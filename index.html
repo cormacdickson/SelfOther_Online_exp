@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+    <title>My experiment</title>
+    <script src="/assets/javascripts/jatos.js"></script>
+    <script src="jspsych-6.3.0/jspsych.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-image-button-response.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-preload.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-instructions.js"></script>
+    <script src="stimuli_A.js"></script>
+    <script src="stimuli_B.js"></script>
+    <script src="stimuli_C.js"></script>
+    <script src="practice_stimuli.js"></script>
+    <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css">
+  	</head>
+
+  	<body>
+  		
+  	</body>
+  	<script>
+
+    /* create timeline */
+    var timeline = [];
+
+
+	var progress = jsPsych.progress();
+
+	var preload_trial = {
+    type: 'preload',
+    auto_preload: true
+    
+}
+
+timeline.push(preload_trial)
+
+
+	timeline.push({
+         type: 'fullscreen',
+         fullscreen_mode: true
+       });
+
+
+
+
+
+// Instructions
+       var instructions = {
+           type: 'instructions',
+           pages: function() {return [
+               '<h1>Welcome!</h1>'+
+
+               '<p>In this experiment, you will be asked to report whether you are aware of stimulus<br> which has either been rotated clockwise or anticlockwise, or is blank.</p>'+
+
+               '<p>The experiment will take approximately 10 minutes to complete.</p>'+
+
+               '<p>Press the arrow buttons to proceed to the next screen.<p>',
+
+               '<p>Use your mouse to click the <strong>Left</strong> button if the stimulus is rotated anticlockwise:</p></br><img src="img/practice_a.png" width="250px" class="center"><br><button type="button"><strong>Left</strong></button><button type="button">Blank</button><button type="button">Right</button> ',
+               '<p>Click the <strong>Left</strong> button if the stimulus is rotated clockwise:</p></br><img src="img/1.png" width="250px" class="center"><br><button type="button"><strong>Left</strong></button><button type="button">Blank</button><button type="button">Right</button> ',
+
+
+               '<p>Use your mouse to click the <strong>Right</strong> button if the stimulus is rotated clockwise:</p></br><img src="img/practice_b.png" width="250px" class="center"><br><button type="button">Blank</button><button type="button">Left</button><button type="button"><strong>right</strong></button> ',
+               '<p>Use your mouse to click the <strong>Right</strong> button if the stimulus is rotated clockwise:</p></br><img src="img/2.png" width="250px" class="center"><br><button type="button">Blank</button><button type="button">Left</button><button type="button"><strong>right</strong></button> ',
+
+               '<p>Use your mouse to click the <strong>Blank</strong> button if the stimulus is blank:</p></br><img src="img/3.png" width="250px" class="center"><br><button type="button">Right</button><button type="button"><strong>Blank</strong></button><button type="button">Left</button>',
+
+               '<p>Note: the order of the response buttons will change on every trial</p>'
+               
+           ]},
+           show_clickable_nav: true,
+           button_label_previous: '',
+           button_label_next: ''
+       }
+
+timeline.push(instructions)
+
+
+//PracticeTrials
+	var begin_trial = {
+		type: 'html-keyboard-response',
+		stimulus: `<h1>Press any key to start the practice round.</h1>`+
+					`<h1></h1>`+
+					'<p>Be accurate and quick!</p>',
+		choices: jsPsych.ALL_KEYS
+		}
+
+	timeline.push(begin_trial)
+
+//var options = ['img/1.png', 'img/2.png', 'img/3.png'];
+/*
+function randomise_options() {
+	if (progress.current_trial_global < progress.total_trials) {
+		return 0.5-Math.random()
+	}
+}
+*/
+		var buffer = {
+		            type: 'html-keyboard-response',
+		            stimulus: '+',
+		            choices: jsPsych.NO_KEYS,
+		            trial_duration: 1000
+		        }
+
+
+
+		        var discrimination_block = {
+		        	type: 'image-keyboard-response',
+		            stimulus: jsPsych.timelineVariable('stimulus'),
+		            stimulus_height: 250, 
+		            maintain_aspect_ratio: true,
+					choices: jsPsych.NO_KEYS,
+		            stimulus_duration: 100,
+		            trial_duration: 300,
+		            post_trial_gap:200
+		        }
+
+
+		        var response_block = {
+
+		            type: 'image-button-response',
+		            stimulus:'' ,
+		            stimulus_height: 1, 
+		            //choices: options.sort(function(a,b){return Math.random}),
+					//choices: options.sort(randomise_options),
+					choices: jsPsych.timelineVariable('options'),
+		            //button_html: '<img src="%choice%" width="100" height="100"/>',
+		            stimulus_duration: 1,
+		            trial_duration: 2000,
+		            post_trial_gap: 600,
+		            response_ends_trial: true,
+		            data: {
+		                task: 'response',
+		                correct_response: jsPsych.timelineVariable('correct_response')
+		            },
+		            on_finish: function(data){
+		               data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response)
+		               }
+		            
+		        }
+
+
+
+
+		    
+var debrief_block = {
+		    type: "html-keyboard-response",
+	      stimulus: function() {
+
+	        var trials = jsPsych.data.get().filter({task: 'response'});
+	        var correct_trials = trials.filter({correct: true});
+	        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+	        var rt = Math.round(correct_trials.select('rt').mean());
+
+	        return `<p>You responded correctly on ${accuracy}% of the trials.</p>
+	          <p>Your average response time was ${rt}ms.</p>
+	          <p>Press any key to proceed to the next part!</p>`;
+
+		      }
+		    };
+
+
+	var feedback = {
+         type: 'html-keyboard-response',
+         stimulus: function(){
+           var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+           if(last_trial_correct){
+             return "<div style=\"width:150px;height:56px;font-size:30px;text-align:center;\">Correct!</div>";
+           } else {
+             return "<div style=\"width:150px;height:56px;border:0px;font-size:30px;text-align:center\">Wrong.</div>"
+           }
+         },
+         trial_duration: function(){
+           var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+           if(last_trial_correct){
+             return 1000;
+           } else {
+             return 1500
+           }
+         },
+         response_ends_trial: false
+       }
+
+
+
+   var practice_block = {
+        timeline: [buffer, discrimination_block, response_block, feedback],
+        timeline_variables: practice_sequence,
+        repetitions: 1,
+        randomize_order: false
+      }
+
+
+timeline.push(practice_block);
+	    
+timeline.push(debrief_block);
+
+
+
+//Main Instructions
+    var main_part_instructions = {
+          type: 'instructions',
+          pages: function() {
+               return [
+              '<h1>Excellent. We are now ready to move on to the main part of the experiment.</h1>'+
+               '<p>This will consist of 3 parts: A, B and C.</p>'+
+     			'<br></br>'+
+              '<p>Remember: Click the <button type="button"><strong>Left</strong></button> button if the stimulus is tilted to the left, the <button type="button"><strong>Right</strong></button> '+
+              'button if the stimulus is tilted to the right, and the <button type="button"><strong>Blank</strong></button> button if the stimulus is blank.</p>'+
+              '<p>Click next to proceed.</p>'
+          ]},
+          show_clickable_nav: true
+      	}
+
+	timeline.push(main_part_instructions)
+
+
+//Trial A
+	var begin_trial_a = {
+			type: 'html-keyboard-response',
+			
+			stimulus: `<h1>Press any key to start part A.</h1>`+
+						`<h1></h1>`+
+						'<p>Be accurate and quick!</p>',
+			choices: jsPsych.ALL_KEYS
+			}
+
+	timeline.push(begin_trial_a)
+
+
+
+	var block_a = {
+		timeline: [buffer, discrimination_block,response_block],
+		timeline_variables: sequence_A,
+		randomize_order:false
+	}
+
+	timeline.push(block_a);
+
+	timeline.push(debrief_block);
+
+
+
+//Trial B
+	var begin_trial_b = {
+			type: 'html-keyboard-response',
+			
+			stimulus: `<h1>Press any key to start part B.</h1>`+
+						`<h1></h1>`+
+						'<p>Be accurate and quick!</p>',
+			choices: jsPsych.ALL_KEYS
+			}
+
+	timeline.push(begin_trial_b)
+
+
+
+	var block_b = {
+		timeline: [buffer, discrimination_block,response_block],
+		timeline_variables: sequence_B,
+		randomize_order:false
+	}
+
+	timeline.push(block_b);
+
+	timeline.push(debrief_block);
+
+
+
+//Trial C
+		var begin_trial_c = {
+			type: 'html-keyboard-response',
+			
+			stimulus: `<h1>Press any key to start part C.</h1>`+
+						`<h1></h1>`+
+						'<p>Be accurate and quick!</p>',
+			choices: jsPsych.ALL_KEYS
+			}
+
+	timeline.push(begin_trial_c)
+
+
+
+	var block_c = {
+		timeline: [buffer, discrimination_block, response_block],
+		timeline_variables: sequence_C,
+		randomize_order:false
+	}
+
+	timeline.push(block_c);
+
+	timeline.push(debrief_block);
+
+
+
+// select all trials
+var all_data = jsPsych.data.get();
+
+// get csv representation of data and log to console
+console.log(all_data.csv());
+
+
+/* start the experiment */
+jatos.onLoad(function() { 
+jsPsych.init({
+	//preload_images: ['img/1.png','img/2.png','img/3.png','img/_practice_a.png','img/practice_b.png'],
+      timeline: timeline,
+
+      on_finish: function() {
+        //jsPsych.data.displayData('csv');
+        var resultJson = jsPsych.data.get().csv();
+      jatos.submitResultData(resultJson, jatos.endStudy);
+      }
+    });
+	}); 
+  </script>
+</html>
