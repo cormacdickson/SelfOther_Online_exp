@@ -8,6 +8,7 @@
     <script src="jspsych/plugin-instructions.js"></script>
     <script src="jspsych/plugin-survey-text.js"></script>
     <script src="jspsych/plugin-survey-multi-choice.js"></script>
+    <script src="jspsych/plugin-rdk.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@0.1.1/css/survey.css">
@@ -50,21 +51,35 @@ var confirm_initials = {
       options: ['Confirm', 'Re-enter initals'], 
       required: true
   }],
-  /*
-  data: {
-      proceed: 'Confirm'
-  },
-  on_finish: function(data) {
-   
-   
-      if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials,data.proceed)){
-            return true;
-        } 
-      else {
-            return false;
-        }
-  } 
-  */
+};
+
+
+var confirm_node = {
+  timeline: [get_initials],
+  conditional_function: function(){
+      // get the data from the previous trial,
+      // if they confirmed their initials proceed, if not run get intials again
+      var data = jsPsych.data.get().last(1).values()[0];
+      console.log(data.response)
+      if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials,'Confirm')){
+          return false;
+      } else {
+          return true;
+      }
+    }
+}
+
+
+
+  var rdktrial = {
+    type: "rdk", 
+    number_of_apertures: 3, //This needs to be set if more than one aperture
+    trial_duration: 10000,
+    correct_choice: "a",
+    RDK_type: 3, //Applied to all apertures if only one value
+    aperture_width: 200, //Applied to all apertures if only one value
+    number_of_dots: [50, 200, 100], //Different parameter for each aperture. Array length must equal number_of_apertures
+    aperture_center_x: [(window.innerWidth/2)-300,window.innerWidth/2,(window.innerWidth/2)+300] //Separate the apertures on the screen (window.innerWidth/2 is the middle of the screen)
 };
 
 
@@ -73,34 +88,16 @@ var confirm_initials = {
 
 
 
-var confirm_node = {
-  timeline: [get_initials],
-  conditional_function: function(){
-        // get the data from the previous trial,
-        // and check which key was pressed
-        var data = jsPsych.data.get().last(1).values()[0];
-        console.log(data.response)
-        if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials,'Confirm')){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-// var initials = jsPsych.data.getLastTrialData();
-
-
-jsPsych.run([get_initials,confirm_initials,confirm_node]);
-
-// const UCinit = initials.response.toUpperCase();
 
 
 
-// console.log(UCinit);
+
+
 
 
 
 
+jsPsych.run([get_initials,confirm_initials,confirm_node]);
 // jsPsych.run([enter_fullscreen]);
 
 /*
