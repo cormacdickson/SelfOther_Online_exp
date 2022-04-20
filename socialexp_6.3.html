@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+    <title>Social Experiment 6.3</title>
+    <script src="jspsych-6.3.0/jspsych.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-survey-multi-choice.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-rdk.js"></script>
+    <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  	</head>
+
+  	<body>
+
+  	</body>
+  	<script>
+
+     /* CREATE TIMELINE */
+    var timeline = [];
+
+
+    
+    var enter_fullscreen = {
+      type: "fullscreen",
+      fullscreen_mode: true
+    }
+    timeline.push(enter_fullscreen)
+
+    var instructions = {
+           type: 'instructions',
+           pages: function() {return [
+               '<h1>Welcome to the group competition game!</h1>'+
+
+               '<p>This game is about working together with another person in a team. Your team is playing against another team of two people. To Identify you, we will ask you to enter your initials on the next screen.</p>'+
+
+               '<p>The game will take about 30 minutes and has two parts:</p>'+
+
+               '<p>- Part 1: Individual performance assessment(~5min) </br> -Part 2: The group competition task<p>'+
+
+               '<p>Press the arrow to procee to the next screen and enter you initials.</p>'
+               
+           ]},
+           show_clickable_nav: true,
+           button_label_previous: '',
+           button_label_next: ''
+       }
+
+timeline.push(instructions)
+
+
+
+
+
+    var get_initials = {
+      type: "survey-text",
+      questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
+      on_finish: function(data) {
+            initials = data.response.Q0.toUpperCase();
+            jsPsych.data.addProperties({ id: initials });
+        }
+    }
+
+
+
+
+var confirm_initials = {
+  type: "survey-multi-choice",
+  questions: [{
+      prompt: function(data) {
+        return ['<p> please confirm your initials are: <br>  </p>'] 
+      },
+      name: 'confirmInitials', 
+      options: ['Confirm', 'Re-enter initals'], 
+      required: true
+  }],
+};
+
+
+
+var confirm_node = {
+  timeline: [get_initials],
+  conditional_function: function(){
+      // get the data from the previous trial,
+      // if they confirmed their initials proceed, if not run get intials again
+      var data = jsPsych.data.get().last(1).values()[0];
+      console.log(data.response)
+      if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials,'Confirm')){
+          proceedWinitals = true;
+          return false;
+      } else {
+          return true;
+      }  
+  }
+}
+
+
+
+
+
+
+
+/*
+var initials_loop_node = {
+      timeline: [get_initials,confirm_initials],
+      loop_function: function(data){
+
+        var data = jsPsych.data.get().values()[0].response;;
+        console.log(data.response)
+        if(jsPsych.pluginAPI.compareKeys(data.response,'Confirm')){
+          return true;
+        } else {
+          return false;
+        }
+      }
+    };
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+timeline.push(get_initials,confirm_initials,confirm_node);
+
+
+var instructions_2 = {
+           type: 'instructions',
+           pages: function() {return [
+               
+
+               '<p>First of all this is how we will display the two teams on screen:.</p>'+
+
+               '<p><img src="images/intro_inst.png" width="250px" class="center"></p>'+
+
+               '<p>(Note: the abbreviations will be shown on this task).<p>'+
+
+               '<p>Press the arrow buttons to proceed to the next screen.<p>',
+
+
+
+               '<h1>Part 1 - Individual performance assessment: Random dot motion task!</h1>'+
+
+               '<p>We ask you to perform a “random dot motion” task, in which you will see dot motion clouds moving to the left or to the right at your position where your initials are.<p>'+
+               
+               '<p>Please press the “left” or “right” arrow button to indicate the correct direction.<p>'+
+
+              '<p>Correct performance will be displayed as:</br><img src="images/fb_correct.png" width="100px" class="center"><p>'+
+
+              '<p>Incorrect performance will be displayed as:</br><img src="images/fb_wrong.png" width="150px" class="center"><p>'+
+
+              '<p>Note that you will have to respond very quickly after the dots have appeared, otherwise your performance will be counted as incorrect.<p>'+
+
+              '<p>We will collect your peformance information when you do so.<p>'+
+
+              '<p>Try it now! Press the right arrow to start.</p>'
+
+
+           ]},
+           show_clickable_nav: true,
+           button_label_previous: '',
+           button_label_next: ''
+       }
+
+timeline.push(instructions_2)
+
+
+  var rdktrial = {
+    type:"rdk", 
+    number_of_apertures: 4, //This needs to be set if more than one aperture
+    trial_duration: 100000,
+    correct_choice: "a",
+    RDK_type: 3, //Applied to all apertures if only one value
+    aperture_type: 1, // circle
+    aperture_width: 200, //Applied to all apertures if only one value
+    border: true,
+    move_distance: [1,0,0,0],
+    dot_color: ["white","blue","black","purple"],
+    number_of_dots: [50,50,50,50], //Different parameter for each aperture. Array length must equal number_of_apertures
+    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                        (window.innerWidth/2+window.innerWidth/5), //topright
+                        (window.innerWidth/2+window.innerWidth/5),
+                        (window.innerWidth/2-window.innerWidth/5)],
+    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4)
+                      ]  
+    
+};
+
+timeline.push(rdktrial)
+// jsPsych.run([enter_fullscreen]);
+
+/*
+
+
+	  var preload_trial = {
+    type: 'preload',
+    auto_preload: true
+
+}
+
+timeline.push(preload_trial)
+
+
+
+
+
+
+
+// Instructions #1
+       var instructions = {
+           type: 'instructions',
+           pages: function() {return [
+               '<h1>Welcome!</h1>'
+
+           ]},
+           show_clickable_nav: true,
+           button_label_previous: '',
+           button_label_next: ''
+       }
+
+timeline.push(instructions)
+
+
+
+
+// prompt for
+var trial = {
+  type: 'jspsych-survey-text',
+  preamble: '<p>What are your intials?</p>',
+  html: '<p><input type="text" id="test-resp-box" name="response" size="10" /></p>',
+  autofocus: 'test-resp-box'
+};
+
+timeline.push(trial)
+
+*/
+//Instructions 2
+
+
+
+/*
+	var feedback = {
+         type: 'html-keyboard-response',
+         stimulus: function(){
+           var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+           if(last_trial_correct){
+             return "<div style=\"width:150px;height:56px;font-size:30px;text-align:center;\">Correct!</div>";
+           } else {
+             return "<div style=\"width:150px;height:56px;border:0px;font-size:30px;text-align:center\">Wrong.</div>"
+           }
+         },
+         trial_duration: function(){
+           var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+           if(last_trial_correct){
+             return 1000;
+           } else {
+             return 1500
+           }
+         },
+         response_ends_trial: false
+       }
+
+
+
+   var practice_block = {
+        timeline: [buffer, discrimination_block, response_block, feedback],
+        timeline_variables: practice_sequence,
+        repetitions: 1,
+        randomize_order: false
+      }
+
+
+timeline.push(practice_block);
+
+timeline.push(debrief_block);
+
+*/
+
+
+// select all trials
+// var all_data = jsPsych.data.get();
+
+// get csv representation of data and log to console
+// console.log(all_data.csv());
+
+
+/* start the experiment */
+//jatos.onLoad(function() {
+
+/*
+      on_finish: function() {
+        //jsPsych.data.displayData('csv');
+        var resultJson = jsPsych.data.get().csv();
+      jatos.submitResultData(resultJson, jatos.endStudy);
+      }
+      */
+    
+jsPsych.init({
+      timeline: timeline,
+
+    });
+  </script>
+</html>

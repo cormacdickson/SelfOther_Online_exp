@@ -72,7 +72,7 @@ var confirm_node = {
 
 
   var rdktrial = {
-    type: "rdk", 
+    type:jsPsychRDK, 
     number_of_apertures: 3, //This needs to be set if more than one aperture
     trial_duration: 10000,
     correct_choice: "a",
@@ -97,7 +97,7 @@ var confirm_node = {
 
 
 
-jsPsych.run([get_initials,confirm_initials,confirm_node]);
+jsPsych.run([rdktrial,get_initials,confirm_initials,confirm_node]);
 // jsPsych.run([enter_fullscreen]);
 
 /*

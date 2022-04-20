@@ -7,6 +7,8 @@
     <script src="jspsych/plugin-fullscreen.js"></script>
     <script src="jspsych/plugin-instructions.js"></script>
     <script src="jspsych/plugin-survey-text.js"></script>
+    <script src="jspsych/plugin-survey-multi-choice.js"></script>
+    <script src="jspsych/plugin-rdk.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@0.1.1/css/survey.css">
@@ -19,10 +21,84 @@
 
     const jsPsych = initJsPsych();
 
-    jsPsych.run([push({
-         type: 'fullscreen',
-         fullscreen_mode: true
-       })]);
+    
+var enter_fullscreen = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true
+}
+
+
+
+var get_initials = {
+  type: jsPsychSurveyText,
+  questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
+  on_finish: function(data) {
+        initials = data.response.Q0.toUpperCase();
+        jsPsych.data.addProperties({ id: initials });
+    }
+}
+
+
+
+
+var confirm_initials = {
+  type: jsPsychSurveyMultiChoice,
+  questions: [{
+      prompt: function(data) {
+        return ['<p> please confirm your initials are: <br>  </p>'] 
+      },
+      name: 'confirmInitials', 
+      options: ['Confirm', 'Re-enter initals'], 
+      required: true
+  }],
+};
+
+
+var confirm_node = {
+  timeline: [get_initials],
+  conditional_function: function(){
+      // get the data from the previous trial,
+      // if they confirmed their initials proceed, if not run get intials again
+      var data = jsPsych.data.get().last(1).values()[0];
+      console.log(data.response)
+      if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials,'Confirm')){
+          return false;
+      } else {
+          return true;
+      }
+    }
+}
+
+
+
+  var rdktrial = {
+    type:jsPsychRDK, 
+    number_of_apertures: 3, //This needs to be set if more than one aperture
+    trial_duration: 10000,
+    correct_choice: "a",
+    RDK_type: 3, //Applied to all apertures if only one value
+    aperture_width: 200, //Applied to all apertures if only one value
+    number_of_dots: [50, 200, 100], //Different parameter for each aperture. Array length must equal number_of_apertures
+    aperture_center_x: [(window.innerWidth/2)-300,window.innerWidth/2,(window.innerWidth/2)+300] //Separate the apertures on the screen (window.innerWidth/2 is the middle of the screen)
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jsPsych.run([rdktrial,get_initials,confirm_initials,confirm_node]);
+// jsPsych.run([enter_fullscreen]);
 
 /*
 
@@ -113,17 +189,15 @@ timeline.push(debrief_block);
 
 
 // select all trials
-var all_data = jsPsych.data.get();
+// var all_data = jsPsych.data.get();
 
 // get csv representation of data and log to console
-console.log(all_data.csv());
+// console.log(all_data.csv());
 
 
 /* start the experiment */
 //jatos.onLoad(function() {
-jsPsych.init({
-	//preload_images: ['img/1.png','img/2.png','img/3.png','img/_practice_a.png','img/practice_b.png'],
-      timeline: timeline,
+
 /*
       on_finish: function() {
         //jsPsych.data.displayData('csv');
@@ -131,7 +205,7 @@ jsPsych.init({
       jatos.submitResultData(resultJson, jatos.endStudy);
       }
       */
-    });
+    
 
   </script>
 </html>

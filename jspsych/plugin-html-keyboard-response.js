@@ -65,7 +65,7 @@ var jsPsychHtmlKeyboardResponse = (function (jspsych) {
   class HtmlKeyboardResponsePlugin {
       constructor(jsPsych) {
           this.jsPsych = jsPsych;
-      }
+      }     
       trial(display_element, trial) {
           var new_html = '<div id="jspsych-html-keyboard-response-stimulus">' + trial.stimulus + "</div>";
           // add prompt
