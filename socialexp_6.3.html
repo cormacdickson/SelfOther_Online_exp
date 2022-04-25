@@ -6,6 +6,7 @@
     <script src="jspsych-6.3.0/jspsych.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-multi-choice.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-rdk.js"></script>
@@ -23,12 +24,12 @@
     var timeline = [];
 
 
-    
+
     var enter_fullscreen = {
       type: "fullscreen",
       fullscreen_mode: true
     }
-    timeline.push(enter_fullscreen)
+    // timeline.push(enter_fullscreen)
 
     var instructions = {
            type: 'instructions',
@@ -42,7 +43,7 @@
                '<p>- Part 1: Individual performance assessment(~5min) </br> -Part 2: The group competition task<p>'+
 
                '<p>Press the arrow to procee to the next screen and enter you initials.</p>'
-               
+
            ]},
            show_clickable_nav: true,
            button_label_previous: '',
@@ -53,32 +54,60 @@
 
 
 
-
+ var initials;
 
     var get_initials = {
       type: "survey-text",
       questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
       on_finish: function(data) {
             initials = data.response.Q0.toUpperCase();
-            jsPsych.data.addProperties({ id: initials });
+            jsPsych.data.addProperties({ player: initials });
+            return initials;
         }
     }
 
 
 
 
+
+    var show_data = {
+        type: "html-button-response",
+        stimulus: function() {
+          var trial_data = jsPsych.data.getLastTrialData().values();
+          var trial_json = JSON.stringify(trial_data, null, 2);
+          return `<p style="margin-bottom:0px;"><strong>Trial data:</strong></p>
+            <pre style="margin-top:0px;text-align:left;">${trial_json}</pre>`;
+        },
+        choices: ['Repeat demo']
+      };
+
+/*
 var confirm_initials = {
   type: "survey-multi-choice",
   questions: [{
       prompt: function(data) {
-        return ['<p> please confirm your initials are: <br>  </p>'] 
+        return ['<p> please confirm your initials are: <br> '+initials+' </p>']
       },
-      name: 'confirmInitials', 
-      options: ['Confirm', 'Re-enter initals'], 
+      name: 'confirmInitials',
+      options: ['Confirm', 'Re-enter initals'],
       required: true
   }],
 };
+*/
+var confirm_initials = {
+  type: "survey-multi-choice",
 
+  questions: [{
+      prompt: function() {
+        var initials = jsPsych.data.get().filter().last(1).values[0];
+        return 'are your initials' +initials+ '?';
+      },
+      name: 'confirmInitials',
+      options: ['Confirm', 'Re-enter initals'],
+      required: true
+  }],
+
+};
 
 
 var confirm_node = {
@@ -93,8 +122,9 @@ var confirm_node = {
           return false;
       } else {
           return true;
-      }  
+      }
   }
+
 }
 
 
@@ -139,13 +169,13 @@ var initials_loop_node = {
 
 
 
-// timeline.push(get_initials,confirm_initials,confirm_node);
+timeline.push(get_initials,show_data,confirm_initials,confirm_node);
 
 
 var instructions_2 = {
            type: 'instructions',
            pages: function() {return [
-               
+
 
                '<p>First of all this is how we will display the two teams on screen:.</p>'+
 
@@ -160,7 +190,7 @@ var instructions_2 = {
                '<h1>Part 1 - Individual performance assessment: Random dot motion task!</h1>'+
 
                '<p>We ask you to perform a “random dot motion” task, in which you will see dot motion clouds moving to the left or to the right at your position where your initials are.<p>'+
-               
+
                '<p>Please press the “left” or “right” arrow button to indicate the correct direction.<p>'+
 
               '<p>Correct performance will be displayed as:</br><img src="images/fb_correct.png" width="100px" class="center"><p>'+
@@ -184,7 +214,7 @@ var instructions_2 = {
 
 
   var rdktrial = {
-    type:"rdk", 
+    type:"rdk",
     number_of_apertures: 4, //This needs to be set if more than one aperture
     trial_duration: 100000,
     correct_choice: "a",
@@ -203,8 +233,8 @@ var instructions_2 = {
                         (window.innerHeight/2-window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4)
-                      ]  
-    
+                      ]
+
 };
 
 // timeline.push(rdktrial)
@@ -218,10 +248,11 @@ var instructions_2 = {
 
 
 var initialsrdk = {
-    type:"initials-rdk", 
+    type:"initials-rdk",
     number_of_apertures: 4, //This needs to be set if more than one aperture
-    trial_duration: 100000,
+    trial_duration: 100,
     RDK_type: 3, //Applied to all apertures if only one value
+    players: ["cd","fc",3,4],
     aperture_type: 1, // circle
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
@@ -235,8 +266,8 @@ var initialsrdk = {
                         (window.innerHeight/2-window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4)
-                      ]  
-    
+                      ]
+
 };
 
 timeline.push(initialsrdk)
@@ -359,10 +390,12 @@ timeline.push(debrief_block);
       jatos.submitResultData(resultJson, jatos.endStudy);
       }
       */
-    
+
 jsPsych.init({
       timeline: timeline,
-
+      on_finish: function() {
+        jsPsych.data.displayData('csv');
+    }
     });
   </script>
 </html>
