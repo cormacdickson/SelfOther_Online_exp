@@ -75,8 +75,9 @@
         stimulus: function() {
           var trial_data = jsPsych.data.getLastTrialData().values();
           var trial_json = JSON.stringify(trial_data, null, 2);
-          return `<p style="margin-bottom:0px;"><strong>Trial data:</strong></p>
-            <pre style="margin-top:0px;text-align:left;">${trial_json}</pre>`;
+          var playerid   = jsPsych.data.getLastTrialData().select('player').values[0];
+          console.log(playerid)
+          return playerid;
         },
         choices: ['Repeat demo']
       };
@@ -99,8 +100,8 @@ var confirm_initials = {
 
   questions: [{
       prompt: function() {
-        var initials = jsPsych.data.get().filter().last(1).values[0];
-        return 'are your initials' +initials+ '?';
+        var playerid   = jsPsych.data.getDataByTimelineNode('0.0-0.0').select('player').values[0];
+        return 'are your initials' +playerid+ '?';
       },
       name: 'confirmInitials',
       options: ['Confirm', 'Re-enter initals'],
