@@ -10,7 +10,9 @@
     <script src="jspsych-6.3.0/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-multi-choice.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-rdk.js"></script>
-    <script src="jspsych-6.3.0/plugins/jspsych-initials-rdk.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-training-pretrial.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-training-trial.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-training-fb.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="style.css" rel="stylesheet" type="text/css" />
   	</head>
@@ -72,7 +74,7 @@ var confirm_initials = {
       prompt: function() {
         //var playerid   = jsPsych.data.getDataByTimelineNode('0.0-0.0').select('player').values[0];
         var playerid   = jsPsych.data.get().select('player').values[0];
-        return 'are your initials' +playerid+ '?';
+        return 'Please confirm your initials are: ' +playerid+ '';
       },
       name: 'confirmInitials',
       options: ['Confirm', 'Re-enter initals'],
@@ -136,14 +138,14 @@ var instructions_2 = {
        }
 
 // timeline.push(instructions_2)
-var initialsrdk = {
+var training_pretrial = {
   on_start: function(trial){
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
     return ;
   },
 
-    type:"initials-rdk",
+    type:"training-pretrial",
     number_of_apertures: 4, //This needs to be set if more than one aperture
     trial_duration: 1000,
     RDK_type: 3, //Applied to all apertures if only one value
@@ -167,19 +169,21 @@ var initialsrdk = {
     }
 };
 
-timeline.push(initialsrdk)
+ timeline.push(training_pretrial)
 
-  var rdktrial = {
-    type:"rdk",
+  var training_trial = {
+    type:"training-trial",
     number_of_apertures: 4, //This needs to be set if more than one aperture
-    trial_duration: 100000,
-    correct_choice: "a",
+    trial_duration: 10000,
+    correct_choice: "left",
     RDK_type: 3, //Applied to all apertures if only one value
     aperture_type: 1, // circle
+    player_on:0, // index of the player to show rdk for [self,partner,op1,op2]
+    player_order: [0,1,2,3],
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
-    move_distance: [1,0,0,0],
-    dot_color: ["white","blue","black","purple"],
+    //move_distance: [0,0,0,0],
+    player_colours: ["white","blue","green","purple"],
     number_of_dots: [50,50,50,50], //Different parameter for each aperture. Array length must equal number_of_apertures
     aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
                         (window.innerWidth/2+window.innerWidth/5), //topright
@@ -190,13 +194,56 @@ timeline.push(initialsrdk)
                         (window.innerHeight/2+window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4)
                       ]
+                      /*
+    on_finish: function(data){
+      // Score the response as correct or incorrect.
+      if(jsPsych.pluginAPI.compareKeys(data.response, data.correct_response)){
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }
+    */
+};
+timeline.push(training_trial)
 
+var training_fb = {
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+    return ;
+  },
+
+    type:"training-fb",
+    number_of_apertures: 4, //This needs to be set if more than one aperture
+    trial_duration: 1000,
+    RDK_type: 3, //Applied to all apertures if only one value
+    player_order: [0,1,2,3],
+    aperture_type: 1, // circle
+    aperture_width: 200, //Applied to all apertures if only one value
+    border: true,
+    feedback: 1, /*function(){
+      var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+      if(last_trial_correct){
+        return 1;
+      } else {
+        return 0
+      }
+    }, */
+    background_color: 'grey',
+    border_color: ["white","blue","black","purple"],
+    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                        (window.innerWidth/2+window.innerWidth/5), //topright
+                        (window.innerWidth/2+window.innerWidth/5),
+                        (window.innerWidth/2-window.innerWidth/5)],
+    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4)
+                      ]
 };
 
-// timeline.push(rdktrial)
-
-
-
+timeline.push(training_fb)
 
 
 

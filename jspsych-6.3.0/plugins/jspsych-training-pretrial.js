@@ -29,12 +29,12 @@
 */
 
 
-jsPsych.plugins["initials-rdk"] = (function() {
+jsPsych.plugins["training-pretrial"] = (function() {
 
 	var plugin = {};
 
 	plugin.info = {
-	    name: "initials-rdk",
+	    name: "training-pretrial",
 	    parameters: {
 
 		    trial_duration: {
