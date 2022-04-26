@@ -103,11 +103,17 @@ jsPsych.plugins["initials-rdk"] = (function() {
 		      default: 1,
 		      description: "The color of the border"
 		    },
-				players: {
+				player_order: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'players',
+	        pretty_name: 'player_order',
 	        default: undefined,
 	        description: 'The HTML string to be displayed for each player'
+	      },
+				player1: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'player1',
+	        default: undefined,
+	        description: 'The HTML string to be displayed for player1'
 	      },
 	    }
 	 }
@@ -122,7 +128,8 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
-		trial.players = assignParameterValue(trial.players, "nana");
+		trial.player_order = assignParameterValue(trial.player_order, "nana");
+		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
@@ -151,7 +158,8 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
 		var nApertures = trial.number_of_apertures; //The number of apertures
 
-		var players = trial.players; // array of each players initials in order
+		var player_order = trial.player_order; // array of each player_order initials in order
+		var player1 = trial.player1;
 		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
 
@@ -278,7 +286,9 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
 
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
-		var players;
+		var player_order;
+		var player1;
+		var player_ids = [player1,'partner','op1','op2'];
 		var apertureWidthArray;
 		var apertureHeightArray;
 
@@ -400,7 +410,7 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
 		//Set up the variables for the apertures
 		function setUpMultipleApertures(){
-			playersArray = setParameter(players);
+			//player_orderArray = setParameter(player_order);
 
 			apertureWidthArray = setParameter(apertureWidth);
 			apertureHeightArray = setParameter(apertureHeight);
@@ -460,7 +470,7 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
 			//Set the global variables to that relevant to the current aperture
 
-			players = playersArray[currentApertureNumber];
+			//player_order = player_orderArray[currentApertureNumber];
 
 			apertureWidth = apertureWidthArray[currentApertureNumber];
 			apertureHeight = apertureHeightArray[currentApertureNumber];
@@ -513,7 +523,7 @@ jsPsych.plugins["initials-rdk"] = (function() {
 				initializeCurrentApertureParameters(currentApertureNumber);
 
 				//Draw on the canvas
-				draw();
+				draw(currentApertureNumber);
 
 				// drawinitials();
 			}
@@ -521,7 +531,7 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
 
 		//Draw the dots on the canvas after they're updated
-		function draw() {
+		function draw(currentApertureNumber) {
 
 
 	      	//Draw the border if we want it
@@ -545,7 +555,7 @@ jsPsych.plugins["initials-rdk"] = (function() {
 
       		}//End of if border === true
 
-					ctx.fillText(players, apertureCenterX, apertureCenterY);
+					ctx.fillText(player_ids[player_order[currentApertureNumber]], apertureCenterX, apertureCenterY);
 					ctx.textAlign = "center";
 		}//End of draw
 

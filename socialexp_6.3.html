@@ -70,7 +70,8 @@ var confirm_initials = {
   type: "survey-multi-choice",
   questions: [{
       prompt: function() {
-        var playerid   = jsPsych.data.getDataByTimelineNode('0.0-0.0').select('player').values[0];
+        //var playerid   = jsPsych.data.getDataByTimelineNode('0.0-0.0').select('player').values[0];
+        var playerid   = jsPsych.data.get().select('player').values[0];
         return 'are your initials' +playerid+ '?';
       },
       name: 'confirmInitials',
@@ -92,12 +93,6 @@ var Get_ID_loop = {
 }
 
 timeline.push(Get_ID_loop);
-
-
-
-
-
-
 
 
 
@@ -141,7 +136,38 @@ var instructions_2 = {
        }
 
 // timeline.push(instructions_2)
+var initialsrdk = {
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+    return ;
+  },
 
+    type:"initials-rdk",
+    number_of_apertures: 4, //This needs to be set if more than one aperture
+    trial_duration: 1000,
+    RDK_type: 3, //Applied to all apertures if only one value
+    player_order: [0,1,2,3],
+    aperture_type: 1, // circle
+    aperture_width: 200, //Applied to all apertures if only one value
+    border: true,
+    background_color: 'grey',
+    border_color: ["white","blue","black","purple"],
+    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                        (window.innerWidth/2+window.innerWidth/5), //topright
+                        (window.innerWidth/2+window.innerWidth/5),
+                        (window.innerWidth/2-window.innerWidth/5)],
+    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4)
+                      ],
+    on_finish: function(){
+      console.log('printing for clarity');
+    }
+};
+
+timeline.push(initialsrdk)
 
   var rdktrial = {
     type:"rdk",
@@ -177,30 +203,7 @@ var instructions_2 = {
 
 
 
-var initialsrdk = {
-    type:"initials-rdk",
-    number_of_apertures: 4, //This needs to be set if more than one aperture
-    trial_duration: 100,
-    RDK_type: 3, //Applied to all apertures if only one value
-    players: ["cd","fc",3,4],
-    aperture_type: 1, // circle
-    aperture_width: 200, //Applied to all apertures if only one value
-    border: true,
-    background_color: 'grey',
-    border_color: ["white","blue","black","purple"],
-    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
-                        (window.innerWidth/2+window.innerWidth/5), //topright
-                        (window.innerWidth/2+window.innerWidth/5),
-                        (window.innerWidth/2-window.innerWidth/5)],
-    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
-                        (window.innerHeight/2-window.innerHeight/4),
-                        (window.innerHeight/2+window.innerHeight/4),
-                        (window.innerHeight/2+window.innerHeight/4)
-                      ]
 
-};
-
-timeline.push(initialsrdk)
 
 
 
