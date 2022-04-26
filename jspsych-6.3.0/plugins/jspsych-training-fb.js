@@ -564,9 +564,9 @@ jsPsych.plugins["training-fb"] = (function() {
 	        	}//End of if square or
 
       		}//End of if border === true
-
+          ctx.textAlign = "center";
 					ctx.fillText(player_ids[player_order[currentApertureNumber]], apertureCenterX, apertureCenterY);
-					ctx.textAlign = "center";
+
 		}//End of draw
 
 function drawfb(){

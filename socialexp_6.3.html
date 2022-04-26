@@ -139,18 +139,16 @@ var instructions_2 = {
 
 // timeline.push(instructions_2)
 var training_pretrial = {
+  // get the subjects initials
   on_start: function(trial){
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
     return ;
   },
-
     type:"training-pretrial",
-    number_of_apertures: 4, //This needs to be set if more than one aperture
-    trial_duration: 1000,
+    trial_duration: 4000,
     RDK_type: 3, //Applied to all apertures if only one value
     player_order: [0,1,2,3],
-    aperture_type: 1, // circle
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
     background_color: 'grey',
@@ -163,10 +161,7 @@ var training_pretrial = {
                         (window.innerHeight/2-window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4),
                         (window.innerHeight/2+window.innerHeight/4)
-                      ],
-    on_finish: function(){
-      console.log('printing for clarity');
-    }
+                      ]
 };
 
  timeline.push(training_pretrial)

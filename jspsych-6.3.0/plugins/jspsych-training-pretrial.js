@@ -43,12 +43,6 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		      default: 500,
 		      description: "The length of stimulus presentation"
 		    },
-		    response_ends_trial: {
-		      type: jsPsych.plugins.parameterType.BOOL,
-		      pretty_name: "Response ends trial",
-		      default: true,
-		      description: "If true, then any valid key will end the trial"
-		    },
 		    aperture_width: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Aperture width",
@@ -66,12 +60,6 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		      pretty_name: "Background color",
 		      default: "gray",
 		      description: "The background of the stimulus"
-		    },
-		    aperture_type: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Aperture Type",
-		      default: 2,
-		      description: "The shape of the aperture"
 		    },
 		    aperture_center_x: {
 		      type: jsPsych.plugins.parameterType.INT,
@@ -128,39 +116,35 @@ jsPsych.plugins["training-pretrial"] = (function() {
 
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
-		trial.player_order = assignParameterValue(trial.player_order, "nana");
-		trial.player1 = assignParameterValue(trial.player1, "nan");
-		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
-		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
+		trial.player_order      = assignParameterValue(trial.player_order, "nana");
+		trial.player1           = assignParameterValue(trial.player1, "nan");
+		trial.trial_duration    = assignParameterValue(trial.trial_duration, 500);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
 
-		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
-		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
+		trial.aperture_width    = assignParameterValue(trial.aperture_width, 600);
+		trial.aperture_height   = assignParameterValue(trial.aperture_height, 400);
 
-		trial.background_color = assignParameterValue(trial.background_color, "gray");
+		trial.background_color  = assignParameterValue(trial.background_color, "gray");
 
-		trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
+		trial.aperture_type     = assignParameterValue(trial.aperture_type, 2);
 
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
 
-		trial.border = assignParameterValue(trial.border, false);
-		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
-		trial.border_color = assignParameterValue(trial.border_color, "black");
+		trial.border            = assignParameterValue(trial.border, false);
+		trial.border_thickness  = assignParameterValue(trial.border_thickness, 1);
+		trial.border_color      = assignParameterValue(trial.border_color, "black");
 
 
-		//For square and circle, set the aperture height == aperture width
-		if (apertureType == 1 || apertureType == 3) {
-			trial.aperture_height = trial.aperture_width;
-		}
+		//For circler aperture, set the aperture height == aperture width
+		trial.aperture_height = trial.aperture_width;
+
 
 		//Convert the parameter variables to those that the code below can use
-
-		var nApertures = trial.number_of_apertures; //The number of apertures
-
-		var player_order = trial.player_order; // array of each player_order initials in order
-		var player1 = trial.player1;
-		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
+		var nApertures     = 4; //The number of apertures
+		var player_order   = trial.player_order; // array of each player_order initials in order
+		var player1        = trial.player1;
+		var apertureWidth  = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
 
 		var backgroundColor = trial.background_color; //Color of the background
@@ -256,7 +240,7 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		var ctx = canvas.getContext("2d");
 
 		//Declare variables for width and height, and also set the canvas width and height to the window width and height
-		var canvasWidth =     canvas.width = window.innerWidth;
+		var canvasWidth  = canvas.width = window.innerWidth;
 		var canvasHeight = canvas.height = window.innerHeight;
 
 		//Set the canvas background color
@@ -271,24 +255,12 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		//This is the main part of the trial that makes everything run
 
 
-
-
-
-
-		// draw
-
-
-
-
 		//Global variable for the current aperture number
 		var currentApertureNumber;
 
-
-
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
-		var player_order;
-		var player1;
-		var player_ids = [player1,'partner','op1','op2'];
+
+		var player_ids = [player1,'Pa','Op1','Op2'];
 		var apertureWidthArray;
 		var apertureHeightArray;
 
@@ -305,12 +277,6 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		//Variable to start the timer when the time comes
 		var timerHasStarted = false;
 
-		//Initialize object to store the response data. Default values of -1 are used if the trial times out and the subject has not pressed a valid key
-		var response = {
-			rt: -1,
-			key: -1
-		}
-
 		//Declare a global timeout ID to be initialized below in DotMotion function and to be used in after_response function
 		var timeoutID;
 
@@ -319,8 +285,6 @@ jsPsych.plugins["training-pretrial"] = (function() {
 
 
 		updateAndDraw();
-
-		//display_element.innerHTML = new_html;
 
 		//--------RDK variables and function calls end--------
 
@@ -333,58 +297,23 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		//----JsPsych Functions Begin----
 
 
-		//Function to start the keyboard listener
-		function startKeyboardListener(){
-			//Start the response listener if there are choices for keys
-			if (trial.choices != jsPsych.NO_KEYS) {
-				//Create the keyboard listener to listen for subjects' key response
-				keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
-					callback_function: after_response, //Function to call once the subject presses a valid key
-					valid_responses: trial.choices, //The keys that will be considered a valid response and cause the callback function to be called
-					rt_method: 'performance', //The type of method to record timing information.
-					persist: false, //If set to false, keyboard listener will only trigger the first time a valid key is pressed. If set to true, it has to be explicitly cancelled by the cancelKeyboardResponse plugin API.
-					allow_held_key: false //Only register the key once, after this getKeyboardResponse function is called. (Check JsPsych docs for better info under 'jsPsych.pluginAPI.getKeyboardResponse').
-				});
-			}
-		}
-
 		//Function to end the trial proper
 		function end_trial() {
 
-
-
-			//Kill the keyboard listener if keyboardListener has been defined
-			if (typeof keyboardListener !== 'undefined') {
-				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
-			}
-
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
-				rt: response.rt, //The response time
-				response: response.key, //The key that the subject pressed
-				// correct: correctOrNot(), //If the subject response was correct
-				choices: trial.choices, //The set of valid keys
-				correct_choice: trial.correct_choice, //The correct choice
-				trial_duration: trial.trial_duration, //The trial duration
-				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
-				number_of_apertures: trial.number_of_apertures,
-
-				aperture_width: trial.aperture_width,
-				aperture_height: trial.aperture_height,
-
-				background_color: trial.background_color,
-				RDK_type: trial.RDK_type,
-				aperture_type: trial.aperture_type,
-
-
-				aperture_center_x: trial.aperture_center_x,
-				aperture_center_y: trial.aperture_center_y,
-
-				border: trial.border,
-				border_thickness: trial.border_thickness,
-				border_color: trial.border_color,
-				canvas_width: canvasWidth,
-				canvas_height: canvasHeight
+				trial_duration:      trial.trial_duration, //The trial duration
+				aperture_width:      trial.aperture_width,
+				aperture_height:     trial.aperture_height,
+				background_color:    trial.background_color,
+				RDK_type:            trial.RDK_type,
+				aperture_center_x:   trial.aperture_center_x,
+				aperture_center_y:   trial.aperture_center_y,
+				border:              trial.border,
+				border_thickness:    trial.border_thickness,
+				border_color:        trial.border_color,
+				canvas_width:        canvasWidth,
+				canvas_height:       canvasHeight
 			}
 
 			//Remove the canvas as the child of the display_element element
@@ -400,7 +329,6 @@ jsPsych.plugins["training-pretrial"] = (function() {
 
 		} //End of end_trial
 
-		//Function to record the first response by the subject
 
 
 
@@ -410,31 +338,20 @@ jsPsych.plugins["training-pretrial"] = (function() {
 
 		//Set up the variables for the apertures
 		function setUpMultipleApertures(){
-			//player_orderArray = setParameter(player_order);
-
-			apertureWidthArray = setParameter(apertureWidth);
-			apertureHeightArray = setParameter(apertureHeight);
-
-			apertureCenterXArray = setParameter(apertureCenterX);
-			apertureCenterYArray = setParameter(apertureCenterY);
-
-			apertureTypeArray = setParameter(apertureType);
-
-
-			borderArray = setParameter(border);
-			borderThicknessArray = setParameter(borderThickness);
-			borderColorArray = setParameter(borderColor);
-
-			currentSetArray = setParameter(0); //Always starts at zero
-
+			apertureWidthArray    = setParameter(apertureWidth);
+			apertureHeightArray   = setParameter(apertureHeight);
+			apertureCenterXArray  = setParameter(apertureCenterX);
+			apertureCenterYArray  = setParameter(apertureCenterY);
+			apertureTypeArray     = setParameter(apertureType);
+			borderArray           = setParameter(border);
+			borderThicknessArray  = setParameter(borderThickness);
+			borderColorArray 			= setParameter(borderColor);
+			currentSetArray 			= setParameter(0); //Always starts at zero
 
 			//Loop through the number of apertures to make the dots
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
 				//Initialize the parameters to make the 2d dot array (one for each aperture);
 				initializeCurrentApertureParameters();
-
-
 			}
 		}
 
@@ -469,63 +386,37 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		function initializeCurrentApertureParameters(){
 
 			//Set the global variables to that relevant to the current aperture
-
-			//player_order = player_orderArray[currentApertureNumber];
-
-			apertureWidth = apertureWidthArray[currentApertureNumber];
+			apertureWidth  = apertureWidthArray[currentApertureNumber];
 			apertureHeight = apertureHeightArray[currentApertureNumber];
-
 			apertureCenterX = apertureCenterXArray[currentApertureNumber];
 			apertureCenterY = apertureCenterYArray[currentApertureNumber];
-
 			apertureType = apertureTypeArray[currentApertureNumber];
-
 			border = borderArray[currentApertureNumber];
 			borderThickness = borderThicknessArray[currentApertureNumber];
 			borderColor = borderColorArray[currentApertureNumber];
 
-
-
 			//Initialize the aperture parameters
 			initializeApertureDimensions();
 
-
-		}// End of initializeCurrentApertureParameters
-
-
-
+		}  // End of initializeCurrentApertureParameters
 
 
 		//Initialize the parameters for the aperture for further calculation
 		function initializeApertureDimensions() {
-			//For circle and square
-			if (apertureType == 1 || apertureType == 3) {
-				horizontalAxis = verticalAxis = apertureWidth/2;
-			}
-			//For ellipse and rectangle
-			else if (apertureType == 2 || apertureType == 4) {
-				horizontalAxis = apertureWidth / 2;
-				verticalAxis = apertureHeight / 2;
-			}
+			//For circle
+			horizontalAxis = verticalAxis = apertureWidth/2;
 		}
-
-
 
 
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
-
-
 			// Draw all the relevant dots on the canvas
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
 
 				//Draw on the canvas
 				draw(currentApertureNumber);
-
-				// drawinitials();
 			}
 		}
 
@@ -533,58 +424,37 @@ jsPsych.plugins["training-pretrial"] = (function() {
 		//Draw the dots on the canvas after they're updated
 		function draw(currentApertureNumber) {
 
+    	//Draw the border if we want it
+    	if(border === true){
+      	//For circle and ellipse
+      	if(apertureType === 1 || apertureType === 2){
+        		ctx.lineWidth = borderThickness;
+        		ctx.strokeStyle = borderColor;
+        		ctx.beginPath();
+        		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
+        		ctx.stroke();
+      	}//End of if circle or ellipse
 
-	      	//Draw the border if we want it
-	      	if(border === true){
+      	//For square and rectangle
+      	if(apertureType === 3 || apertureType === 4){
+        		ctx.lineWidth = borderThickness;
+        		ctx.strokeStyle = borderColor;
+        		ctx.strokeRect(apertureCenterX-horizontalAxis-(borderThickness/2), apertureCenterY-verticalAxis-(borderThickness/2), (horizontalAxis*2)+borderThickness, (verticalAxis*2)+borderThickness);
+      	}//End of if square or
 
-	        	//For circle and ellipse
-	        	if(apertureType === 1 || apertureType === 2){
-	          		ctx.lineWidth = borderThickness;
-	          		ctx.strokeStyle = borderColor;
-	          		ctx.beginPath();
-	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
-	          		ctx.stroke();
-	        	}//End of if circle or ellipse
+  		}//End of if border === true
+			ctx.textAlign = "center";
+			ctx.fillText(player_ids[player_order[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
-	        	//For square and rectangle
-	        	if(apertureType === 3 || apertureType === 4){
-	          		ctx.lineWidth = borderThickness;
-	          		ctx.strokeStyle = borderColor;
-	          		ctx.strokeRect(apertureCenterX-horizontalAxis-(borderThickness/2), apertureCenterY-verticalAxis-(borderThickness/2), (horizontalAxis*2)+borderThickness, (verticalAxis*2)+borderThickness);
-	        	}//End of if square or
-
-      		}//End of if border === true
-
-					ctx.fillText(player_ids[player_order[currentApertureNumber]], apertureCenterX, apertureCenterY);
-					ctx.textAlign = "center";
 		}//End of draw
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		//Generates a random number (with decimals) between 2 values
 		function randomNumberBetween(lowerBound, upperBound) {
 			return lowerBound + Math.random() * (upperBound - lowerBound);
 		}
-
-
-
 		//----RDK Functions End----
+
 
 		//----General Functions Begin//----
 
