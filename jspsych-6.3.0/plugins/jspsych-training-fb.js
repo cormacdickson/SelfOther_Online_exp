@@ -136,41 +136,31 @@ jsPsych.plugins["training-fb"] = (function() {
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		trial.player_order = assignParameterValue(trial.player_order, "nana");
 		trial.player1 = assignParameterValue(trial.player1, "nan");
-
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
-
 		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
-
 		trial.background_color = assignParameterValue(trial.background_color, "gray");
-
 		trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
-
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
-
 		trial.border = assignParameterValue(trial.border, false);
 		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
 		trial.border_color = assignParameterValue(trial.border_color, "black");
 
 
 		//For square and circle, set the aperture height == aperture width
-		if (apertureType == 1 || apertureType == 3) {
 			trial.aperture_height = trial.aperture_width;
-		}
 
 		//Convert the parameter variables to those that the code below can use
 
 		var nApertures = trial.number_of_apertures; //The number of apertures
-
 		var player_order = trial.player_order; // array of each player_order initials in order
 		var player1 = trial.player1;
 		var feedback = trial.feedback;
 		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
-
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
@@ -280,26 +270,13 @@ jsPsych.plugins["training-fb"] = (function() {
 
 
 
-
-
-
-		// draw
-
-
-
-
 		//Global variable for the current aperture number
 		var currentApertureNumber;
 
-
-
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
-		var player_order;
-		var player1;
 		var player_ids = [player1,'partner','op1','op2'];
 		var apertureWidthArray;
 		var apertureHeightArray;
-
 		var apertureCenterXArray;
 		var apertureCenterYArray;
 
@@ -313,22 +290,11 @@ jsPsych.plugins["training-fb"] = (function() {
 		//Variable to start the timer when the time comes
 		var timerHasStarted = false;
 
-		//Initialize object to store the response data. Default values of -1 are used if the trial times out and the subject has not pressed a valid key
-		var response = {
-			rt: -1,
-			key: -1
-		}
-
 		//Declare a global timeout ID to be initialized below in DotMotion function and to be used in after_response function
 		var timeoutID;
 
-		//Declare global variable to be defined in startKeyboardListener function and to be used in end_trial function
-		var keyboardListener;
-
-
 		updateAndDraw();
 
-		//display_element.innerHTML = new_html;
 
 		//--------RDK variables and function calls end--------
 
@@ -341,53 +307,21 @@ jsPsych.plugins["training-fb"] = (function() {
 		//----JsPsych Functions Begin----
 
 
-		//Function to start the keyboard listener
-		function startKeyboardListener(){
-			//Start the response listener if there are choices for keys
-			if (trial.choices != jsPsych.NO_KEYS) {
-				//Create the keyboard listener to listen for subjects' key response
-				keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
-					callback_function: after_response, //Function to call once the subject presses a valid key
-					valid_responses: trial.choices, //The keys that will be considered a valid response and cause the callback function to be called
-					rt_method: 'performance', //The type of method to record timing information.
-					persist: false, //If set to false, keyboard listener will only trigger the first time a valid key is pressed. If set to true, it has to be explicitly cancelled by the cancelKeyboardResponse plugin API.
-					allow_held_key: false //Only register the key once, after this getKeyboardResponse function is called. (Check JsPsych docs for better info under 'jsPsych.pluginAPI.getKeyboardResponse').
-				});
-			}
-		}
-
 		//Function to end the trial proper
 		function end_trial() {
 
 
-
-			//Kill the keyboard listener if keyboardListener has been defined
-			if (typeof keyboardListener !== 'undefined') {
-				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
-			}
-
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
-				rt: response.rt, //The response time
-				response: response.key, //The key that the subject pressed
-				// correct: correctOrNot(), //If the subject response was correct
-				choices: trial.choices, //The set of valid keys
-				correct_choice: trial.correct_choice, //The correct choice
 				trial_duration: trial.trial_duration, //The trial duration
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
-				number_of_apertures: trial.number_of_apertures,
-
 				aperture_width: trial.aperture_width,
 				aperture_height: trial.aperture_height,
-
 				background_color: trial.background_color,
 				RDK_type: trial.RDK_type,
 				aperture_type: trial.aperture_type,
-
-
 				aperture_center_x: trial.aperture_center_x,
 				aperture_center_y: trial.aperture_center_y,
-
 				border: trial.border,
 				border_thickness: trial.border_thickness,
 				border_color: trial.border_color,
@@ -422,27 +356,18 @@ jsPsych.plugins["training-fb"] = (function() {
 
 			apertureWidthArray = setParameter(apertureWidth);
 			apertureHeightArray = setParameter(apertureHeight);
-
 			apertureCenterXArray = setParameter(apertureCenterX);
 			apertureCenterYArray = setParameter(apertureCenterY);
-
 			apertureTypeArray = setParameter(apertureType);
-
-
 			borderArray = setParameter(border);
 			borderThicknessArray = setParameter(borderThickness);
 			borderColorArray = setParameter(borderColor);
-
 			currentSetArray = setParameter(0); //Always starts at zero
-
 
 			//Loop through the number of apertures to make the dots
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
 				//Initialize the parameters to make the 2d dot array (one for each aperture);
 				initializeCurrentApertureParameters();
-
-
 			}
 		}
 
@@ -477,21 +402,14 @@ jsPsych.plugins["training-fb"] = (function() {
 		function initializeCurrentApertureParameters(){
 
 			//Set the global variables to that relevant to the current aperture
-
-			//player_order = player_orderArray[currentApertureNumber];
-
 			apertureWidth = apertureWidthArray[currentApertureNumber];
 			apertureHeight = apertureHeightArray[currentApertureNumber];
-
 			apertureCenterX = apertureCenterXArray[currentApertureNumber];
 			apertureCenterY = apertureCenterYArray[currentApertureNumber];
-
 			apertureType = apertureTypeArray[currentApertureNumber];
-
 			border = borderArray[currentApertureNumber];
 			borderThickness = borderThicknessArray[currentApertureNumber];
 			borderColor = borderColorArray[currentApertureNumber];
-
 
 
 			//Initialize the aperture parameters
@@ -499,9 +417,6 @@ jsPsych.plugins["training-fb"] = (function() {
 
 
 		}// End of initializeCurrentApertureParameters
-
-
-
 
 
 		//Initialize the parameters for the aperture for further calculation
@@ -518,11 +433,8 @@ jsPsych.plugins["training-fb"] = (function() {
 		}
 
 
-
-
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
-
 
 			// Draw all the relevant dots on the canvas
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
