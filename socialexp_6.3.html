@@ -54,50 +54,20 @@
 
 
 
- var initials;
 
-    var get_initials = {
-      type: "survey-text",
-      questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
-      on_finish: function(data) {
-            initials = data.response.Q0.toUpperCase();
-            jsPsych.data.addProperties({ player: initials });
-            return initials;
-        }
+
+var get_initials = {
+  type: "survey-text",
+  questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
+  on_finish: function(data) {
+        initials = data.response.Q0.toUpperCase();
+        jsPsych.data.addProperties({ player: initials });
+        return initials;
     }
+}
 
-
-
-
-
-    var show_data = {
-        type: "html-button-response",
-        stimulus: function() {
-          var trial_data = jsPsych.data.getLastTrialData().values();
-          var trial_json = JSON.stringify(trial_data, null, 2);
-          var playerid   = jsPsych.data.getLastTrialData().select('player').values[0];
-          console.log(playerid)
-          return playerid;
-        },
-        choices: ['Repeat demo']
-      };
-
-/*
 var confirm_initials = {
   type: "survey-multi-choice",
-  questions: [{
-      prompt: function(data) {
-        return ['<p> please confirm your initials are: <br> '+initials+' </p>']
-      },
-      name: 'confirmInitials',
-      options: ['Confirm', 'Re-enter initals'],
-      required: true
-  }],
-};
-*/
-var confirm_initials = {
-  type: "survey-multi-choice",
-
   questions: [{
       prompt: function() {
         var playerid   = jsPsych.data.getDataByTimelineNode('0.0-0.0').select('player').values[0];
@@ -107,48 +77,21 @@ var confirm_initials = {
       options: ['Confirm', 'Re-enter initals'],
       required: true
   }],
-
 };
 
-
-var confirm_node = {
-  timeline: [get_initials],
-  conditional_function: function(){
-      // get the data from the previous trial,
-      // if they confirmed their initials proceed, if not run get intials again
-      var data = jsPsych.data.get().last(1).values()[0];
-      console.log(data.response)
-      if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials,'Confirm')){
-          proceedWinitals = true;
-          return false;
-      } else {
-          return true;
-      }
-  }
-
+var Get_ID_loop = {
+    timeline: [get_initials,confirm_initials],
+    loop_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials, 'Confirm')){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
-
-
-
-
-
-
-/*
-var initials_loop_node = {
-      timeline: [get_initials,confirm_initials],
-      loop_function: function(data){
-
-        var data = jsPsych.data.get().values()[0].response;;
-        console.log(data.response)
-        if(jsPsych.pluginAPI.compareKeys(data.response,'Confirm')){
-          return true;
-        } else {
-          return false;
-        }
-      }
-    };
-*/
+timeline.push(Get_ID_loop);
 
 
 
@@ -157,20 +100,6 @@ var initials_loop_node = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-timeline.push(get_initials,show_data,confirm_initials,confirm_node);
 
 
 var instructions_2 = {
