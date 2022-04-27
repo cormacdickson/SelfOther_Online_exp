@@ -103,9 +103,9 @@ jsPsych.plugins["training-fb"] = (function() {
 		      default: 1,
 		      description: "The color of the border"
 		    },
-				player_order: {
+				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'player_order',
+	        pretty_name: 'player_position',
 	        default: undefined,
 	        description: 'The HTML string to be displayed for each player'
 	      },
@@ -134,7 +134,7 @@ jsPsych.plugins["training-fb"] = (function() {
 
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
-		trial.player_order = assignParameterValue(trial.player_order, "nana");
+		trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
@@ -156,7 +156,7 @@ jsPsych.plugins["training-fb"] = (function() {
 		//Convert the parameter variables to those that the code below can use
 
 		var nApertures = trial.number_of_apertures; //The number of apertures
-		var player_order = trial.player_order; // array of each player_order initials in order
+		var player_position = trial.player_position; // array of each player_position initials in order
 		var player1 = trial.player1;
 		var feedback = trial.feedback;
 		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
@@ -352,7 +352,7 @@ jsPsych.plugins["training-fb"] = (function() {
 
 		//Set up the variables for the apertures
 		function setUpMultipleApertures(){
-			//player_orderArray = setParameter(player_order);
+			//player_positionArray = setParameter(player_position);
 
 			apertureWidthArray = setParameter(apertureWidth);
 			apertureHeightArray = setParameter(apertureHeight);
@@ -477,7 +477,7 @@ jsPsych.plugins["training-fb"] = (function() {
 
       		}//End of if border === true
           ctx.textAlign = "center";
-					ctx.fillText(player_ids[player_order[currentApertureNumber]], apertureCenterX, apertureCenterY);
+					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
 		}//End of draw
 

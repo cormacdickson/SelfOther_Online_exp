@@ -29,12 +29,12 @@
 */
 
 
-jsPsych.plugins["training-trial"] = (function() {
+jsPsych.plugins["main-fb-sequence"] = (function() {
 
 	var plugin = {};
 
 	plugin.info = {
-	    name: "training-trial",
+	    name: "main-fb-sequence",
 	    parameters: {
 		    choices: {
 		      type: jsPsych.plugins.parameterType.KEY,
@@ -42,13 +42,6 @@ jsPsych.plugins["training-trial"] = (function() {
 		      default: jsPsych.ALL_KEYS,
 		      array: true,
 		      description: "The valid keys that the subject can press to indicate a response"
-		    },
-		    correct_choice: {
-		      type: jsPsych.plugins.parameterType.KEY,
-		      pretty_name: "Correct choice",
-		      default: undefined,
-		      array: true,
-		      description: "The correct keys for that trial"
 		    },
 		    trial_duration: {
 		      type: jsPsych.plugins.parameterType.INT,
@@ -249,11 +242,9 @@ jsPsych.plugins["training-trial"] = (function() {
 
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
-		trial.player_position = assignParameterValue(trial.player_position, "nana");
+		//trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.player_on = assignParameterValue(trial.player_on, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
-		trial.choices = assignParameterValue(trial.choices, []);
-		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
@@ -269,8 +260,8 @@ jsPsych.plugins["training-trial"] = (function() {
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
 		trial.background_color = assignParameterValue(trial.background_color, "gray");
-		trial.RDK_type = assignParameterValue(trial.RDK_type, 3);
-		trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
+		// trial.RDK_type = assignParameterValue(trial.RDK_type, 3);
+		//trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
 		trial.reinsert_type = assignParameterValue(trial.reinsert_type, 2);
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
@@ -290,7 +281,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		}
 
 		//Convert the parameter variables to those that the code below can use
-		var player_position = trial.player_position; // array of each player_position initials in order
+		var player_position = [0,3,1,2]; //trial.player_position; // array of each player_position initials in order
 		var player_on = trial.player_on;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
@@ -308,7 +299,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-
+		var trial_duration = trial.trial_duration;
 
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
@@ -334,7 +325,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		 5 - different && random walk
 		 6 - different && random direction         */
 
-		var RDK = trial.RDK_type;
+		var RDK = 3; //trial.RDK_type;
 
 
 		/*
@@ -344,7 +335,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		 3 - Square
 		 4 - Rectangle
 		*/
-		var apertureType = trial.aperture_type;
+		var apertureType = 1; //trial.aperture_type;
 
 		/*
 		Out of Bounds Decision
@@ -427,7 +418,8 @@ jsPsych.plugins["training-trial"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		var player_on;
-		var player_ids = ['player1','partner','op1','op2'];
+		var player_ids = ['player1','Pa','Op1','Op2'];
+		var trial_duration;// = [300,100,200,100,200,100,200,100,200,100,200,100,200,500];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -460,7 +452,6 @@ jsPsych.plugins["training-trial"] = (function() {
 
 		//Make the array of arrays containing dot objects
 		var dotArray2d;
-
 		var dotArray; //Declare a global variable to hold the current array
 		var currentSetArray; //Declare and initialize a global variable to cycle through the dot arrays
 
@@ -493,7 +484,9 @@ jsPsych.plugins["training-trial"] = (function() {
 		var numberOfFrames = 0;
 
 		//This runs the dot motion simulation, updating it according to the frame refresh rate of the screen.
+
 		animateDotMotion();
+
 
 
 		//--------RDK variables and function calls end--------
@@ -548,11 +541,7 @@ jsPsych.plugins["training-trial"] = (function() {
 
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
-				rt: response.rt, //The response time
-				response: response.key, //The key that the subject pressed
-				correct: correctOrNot(), //If the subject response was correct
-				choices: trial.choices, //The set of valid keys
-				correct_choice: trial.correct_choice, //The correct choice
+
 				trial_duration: trial.trial_duration, //The trial duration
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
 				number_of_apertures: trial.number_of_apertures,
@@ -568,7 +557,7 @@ jsPsych.plugins["training-trial"] = (function() {
 				aperture_height: trial.aperture_height,
 				dot_color: trial.dot_color,
 				background_color: trial.background_color,
-				RDK_type: trial.RDK_type,
+				//RDK_type: trial.RDK_type,
 				aperture_type: trial.aperture_type,
 				reinsert_type: trial.reinsert_type,
 				frame_rate: frameRate, //The average frame rate for the trial
@@ -617,39 +606,7 @@ jsPsych.plugins["training-trial"] = (function() {
 
 		} //End of after_response
 
-		//Function that determines if the response is correct
-		function correctOrNot(){
 
-			//Check that the correct_choice has been defined
-			if(typeof trial.correct_choice !== 'undefined'){
-				//If the correct_choice variable holds an array
-				if(trial.correct_choice.constructor === Array){ //If it is an array
-					//If the elements are characters
-					if(typeof trial.correct_choice[0] === 'string' || trial.correct_choice[0] instanceof String){
-						var key_in_choices = trial.correct_choice.every(function(x) {
-							return jsPsych.pluginAPI.compareKeys(x,response.key);
-						});
-						return key_in_choices; //If the response is included in the correct_choice array, return true. Else, return false.
-					}
-					//Else if the elements are numbers (javascript character codes)
-					else if (typeof trial.correct_choice[0] === 'number'){
-						console.error('Error in RDK plugin: correct_choice value must be a string.');
-					}
-				}
-				//Else compare the char with the response key
-				else{
-					//If the element is a character
-					if(typeof trial.correct_choice === 'string' || trial.correct_choice instanceof String){
-						//Return true if the user's response matches the correct answer. Return false otherwise.
-						return jsPsych.pluginAPI.compareKeys(response.key, trial.correct_choice);
-					}
-					//Else if the element is a number (javascript character codes)
-					else if (typeof trial.correct_choice === 'number'){
-						console.error('Error in RDK plugin: correct_choice value must be a string.');
-					}
-				}
-			}
-		}
 
 		//----JsPsych Functions End----
 
@@ -913,12 +870,12 @@ jsPsych.plugins["training-trial"] = (function() {
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
 
-        	//Three for loops that do things in sequence: clear, update, and draw dots.
+      //Three for loops that do things in sequence: clear, update, and draw dots.
 
 			// Clear all the current dots
 			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
 
-					currentApertureNumber = player_on;
+					currentApertureNumber = player_on[loop_number];
 					//Initialize the variables for each parameter
 					initializeCurrentApertureParameters(currentApertureNumber);
 
@@ -930,7 +887,7 @@ jsPsych.plugins["training-trial"] = (function() {
 
 			// Update all the relevant dots
 			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-			currentApertureNumber = player_on;
+			currentApertureNumber = player_on[loop_number];
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
 
@@ -968,7 +925,7 @@ jsPsych.plugins["training-trial"] = (function() {
 
 		//Draw the dots on the canvas after they're updated
 		function draw() {
-			if (currentApertureNumber===player_on){
+			if (currentApertureNumber===player_on[loop_number]){
     		//Load in the current set of dot array for easy handling
     		var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
@@ -1000,13 +957,12 @@ jsPsych.plugins["training-trial"] = (function() {
 
       		}//End of if border === true
 
-					if(currentApertureNumber !== player_on) {
+
 
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
-					}
 		}//End of draw
 
 		//Update the dots with their new location
@@ -1263,6 +1219,7 @@ jsPsych.plugins["training-trial"] = (function() {
 				}
 			} //End of apertureType == 3
 			return dot;
+
 		} //End of reinsertOnOppositeEdge
 
 		//Calculate the POSITIVE y value of a point on the edge of the ellipse given an x-value
@@ -1320,10 +1277,14 @@ jsPsych.plugins["training-trial"] = (function() {
 			return lowerBound + Math.random() * (upperBound - lowerBound);
 		}
 
+
+
+
+
 		//Function to make the dots move on the canvas
 		function animateDotMotion() {
 			//frameRequestID saves a long integer that is the ID of this frame request. The ID is then used to terminate the request below.
-			var frameRequestID = window.requestAnimationFrame(animate);
+
 
 			//Start to listen to subject's key responses
 			startKeyboardListener();
@@ -1331,35 +1292,44 @@ jsPsych.plugins["training-trial"] = (function() {
 			//Delare a timestamp
 			var previousTimestamp;
 
-			function animate() {
-				//If stopping condition has been reached, then stop the animation
-				if (stopDotMotion) {
-					window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
-				}
-				//Else continue with another frame request
-				else {
-					frameRequestID = window.requestAnimationFrame(animate); //Calls for another frame request
 
-					//If the timer has not been started and it is set, then start the timer
-					if ( (!timerHasStarted) && (trial.trial_duration > 0) ){
-						//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
-						//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
-						timeoutID = window.setTimeout(end_trial,trial.trial_duration); //This timeoutID is then used to cancel the timeout should the subject press a valid key
-						//The timer has started, so we set the variable to true so it does not start more timers
-						timerHasStarted = true;
-					}
+			for(loop_number = 0; loop_number < nApertures; loop_number++){
+				for(step = 0; step < 14; step++){
+					//trial_duration = trial_duration[step];
 
-					updateAndDraw(); //Update and draw each of the dots in their respective apertures
+					var frameRequestID = window.requestAnimationFrame(animate);
+					
+					function animate() {
+						//If stopping condition has been reached, then stop the animation
+						if (stopDotMotion) {
+							window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
+						}
+						//Else continue with another frame request
+						else {
+							frameRequestID = window.requestAnimationFrame(animate); //Calls for another frame request
 
-					//If this is before the first frame, then start the timestamp
-					if(previousTimestamp === undefined){
-						previousTimestamp = performance.now();
-					}
-					//Else calculate the time and push it into the array
-					else{
-						var currentTimeStamp = performance.now(); //Variable to hold current timestamp
-						frameRate.push(currentTimeStamp - previousTimestamp); //Push the interval into the frameRate array
-						previousTimestamp = currentTimeStamp; //Reset the timestamp
+							//If the timer has not been started and it is set, then start the timer
+							if ( (!timerHasStarted) && (trial.trial_duration[step] > 0) ){
+								//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
+								//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
+								timeoutID = window.setTimeout(end_trial,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
+								//The timer has started, so we set the variable to true so it does not start more timers
+								timerHasStarted = true;
+							}
+
+							updateAndDraw(); //Update and draw each of the dots in their respective apertures
+
+							//If this is before the first frame, then start the timestamp
+							if(previousTimestamp === undefined){
+								previousTimestamp = performance.now();
+							}
+							//Else calculate the time and push it into the array
+							else{
+								var currentTimeStamp = performance.now(); //Variable to hold current timestamp
+								frameRate.push(currentTimeStamp - previousTimestamp); //Push the interval into the frameRate array
+								previousTimestamp = currentTimeStamp; //Reset the timestamp
+							}
+						}
 					}
 				}
 			}

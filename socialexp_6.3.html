@@ -13,6 +13,7 @@
     <script src="jspsych-6.3.0/plugins/jspsych-training-pretrial.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-training-trial.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-training-fb.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-main-fb-sequence.js"></script>
     <script src="training_schedule.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -149,7 +150,7 @@ var training_pretrial = {
     type:"training-pretrial",
     trial_duration: 4000,
     RDK_type: 3, //Applied to all apertures if only one value
-    player_order: [0,1,2,3],
+    player_position: [0,1,2,3],
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
     background_color: 'grey',
@@ -176,7 +177,7 @@ var training_pretrial = {
     RDK_type: 3, //Applied to all apertures if only one value
     aperture_type: 1, // circle
     player_on:0, // index of the player to show rdk for [self,partner,op1,op2]
-    player_order: [0,1,2,3],
+    player_position: [0,1,2,3],
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
     //move_distance: [0,0,0,0],
@@ -214,7 +215,7 @@ var training_fb = {
     number_of_apertures: 4, //This needs to be set if more than one aperture
     trial_duration: 1000,
     RDK_type: 3, //Applied to all apertures if only one value
-    player_order: [0,1,2,3],
+    player_position: [0,1,2,3],
     aperture_type: 1, // circle
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
@@ -247,7 +248,51 @@ var training_block = {
 }
 
 
-timeline.push(training_block)
+ //timeline.push(training_block)
+
+
+//---------------------------------------------
+///------------ Training Ends ------------///
+//----------------------------------------------
+
+
+//---------------------------------------------
+///------------ Main exp begins ------------///
+//----------------------------------------------
+
+
+
+
+var main_fb_sequence = {
+  type:"main-fb-sequence",
+  //trial_duration: 10000,
+  trial_duration: [300,100,200,100,200,100,200,100,200,100,200,100,200,500],
+  coherent_direction: 0,
+  coherence: 0.5,
+  //fb_p1: [0,1,0,1,0,1],
+  //fb_p2: [0,1,1,1,0,1],
+  //fb_p3: [0,1,0,1,1,1],
+  //fb_p4: [0,0,1,1,0,1],
+  player_on:[0,1,2,3], // index of the player to show rdk for [self,partner,op1,op2]
+  aperture_width: 200, //Applied to all apertures if only one value
+  border: true,
+  player_colours: ["white","blue","green","purple"],
+  number_of_dots: [50,50,50,50], //Different parameter for each aperture. Array length must equal number_of_apertures
+  aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                      (window.innerWidth/2+window.innerWidth/5), //topright
+                      (window.innerWidth/2+window.innerWidth/5),
+                      (window.innerWidth/2-window.innerWidth/5)],
+  aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                      (window.innerHeight/2-window.innerHeight/4),
+                      (window.innerHeight/2+window.innerHeight/4),
+                      (window.innerHeight/2+window.innerHeight/4)
+                    ]
+};
+
+
+
+
+timeline.push(main_fb_sequence)
 
 
 
@@ -255,6 +300,23 @@ timeline.push(training_block)
 
 
 
+
+
+
+
+
+
+
+/*
+var main_block_a = {
+  timeline: [main_trial, main_dec1,main_fb,main_dec2],  // main trial displays feedback sewquence
+  timeline_variables: main_schedule_a_diff1,
+  randomize_order:false
+}
+
+timeline.push(main_block_a)
+
+*/
 
 
 
