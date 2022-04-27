@@ -13,6 +13,7 @@
     <script src="jspsych-6.3.0/plugins/jspsych-training-pretrial.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-training-trial.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-training-fb.js"></script>
+    <script src="training_schedule.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="style.css" rel="stylesheet" type="text/css" />
   	</head>
@@ -164,13 +165,14 @@ var training_pretrial = {
                       ]
 };
 
- timeline.push(training_pretrial)
+
 
   var training_trial = {
     type:"training-trial",
-    number_of_apertures: 4, //This needs to be set if more than one aperture
     trial_duration: 10000,
-    correct_choice: "left",
+    correct_choice: jsPsych.timelineVariable('correct_ans'),
+    coherent_direction: jsPsych.timelineVariable('coh_D'),
+    coherence: jsPsych.timelineVariable('coh'),
     RDK_type: 3, //Applied to all apertures if only one value
     aperture_type: 1, // circle
     player_on:0, // index of the player to show rdk for [self,partner,op1,op2]
@@ -200,13 +202,12 @@ var training_pretrial = {
     }
     */
 };
-timeline.push(training_trial)
+
 
 var training_fb = {
   on_start: function(trial){
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
-    return ;
   },
 
     type:"training-fb",
@@ -217,14 +218,14 @@ var training_fb = {
     aperture_type: 1, // circle
     aperture_width: 200, //Applied to all apertures if only one value
     border: true,
-    feedback: 1, /*function(){
+    feedback: function(){
       var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
       if(last_trial_correct){
         return 1;
       } else {
         return 0
       }
-    }, */
+    },
     background_color: 'grey',
     border_color: ["white","blue","black","purple"],
     aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
@@ -238,7 +239,16 @@ var training_fb = {
                       ]
 };
 
-timeline.push(training_fb)
+
+var training_block = {
+  timeline: [training_pretrial, training_trial,training_fb],
+  timeline_variables: training_schedule,
+  randomize_order:false
+}
+
+
+timeline.push(training_block)
+
 
 
 

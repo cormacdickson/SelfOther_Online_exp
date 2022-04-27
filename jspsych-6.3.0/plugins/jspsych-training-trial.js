@@ -293,7 +293,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		var player_order = trial.player_order; // array of each player_order initials in order
 		var player_on = trial.player_on;
 		var player_colours = trial.player_colours;
-		var nApertures = trial.number_of_apertures; //The number of apertures
+		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
 		var nSets = trial.number_of_sets; //Number of sets to cycle through per frame
 		var coherentDirection = trial.coherent_direction; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
