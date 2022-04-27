@@ -411,6 +411,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Global variable for the current aperture number
 		var currentApertureNumber;
+		var step;
 
 		//3D Array to hold the dots (1st D is Apertures, 2nd D is Sets, 3rd D is Dots)
 		var dotArray3d = [];
@@ -433,7 +434,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var dotColorArray;
 		var apertureCenterXArray;
 		var apertureCenterYArray;
-
+		var loop_number;
 		// Set up multiple apertures
 		setUpMultipleApertures();
 
@@ -1280,59 +1281,65 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 
 
+		function loopthroughplayersandsteps(){
+			for (loop_number = 0; loop_number < 4; loop_number++) {
+				for (step = 0; step < 14; step++) {
+					animate()
+				}
+		}
+	}
+
+
+		function animate() {
+			var previousTimestamp;
+			//If stopping condition has been reached, then stop the animation
+			if (stopDotMotion) {
+				window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
+			}
+			//Else continue with another frame request
+			else {
+				frameRequestID = window.requestAnimationFrame(animate); //Calls for another frame request
+
+				//If the timer has not been started and it is set, then start the timer
+				if ( (!timerHasStarted) && (trial.trial_duration[step] > 0) ){
+					//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
+					//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
+					timeoutID = window.setTimeout(end_trial,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
+					//The timer has started, so we set the variable to true so it does not start more timers
+					timerHasStarted = true;
+				}
+
+				updateAndDraw(); //Update and draw each of the dots in their respective apertures
+
+				//If this is before the first frame, then start the timestamp
+				if(previousTimestamp === undefined){
+					previousTimestamp = performance.now();
+				}
+				//Else calculate the time and push it into the array
+				else{
+					var currentTimeStamp = performance.now(); //Variable to hold current timestamp
+					frameRate.push(currentTimeStamp - previousTimestamp); //Push the interval into the frameRate array
+					previousTimestamp = currentTimeStamp; //Reset the timestamp
+				}
+			}
+		}
+
+
 
 		//Function to make the dots move on the canvas
 		function animateDotMotion() {
 			//frameRequestID saves a long integer that is the ID of this frame request. The ID is then used to terminate the request below.
-
+			var frameRequestID = window.requestAnimationFrame(animate);
 
 			//Start to listen to subject's key responses
 			startKeyboardListener();
 
 			//Delare a timestamp
-			var previousTimestamp;
+			//var previousTimestamp;
+
+			loopthroughplayersandsteps()
 
 
-			for(loop_number = 0; loop_number < nApertures; loop_number++){
-				for(step = 0; step < 14; step++){
-					//trial_duration = trial_duration[step];
-
-					var frameRequestID = window.requestAnimationFrame(animate);
-					
-					function animate() {
-						//If stopping condition has been reached, then stop the animation
-						if (stopDotMotion) {
-							window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
-						}
-						//Else continue with another frame request
-						else {
-							frameRequestID = window.requestAnimationFrame(animate); //Calls for another frame request
-
-							//If the timer has not been started and it is set, then start the timer
-							if ( (!timerHasStarted) && (trial.trial_duration[step] > 0) ){
-								//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
-								//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
-								timeoutID = window.setTimeout(end_trial,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
-								//The timer has started, so we set the variable to true so it does not start more timers
-								timerHasStarted = true;
-							}
-
-							updateAndDraw(); //Update and draw each of the dots in their respective apertures
-
-							//If this is before the first frame, then start the timestamp
-							if(previousTimestamp === undefined){
-								previousTimestamp = performance.now();
-							}
-							//Else calculate the time and push it into the array
-							else{
-								var currentTimeStamp = performance.now(); //Variable to hold current timestamp
-								frameRate.push(currentTimeStamp - previousTimestamp); //Push the interval into the frameRate array
-								previousTimestamp = currentTimeStamp; //Reset the timestamp
-							}
-						}
-					}
-				}
-			}
 		}
 
 		//----RDK Functions End----
