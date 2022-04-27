@@ -1300,17 +1300,23 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			return lowerBound + Math.random() * (upperBound - lowerBound);
 		}
 
+		function loopthroughsteps(){
+			for (step = 0; step < 14; step++) {
+				console.log(loop_number)
+					animate()
+			}
+		}
+		
 
 
+		function loopthroughplayers(){
 
-		function loopthroughplayersandsteps(){
 			for (loop_number = 0; loop_number < 4; loop_number++) {
 				console.log(loop_number)
-				for (step = 0; step < 14; step++) {
-					animate()
-				}
+				loopthroughsteps()
+			}
 		}
-	}
+		
 
 
 		function animate() {
@@ -1363,7 +1369,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			//Delare a timestamp
 			//var previousTimestamp;
 
-			loopthroughplayersandsteps()
+			loopthroughplayers()
 
 
 		}
