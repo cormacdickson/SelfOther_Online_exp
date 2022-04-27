@@ -435,6 +435,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterXArray;
 		var apertureCenterYArray;
 		var loop_number;
+		var previousTimestamp;
 		// Set up multiple apertures
 		setUpMultipleApertures();
 
@@ -514,6 +515,26 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					allow_held_key: false //Only register the key once, after this getKeyboardResponse function is called. (Check JsPsych docs for better info under 'jsPsych.pluginAPI.getKeyboardResponse').
 				});
 			}
+		}
+
+
+		function end_step() {
+
+			stopDotMotion = true;
+
+			//Store the number of frames
+			numberOfFrames = frameRate.length;
+
+			//Variable to store the frame rate array
+			var frameRateArray = frameRate;
+
+			//Calculate the average frame rate
+			if(frameRate.length > 0){//Check to make sure that the array is not empty
+				frameRate = frameRate.reduce((total,current) => total + current)/frameRate.length; //Sum up all the elements in the array
+			}else{
+				frameRate = 0; //Set to zero if the subject presses an answer before a frame is shown (i.e. if frameRate is an empty array)
+			}
+
 		}
 
 		//Function to end the trial proper
@@ -875,10 +896,10 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			// Clear all the current dots
 			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
-					currentApertureNumber = player_on[loop_number];
-					//Initialize the variables for each parameter
-					initializeCurrentApertureParameters(currentApertureNumber);
+			//console.log(loop_number)
+			currentApertureNumber = player_on[loop_number];
+			//Initialize the variables for each parameter
+			initializeCurrentApertureParameters(currentApertureNumber);
 
 	        //Clear the canvas by drawing over the current dots
 	        clearDots();
@@ -909,7 +930,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Function that clears the dots on the canvas by drawing over it with the color of the baclground
 	    function clearDots(){
-
+	    		console.log(currentApertureNumber);
+	    		console.log(currentSetArray);
 		    	//Load in the current set of dot array for easy handling
 		    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
@@ -1283,6 +1305,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		function loopthroughplayersandsteps(){
 			for (loop_number = 0; loop_number < 4; loop_number++) {
+				console.log(loop_number)
 				for (step = 0; step < 14; step++) {
 					animate()
 				}
@@ -1291,7 +1314,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 
 		function animate() {
-			var previousTimestamp;
+			
 			//If stopping condition has been reached, then stop the animation
 			if (stopDotMotion) {
 				window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
@@ -1304,9 +1327,10 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				if ( (!timerHasStarted) && (trial.trial_duration[step] > 0) ){
 					//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
 					//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
-					timeoutID = window.setTimeout(end_trial,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
+					timeoutID = window.setTimeout(end_step,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
 					//The timer has started, so we set the variable to true so it does not start more timers
 					timerHasStarted = true;
+					console.log(trial.trial_duration[step]);
 				}
 
 				updateAndDraw(); //Update and draw each of the dots in their respective apertures
@@ -1330,6 +1354,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		function animateDotMotion() {
 			//frameRequestID saves a long integer that is the ID of this frame request. The ID is then used to terminate the request below.
 			var frameRequestID = window.requestAnimationFrame(animate);
+
+
 
 			//Start to listen to subject's key responses
 			startKeyboardListener();

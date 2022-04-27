@@ -260,13 +260,23 @@ var training_block = {
 ///------------ Main exp begins ------------///
 //----------------------------------------------
 
-
+var trial = {
+    type: "rdk", 
+    post_trial_gap: 0,
+    number_of_dots: 200,
+    RDK_type: 3,
+    choices: ["a", "l"],
+    correct_choice: "a",
+    coherent_direction: 180,
+    trial_duration: 1000
+};
+//timeline.push(trial)
 
 
 var main_fb_sequence = {
   type:"main-fb-sequence",
   //trial_duration: 10000,
-  trial_duration: [300,100,200,100,200,100,200,100,200,100,200,100,200,500],
+  trial_duration: [30000,1000,2000,1000,2000,1000,2000,1000,2000,1000,2000,1000,2000,5000],
   coherent_direction: 0,
   coherence: 0.5,
   //fb_p1: [0,1,0,1,0,1],
