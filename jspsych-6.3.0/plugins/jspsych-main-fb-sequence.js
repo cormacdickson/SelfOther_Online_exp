@@ -321,7 +321,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var trial_duration 			= trial.trial_duration;
 
-
+		
 		var S_perf = trial.S_perf;
 		var P_perf = trial.P_perf;
 		var O1_perf = trial.O1_perf;
@@ -1401,7 +1401,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			//Delare a timestamp
 			//var previousTimestamp;
 
-			animate()
+			animate();
 		}
 
 		//----RDK Functions End----
