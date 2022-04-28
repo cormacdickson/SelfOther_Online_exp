@@ -14,6 +14,7 @@
     <script src="jspsych-6.3.0/plugins/jspsych-training-trial.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-training-fb.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-main-fb-sequence.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-main-decision.js"></script>
     <script src="training_schedule.js"></script>
     <script src="main_trial_schedule.js"></script>
     <script src="Porder.js"></script>
@@ -312,8 +313,42 @@ var main_fb_sequence = {
 
 var Porder_schedule = "Porder_"+subject_id;
 
+
+
+// create the main decision trial
+var main_decision_1 = {
+  // get the subjects initials
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+    return ;
+  },
+    type:"main-decision",
+    dec_num: 0, // first or second decison
+    dectype: jsPsych.timelineVariable('dectype'),
+    outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
+    trial_duration: 2000,
+    RDK_type: 3, //Applied to all apertures if only one value
+    player_position: [0,1,2,3],
+    aperture_width: 200, //Applied to all apertures if only one value
+    border: true,
+    background_color: 'grey',
+    border_color: ["white","blue","black","purple"],
+    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                        (window.innerWidth/2+window.innerWidth/5), //topright
+                        (window.innerWidth/2+window.innerWidth/5),
+                        (window.innerWidth/2-window.innerWidth/5)],
+    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4)
+                      ]
+};
+
+
+// create timeline for the main block
 var main_block = {
-  timeline: [main_fb_sequence],
+  timeline: [ main_decision_1],
   timeline_variables: main_trial_schedule,
   //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false
