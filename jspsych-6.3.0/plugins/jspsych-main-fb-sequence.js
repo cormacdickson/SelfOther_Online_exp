@@ -284,8 +284,6 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
 		trial.background_color = assignParameterValue(trial.background_color, "gray");
-		// trial.RDK_type = assignParameterValue(trial.RDK_type, 3);
-		//trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
 		trial.reinsert_type = assignParameterValue(trial.reinsert_type, 2);
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
@@ -299,39 +297,36 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		trial.border_color = assignParameterValue(trial.border_color, "black");
 
 		trial.player_position = [0,3,1,2];
+		trial.aperture_height = trial.aperture_width; //set the aperture height == aperture width
 
-		//For square and circle, set the aperture height == aperture width
-		if (apertureType == 1 || apertureType == 3) {
-			trial.aperture_height = trial.aperture_width;
-		}
 
 		//Convert the parameter variables to those that the code below can use
-		var player_position = trial.player_position; //trial.player_position; // array of each player_position initials in order
-		var p_order = trial.p_order;
-		var player_colours = trial.player_colours;
-		var nApertures = 4; //The number of apertures
-		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
-		var nSets = trial.number_of_sets; //Number of sets to cycle through per frame
-		var coherentDirection = trial.coherent_direction; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
-		var coherence = trial.coherence; //Proportion of dots to move together, range from 0 to 1
-		var oppositeCoherence = trial.opposite_coherence; // The coherence for the dots going the opposite direction as the coherent dots
-		var dotRadius = trial.dot_radius; //Radius of each dot in pixels
-		var dotLife = trial.dot_life; //How many frames a dot will keep following its trajectory before it is redrawn at a random location. -1 denotes infinite life (the dot will only be redrawn if it reaches the end of the aperture).
-		var moveDistance = trial.move_distance; //How many pixels the dots move per frame
-		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
-		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
-		var dotColor = [player_colours[0], 'blue', 'green','yellow']; //trial.dot_color; //Color of the dots
-		var backgroundColor = trial.background_color; //Color of the background
-		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
-		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-		var trial_duration = trial.trial_duration;
+		var player_position 		= trial.player_position; //trial.player_position; // array of each player_position initials in order
+		var p_order 						= trial.p_order;
+		var player_colours 			= trial.player_colours;
+		var nApertures 					= 4; //The number of apertures
+		var nDots 							= trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
+		var nSets 							= trial.number_of_sets; //Number of sets to cycle through per frame
+		var coherentDirection 	= trial.coherent_direction; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
+		var coherence 					= trial.coherence; //Proportion of dots to move together, range from 0 to 1
+		var oppositeCoherence 	= trial.opposite_coherence; // The coherence for the dots going the opposite direction as the coherent dots
+		var dotRadius 					= trial.dot_radius; //Radius of each dot in pixels
+		var dotLife 						= trial.dot_life; //How many frames a dot will keep following its trajectory before it is redrawn at a random location. -1 denotes infinite life (the dot will only be redrawn if it reaches the end of the aperture).
+		var moveDistance 				= trial.move_distance; //How many pixels the dots move per frame
+		var apertureWidth 			= trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
+		var apertureHeight 			= trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
+		var dotColor 						= [player_colours[0], 'blue', 'green','yellow']; //trial.dot_color; //Color of the dots
+		var backgroundColor 		= trial.background_color; //Color of the background
+		var apertureCenterX 		= trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
+		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
+		var trial_duration 			= trial.trial_duration;
 
 
 		var S_perf = trial.S_perf;
 		var P_perf = trial.P_perf;
 		var O1_perf = trial.O1_perf;
 		var O2_perf = trial.O2_perf;
-		var fb_steps = [2,4,6,8,10,12];
+		var fb_steps = [2,4,6,8,10,12]; // this is a hardcoded indexo f which steps we want to dispaly feedback on
 
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
@@ -443,7 +438,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Global variable for the current aperture number
 		var currentApertureNumber;
-		var step = 0;
+		var step = 0; // think i can take this out
 
 		//3D Array to hold the dots (1st D is Apertures, 2nd D is Sets, 3rd D is Dots)
 		var dotArray3d = [];
@@ -468,6 +463,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterYArray;
 		var loop_number = 0;
 		var previousTimestamp;
+
 		// Set up multiple apertures
 		setUpMultipleApertures();
 
@@ -551,65 +547,37 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			}
 		}
 
+		// function to increment the current rdk perfomance we are showing
 		function increment_player(){
-			loop_number++
-			step = 0;
-			fb_index = 0;
+			loop_number++ 	// increment the player
+			step = 0;       // reset current step to 0
+			fb_index = 0;   // reset the feedback index to zero
 
 			if(loop_number >3){
-				end_trial();
+				end_trial(); 	// if we have already shown 4 players end the trial
 			}
 		}
 
 
 
 		function end_step() {
-
-			clear_fb();
-
-			step++;
-			// stopDotMotion = true;
-			stepTimerHasStarted = false;
+			clear_fb(); // always clear feedback by drawing on canvas at the end of each step
+			step++; 		// increment current step
+			stepTimerHasStarted = false; // reset the step timer
 
 			if (step > 13){
-				increment_player();
+				increment_player(); // if we have finished all steps go to next player
+			} else if (fb_steps.includes(step)){
+					draw_fb();				// if this is a feedback step draw the correspoding fb
 			}
-
-			if (fb_steps.includes(step)){
-				// check which player we are on
-					// check which fbindex we are at
-
-					draw_fb();
-				}
 		}
-
-/*
-			//Store the number of frames
-			numberOfFrames = frameRate.length;
-
-			//Variable to store the frame rate array
-			var frameRateArray = frameRate;
-
-			//Calculate the average frame rate
-			if(frameRate.length > 0){//Check to make sure that the array is not empty
-				frameRate = frameRate.reduce((total,current) => total + current)/frameRate.length; //Sum up all the elements in the array
-			}else{
-				frameRate = 0; //Set to zero if the subject presses an answer before a frame is shown (i.e. if frameRate is an empty array)
-			}
-*/
 
 
 		//Function to end the trial proper
 		function end_trial() {
-
-			//Stop the dot motion animation
-			stopDotMotion = true;
-
-			//Store the number of frames
-			numberOfFrames = frameRate.length;
-
-			//Variable to store the frame rate array
-			var frameRateArray = frameRate;
+			stopDotMotion 			= true;								//Stop the dot motion animation
+			numberOfFrames 			= frameRate.length; 	//Store the number of frames
+			var frameRateArray 	= frameRate;    			//Variable to store the frame rate array
 
 			//Calculate the average frame rate
 			if(frameRate.length > 0){//Check to make sure that the array is not empty
@@ -641,7 +609,6 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				aperture_height: trial.aperture_height,
 				dot_color: trial.dot_color,
 				background_color: trial.background_color,
-				//RDK_type: trial.RDK_type,
 				aperture_type: trial.aperture_type,
 				reinsert_type: trial.reinsert_type,
 				frame_rate: frameRate, //The average frame rate for the trial
@@ -722,13 +689,10 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			borderArray = setParameter(border);
 			borderThicknessArray = setParameter(borderThickness);
 			borderColorArray = setParameter(borderColor);
-
 			currentSetArray = setParameter(0); //Always starts at zero
-
 
 			//Loop through the number of apertures to make the dots
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
 				//Initialize the parameters to make the 2d dot array (one for each aperture);
 				initializeCurrentApertureParameters();
 
@@ -951,6 +915,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			return tempArray;
 		}
 
+		// function to index performance to the player we are currently showing
 		function assignPerfToCurrentPlayer(){
 			if (p_order[loop_number]== 0){
 				current_perf = S_perf;
@@ -969,36 +934,23 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
 
-			assignPerfToCurrentPlayer();
-      //Three for loops that do things in sequence: clear, update, and draw dots.
+			assignPerfToCurrentPlayer();   // get performance for this pla
 
-			// Clear all the current dots
-			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-			//console.log(loop_number)
 			currentApertureNumber = p_order[loop_number];
 			//Initialize the variables for each parameter
 			initializeCurrentApertureParameters(currentApertureNumber);
 
-	        //Clear the canvas by drawing over the current dots
-	        clearDots();
+	    //Clear the canvas by drawing over the current dots
+	    clearDots(); // for current player only
+
+			//Update the dots
+			updateDots(); // for current player only
 
 
-			// Update all the relevant dots
-			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-			currentApertureNumber = p_order[loop_number];
-				//Initialize the variables for each parameter
-				initializeCurrentApertureParameters(currentApertureNumber);
-
-				//Update the dots
-				updateDots();
-
-
-			// Draw all the relevant dots on the canvas
+			// Draw all the relevant dots & initials on the canvas
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
-
 				//Draw on the canvas
 				draw();
 				}
@@ -1007,8 +959,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//Function that clears the dots on the canvas by drawing over it with the color of the baclground
 	    function clearDots(){
 
-		    	//Load in the current set of dot array for easy handling
-		    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
+		    //Load in the current set of dot array for easy handling
+		   	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
 				//Loop through the dots one by one and draw them
 				for (var i = 0; i < nDots; i++) {
@@ -1020,8 +972,9 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				}
 			}
 
+		// Function to draw the relevant feedback
 		function draw_fb(){
-
+				// if fb =1 draw a yellow circle
 				if (current_perf[fb_index]>0){
 					ctx.lineWidth = borderThickness;
 					ctx.strokeStyle = borderColor;
@@ -1031,19 +984,19 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					ctx.fill();
 					//ctx.stroke();
 				} else {
+					// draw a red x
 					ctx.beginPath();
-
 			    ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
 			    ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
-
 			    ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
 			    ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
 					ctx.strokeStyle = 'red';
 			    ctx.stroke();
 				}
-				fb_index++;
+				fb_index++; // increment the index
 		}
 
+		// Function to remove any fb by drawing a rectangle over it in background color
 		function clear_fb(){
 					ctx.lineWidth = borderThickness;
 					ctx.strokeStyle = borderColor;
@@ -1056,46 +1009,37 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//Draw the dots on the canvas after they're updated
 		function draw() {
 			if (currentApertureNumber===p_order[loop_number]){
-    		//Load in the current set of dot array for easy handling
-    		var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
+	    	//Load in the current set of dot array for easy handling
+	    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
-			//Loop through the dots one by one and draw them
-			for (var i = 0; i < nDots; i++) {
-				dot = dotArray[i];
-				ctx.beginPath();
-				ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
-				ctx.fillStyle = dotColor;
-				ctx.fill();
+				//Loop through the dots one by one and draw them
+				for (var i = 0; i < nDots; i++) {
+					dot = dotArray[i];
+					ctx.beginPath();
+					ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
+					ctx.fillStyle = dotColor;
+					ctx.fill();
+				}
 			}
-		}
 
-	      	//Draw the border if we want it
-	      	if(border === true){
+    	//Draw the border if we want it
+    	if(border === true){
+      	//For circle and ellipse
+      	if(apertureType === 1 || apertureType === 2){
+        		ctx.lineWidth = borderThickness;
+        		ctx.strokeStyle = borderColor;
+        		ctx.beginPath();
+        		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
+        		ctx.stroke();
+      	}//End of if circle or ellipse
+			}//End of if border === true
 
-	        	//For circle and ellipse
-	        	if(apertureType === 1 || apertureType === 2){
-	          		ctx.lineWidth = borderThickness;
-	          		ctx.strokeStyle = borderColor;
-	          		ctx.beginPath();
-	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
-	          		ctx.stroke();
-	        	}//End of if circle or ellipse
-
-
-
-      		}//End of if border === true
-
-					ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
-					ctx.textAlign = "center";
-					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
-
-
-
-
-
-
-
+			// draw the intials of the players
+			ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+			ctx.textAlign = "center";
+			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 		}//End of draw
+
 
 		//Update the dots with their new location
 		function updateDots() {
@@ -1107,8 +1051,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				currentSetArray[currentApertureNumber] = currentSetArray[currentApertureNumber] + 1;
 			}
 
-    		//Load in the current set of dot array for easy handling
-    		var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
+    	//Load in the current set of dot array for easy handling
+    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
 			//Load in the current set of dot array for easy handling
 			//dotArray = dotArray2d[currentSetArray[currentApertureNumber]]; //Global variable, so the draw function also uses this array
@@ -1410,29 +1354,6 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		}
 
 
-/*
-		function loopthroughsteps(){
-			step = 0;
-			while(step<14){
-			//for (step = 0; step < 14; step++) {
-				console.log(loop_number)
-					animate()
-				}
-		}
-
-
-
-		function loopthroughplayers(){
-			for (loop_number = 0; loop_number < 4; loop_number++) {
-				console.log(loop_number)
-				loopthroughsteps()
-			}
-
-			end_trial();
-		}
-*/
-
-
 		function animate() {
 
 			//If stopping condition has been reached, then stop the animation
@@ -1443,18 +1364,14 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			else {
 				frameRequestID = window.requestAnimationFrame(animate); //Calls for another frame request
 
-
 				//If the timer has not been started and it is set, then start the timer
 				if ( (!stepTimerHasStarted) && (trial.trial_duration[step] > 0) ){
 					//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
 					//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
 					stepTimeoutID = window.setTimeout(end_step,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
-
 					//The timer has started, so we set the variable to true so it does not start more timers
 					stepTimerHasStarted = true;
-
 				}
-
 
 				updateAndDraw(); //Update and draw each of the dots in their respective apertures
 
@@ -1478,8 +1395,6 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			//frameRequestID saves a long integer that is the ID of this frame request. The ID is then used to terminate the request below.
 			var frameRequestID = window.requestAnimationFrame(animate);
 
-
-
 			//Start to listen to subject's key responses
 			startKeyboardListener();
 
@@ -1487,8 +1402,6 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			//var previousTimestamp;
 
 			animate()
-
-
 		}
 
 		//----RDK Functions End----
