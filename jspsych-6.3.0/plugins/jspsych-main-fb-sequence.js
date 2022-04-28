@@ -554,15 +554,19 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		function increment_player(){
 			loop_number++
 			step = 0;
-			fbindex = 0;
+			fb_index = 0;
 
 			if(loop_number >3){
 				end_trial();
 			}
 		}
 
+
+
 		function end_step() {
+
 			clear_fb();
+
 			step++;
 			// stopDotMotion = true;
 			stepTimerHasStarted = false;
@@ -570,6 +574,14 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			if (step > 13){
 				increment_player();
 			}
+
+			if (fb_steps.includes(step)){
+				// check which player we are on
+					// check which fbindex we are at
+
+					draw_fb();
+				}
+		}
 
 /*
 			//Store the number of frames
@@ -585,7 +597,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				frameRate = 0; //Set to zero if the subject presses an answer before a frame is shown (i.e. if frameRate is an empty array)
 			}
 */
-		}
+
 
 		//Function to end the trial proper
 		function end_trial() {
@@ -989,7 +1001,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 				//Draw on the canvas
 				draw();
-			}
+				}
 		}
 
 		//Function that clears the dots on the canvas by drawing over it with the color of the baclground
@@ -1040,6 +1052,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					ctx.fillStyle = backgroundColor;
 					ctx.fill();
 		}
+
 		//Draw the dots on the canvas after they're updated
 		function draw() {
 			if (currentApertureNumber===p_order[loop_number]){
@@ -1076,12 +1089,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					ctx.textAlign = "center";
 					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
-				if (fb_steps.includes(step)){
-					// check which player we are on
-						// check which fbindex we are at
 
-						draw_fb();
-				}
 
 
 
