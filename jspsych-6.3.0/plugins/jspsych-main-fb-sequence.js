@@ -538,6 +538,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				increment_player();
 			}
 
+/*
 			//Store the number of frames
 			numberOfFrames = frameRate.length;
 
@@ -550,7 +551,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			}else{
 				frameRate = 0; //Set to zero if the subject presses an answer before a frame is shown (i.e. if frameRate is an empty array)
 			}
-
+*/
 		}
 
 		//Function to end the trial proper
