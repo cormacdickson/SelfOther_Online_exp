@@ -211,7 +211,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		      default: 1,
 		      description: "The color of the border"
 		    },
-				player_on: {
+				p_order: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "player being shown",
 		      default: 1,
@@ -220,14 +220,38 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default: "nan",
 	        description: 'The location for each player'
 	      },
 				player_colours: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_colours',
-	        default: undefined,
+	        default: "nan",
 	        description: 'The color of each player'
+	      },
+				S_perf: {
+	        type: jsPsych.plugins.parameterType.INT,
+	        pretty_name: 'S_perf',
+	        default: "nan",
+	        description: 'S_perf'
+	      },
+				P_perf: {
+	        type: jsPsych.plugins.parameterType.INT,
+	        pretty_name: 'P_perf',
+	        default: "nan",
+	        description: 'P_perf'
+	      },
+				O1_perf: {
+	        type: jsPsych.plugins.parameterType.INT,
+	        pretty_name: 'O1_perf',
+	        default: "nan",
+	        description: 'O1_perf'
+	      },
+				O2_perf: {
+	        type: jsPsych.plugins.parameterType.INT,
+	        pretty_name: 'O2_perf',
+	        default: "nan",
+	        description: 'O2_perf'
 	      }
 	    }
 	 }
@@ -243,7 +267,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		//trial.player_position = assignParameterValue(trial.player_position, "nana");
-		trial.player_on = assignParameterValue(trial.player_on, "nan");
+		trial.p_order = assignParameterValue(trial.p_order, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
@@ -274,6 +298,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
 		trial.border_color = assignParameterValue(trial.border_color, "black");
 
+		trial.player_position = [0,3,1,2];
 
 		//For square and circle, set the aperture height == aperture width
 		if (apertureType == 1 || apertureType == 3) {
@@ -281,8 +306,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		}
 
 		//Convert the parameter variables to those that the code below can use
-		var player_position = [0,3,1,2]; //trial.player_position; // array of each player_position initials in order
-		var player_on = trial.player_on;
+		var player_position = trial.player_position; //trial.player_position; // array of each player_position initials in order
+		var p_order = trial.p_order;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
@@ -300,6 +325,13 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var trial_duration = trial.trial_duration;
+
+
+		var S_perf = trial.S_perf;
+		var P_perf = trial.P_perf;
+		var O1_perf = trial.O1_perf;
+		var O2_perf = trial.O2_perf;
+		var fb_steps = [2,4,6,8,10,12];
 
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
@@ -417,8 +449,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var dotArray3d = [];
 
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
-		var player_position;
-		var player_on;
+		//var player_position;
+		var fb_index = 0;
 		var player_ids = ['player1','Pa','Op1','Op2'];
 		var trial_duration;// = [300,100,200,100,200,100,200,100,200,100,200,100,200,500];
 		var nDotsArray;
@@ -456,7 +488,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var dotArray2d;
 		var dotArray; //Declare a global variable to hold the current array
 		var currentSetArray; //Declare and initialize a global variable to cycle through the dot arrays
-
+		var current_perf;
 
 		//Initialize stopping condition for animateDotMotion function that runs in a loop
 		var stopDotMotion = false;
@@ -522,6 +554,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		function increment_player(){
 			loop_number++
 			step = 0;
+			fbindex = 0;
 
 			if(loop_number >3){
 				end_trial();
@@ -529,7 +562,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		}
 
 		function end_step() {
-
+			clear_fb();
 			step++;
 			// stopDotMotion = true;
 			stepTimerHasStarted = false;
@@ -906,15 +939,31 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			return tempArray;
 		}
 
+		function assignPerfToCurrentPlayer(){
+			if (p_order[loop_number]== 0){
+				current_perf = S_perf;
+			}
+			else if (p_order[loop_number]== 1) {
+				current_perf = P_perf;
+			}
+			else if (p_order[loop_number]== 2) {
+				current_perf = O1_perf;
+			}
+			else if (p_order[loop_number]== 3) {
+				current_perf = O2_perf;
+			}
+		}
+
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
 
+			assignPerfToCurrentPlayer();
       //Three for loops that do things in sequence: clear, update, and draw dots.
 
 			// Clear all the current dots
 			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
 			//console.log(loop_number)
-			currentApertureNumber = player_on[loop_number];
+			currentApertureNumber = p_order[loop_number];
 			//Initialize the variables for each parameter
 			initializeCurrentApertureParameters(currentApertureNumber);
 
@@ -922,11 +971,9 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 	        clearDots();
 
 
-
-
 			// Update all the relevant dots
 			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-			currentApertureNumber = player_on[loop_number];
+			currentApertureNumber = p_order[loop_number];
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
 
@@ -947,8 +994,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Function that clears the dots on the canvas by drawing over it with the color of the baclground
 	    function clearDots(){
-	    		console.log(currentApertureNumber);
-	    		console.log(currentSetArray);
+
 		    	//Load in the current set of dot array for easy handling
 		    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
@@ -962,10 +1008,41 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				}
 			}
 
+		function draw_fb(){
 
+				if (current_perf[fb_index]>0){
+					ctx.lineWidth = borderThickness;
+					ctx.strokeStyle = borderColor;
+					ctx.beginPath();
+					ctx.ellipse(window.innerWidth/2, window.innerHeight/2, 20, 20, 0, 0, Math.PI*2);
+					ctx.fillStyle = 'yellow';
+					ctx.fill();
+					//ctx.stroke();
+				} else {
+					ctx.beginPath();
+
+			    ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
+			    ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
+
+			    ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
+			    ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
+					ctx.strokeStyle = 'red';
+			    ctx.stroke();
+				}
+				fb_index++;
+		}
+
+		function clear_fb(){
+					ctx.lineWidth = borderThickness;
+					ctx.strokeStyle = borderColor;
+					ctx.beginPath();
+					ctx.rect(window.innerWidth/2-30, window.innerHeight/2-30, 60, 60, 0, 0, Math.PI*2);
+					ctx.fillStyle = backgroundColor;
+					ctx.fill();
+		}
 		//Draw the dots on the canvas after they're updated
 		function draw() {
-			if (currentApertureNumber===player_on[loop_number]){
+			if (currentApertureNumber===p_order[loop_number]){
     		//Load in the current set of dot array for easy handling
     		var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
@@ -978,8 +1055,6 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				ctx.fill();
 			}
 		}
-
-
 
 	      	//Draw the border if we want it
 	      	if(border === true){
@@ -997,11 +1072,20 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
       		}//End of if border === true
 
+					ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+					ctx.textAlign = "center";
+					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
+
+				if (fb_steps.includes(step)){
+					// check which player we are on
+						// check which fbindex we are at
+
+						draw_fb();
+				}
 
 
-						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
-						ctx.textAlign = "center";
-						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
+
+
 
 		}//End of draw
 
@@ -1360,7 +1444,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 					//The timer has started, so we set the variable to true so it does not start more timers
 					stepTimerHasStarted = true;
-					console.log(trial.trial_duration[step]);
+
 				}
 
 
