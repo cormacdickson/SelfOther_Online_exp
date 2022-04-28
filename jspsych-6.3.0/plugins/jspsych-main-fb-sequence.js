@@ -411,7 +411,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Global variable for the current aperture number
 		var currentApertureNumber;
-		var step;
+		var step = 0;
 
 		//3D Array to hold the dots (1st D is Apertures, 2nd D is Sets, 3rd D is Dots)
 		var dotArray3d = [];
@@ -434,7 +434,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var dotColorArray;
 		var apertureCenterXArray;
 		var apertureCenterYArray;
-		var loop_number;
+		var loop_number = 0;
 		var previousTimestamp;
 		// Set up multiple apertures
 		setUpMultipleApertures();
@@ -465,7 +465,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var firstFrame = true; //Used to skip the first frame in animate function below (in animateDotMotion function)
 
 		//Variable to start the timer when the time comes
-		var timerHasStarted = false;
+		var stepTimerHasStarted = false;
+		var trialTimerHasStarted = false;
 
 		//Initialize object to store the response data. Default values of -1 are used if the trial times out and the subject has not pressed a valid key
 		var response = {
@@ -474,7 +475,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		}
 
 		//Declare a global timeout ID to be initialized below in animateDotMotion function and to be used in after_response function
-		var timeoutID;
+		var trialTimeoutID;
+		var stepTimoutID;
 
 		//Declare global variable to be defined in startKeyboardListener function and to be used in end_trial function
 		var keyboardListener;
@@ -517,10 +519,24 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			}
 		}
 
+		function increment_player(){
+			loop_number++
+			step = 0;
+
+			if(loop_number >3){
+				end_trial();
+			}
+		}
 
 		function end_step() {
 
-			stopDotMotion = true;
+			step++;
+			// stopDotMotion = true;
+			stepTimerHasStarted = false;
+
+			if (step > 13){
+				increment_player();
+			}
 
 			//Store the number of frames
 			numberOfFrames = frameRate.length;
@@ -622,7 +638,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
 			if (trial.response_ends_trial) {
-				window.clearTimeout(timeoutID);
+				window.clearTimeout(trialTimeoutID);
 				end_trial();
 			}
 
@@ -1300,44 +1316,52 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			return lowerBound + Math.random() * (upperBound - lowerBound);
 		}
 
+
+/*
 		function loopthroughsteps(){
-			for (step = 0; step < 14; step++) {
+			step = 0;
+			while(step<14){
+			//for (step = 0; step < 14; step++) {
 				console.log(loop_number)
 					animate()
-			}
+				}
 		}
-		
+
 
 
 		function loopthroughplayers(){
-
 			for (loop_number = 0; loop_number < 4; loop_number++) {
 				console.log(loop_number)
 				loopthroughsteps()
 			}
+
+			end_trial();
 		}
-		
+*/
 
 
 		function animate() {
-			
+
 			//If stopping condition has been reached, then stop the animation
-			if (stopDotMotion) {
+			if (stopDotMotion)  {
 				window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
 			}
 			//Else continue with another frame request
 			else {
 				frameRequestID = window.requestAnimationFrame(animate); //Calls for another frame request
 
+
 				//If the timer has not been started and it is set, then start the timer
-				if ( (!timerHasStarted) && (trial.trial_duration[step] > 0) ){
+				if ( (!stepTimerHasStarted) && (trial.trial_duration[step] > 0) ){
 					//If the trial duration is set, then set a timer to count down and call the end_trial function when the time is up
 					//(If the subject did not press a valid keyboard response within the trial duration, then this will end the trial)
-					timeoutID = window.setTimeout(end_step,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
+					stepTimeoutID = window.setTimeout(end_step,trial.trial_duration[step]); //This timeoutID is then used to cancel the timeout should the subject press a valid key
+
 					//The timer has started, so we set the variable to true so it does not start more timers
-					timerHasStarted = true;
+					stepTimerHasStarted = true;
 					console.log(trial.trial_duration[step]);
 				}
+
 
 				updateAndDraw(); //Update and draw each of the dots in their respective apertures
 
@@ -1369,7 +1393,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			//Delare a timestamp
 			//var previousTimestamp;
 
-			loopthroughplayers()
+			animate()
 
 
 		}
