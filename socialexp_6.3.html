@@ -15,6 +15,7 @@
     <script src="jspsych-6.3.0/plugins/jspsych-training-fb.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-main-fb-sequence.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-main-decision.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-main-fb.js"></script>
     <script src="training_schedule.js"></script>
     <script src="main_trial_schedule.js"></script>
     <script src="Porder.js"></script>
@@ -260,7 +261,7 @@ var training_block = {
 }
 
 
- //timeline.push(training_block)
+ // timeline.push(training_block)
 
 
 //---------------------------------------------
@@ -327,7 +328,9 @@ var main_decision_1 = {
     dec_num: 0, // first or second decison
     dectype: jsPsych.timelineVariable('dectype'),
     outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
-    trial_duration: 2000,
+    trial_duration: 5000,
+    response_ends_trial: true,
+    choices: jsPsych.ALL_KEYS,
     RDK_type: 3, //Applied to all apertures if only one value
     player_position: [0,1,2,3],
     aperture_width: 200, //Applied to all apertures if only one value
@@ -345,10 +348,44 @@ var main_decision_1 = {
                       ]
 };
 
+var main_fb = {
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+  },
+
+    type:"main-fb",
+    number_of_apertures: 4, //This needs to be set if more than one aperture
+    trial_duration: 1000,
+    RDK_type: 3, //Applied to all apertures if only one value
+    player_position: [0,1,2,3],
+    aperture_type: 1, // circle
+    aperture_width: 200, //Applied to all apertures if only one value
+    border: true,
+    feedback: function(){
+      var last_resp = jsPsych.data.get().last(1).values()[0].response;
+      if(jsPsych.pluginAPI.compareKeys(last_resp, 'arrowleft')){
+        return 0;
+      } else if (jsPsych.pluginAPI.compareKeys(last_resp, 'arrowright')) {
+        return 1
+      }
+    },
+    background_color: 'grey',
+    border_color: ["white","blue","black","purple"],
+    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                        (window.innerWidth/2+window.innerWidth/5), //topright
+                        (window.innerWidth/2+window.innerWidth/5),
+                        (window.innerWidth/2-window.innerWidth/5)],
+    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4)
+                      ]
+};
 
 // create timeline for the main block
 var main_block = {
-  timeline: [main_decision_1],
+  timeline: [main_decision_1,main_fb],
   timeline_variables: main_trial_schedule,
   //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false
