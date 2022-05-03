@@ -159,6 +159,8 @@ jsPsych.plugins["main-decision"] = (function() {
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
+		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
+		var allApertureCentreY = trial.aperture_center_y; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var dectype					= trial.dectype;
 		var outcomeEngage		= trial.outcomeEngage;
@@ -425,60 +427,39 @@ jsPsych.plugins["main-decision"] = (function() {
 			// need to know if we are in the first decisionor second decisionor
 				// need to know what arrow we want to drawn
 
-
-
 				if (dectype[dec_num] == 1){
 						//draw an arrow
 						ctx.beginPath();
-						ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 - 80);
-						ctx.lineTo(window.innerWidth/2 + 80, window.innerHeight/2 - 80);
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
+						ctx.lineTo(allApertureCentreX[1] - apertureWidth/2, allApertureCentreY[1]);
 						ctx.strokeStyle = 'red';
-				    ctx.stroke();
+				    	ctx.stroke();  
 
 				} else if (dectype[dec_num] == 2){
 					//draw an arrow
-					ctx.beginPath();
-					//topleft arrowhead
-			    ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 - 80);
-			    ctx.lineTo(window.innerWidth/2 - 80, window.innerHeight/2 - 70);
-					ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 - 80);
-			    ctx.lineTo(window.innerWidth/2 - 70, window.innerHeight/2 - 80);
-					//diagonal line
-			    ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 - 80);
-					ctx.lineTo(window.innerWidth/2 + 80, window.innerHeight/2 + 80);
-					// bottomright arrowhead
-					ctx.moveTo(window.innerWidth/2 + 80, window.innerHeight/2 + 80);
-			    ctx.lineTo(window.innerWidth/2 + 80, window.innerHeight/2 + 70);
-					ctx.moveTo(window.innerWidth/2 + 80, window.innerHeight/2 + 80);
-			    ctx.lineTo(window.innerWidth/2 + 70, window.innerHeight/2 + 80);
-					ctx.strokeStyle = 'red';
-			    ctx.stroke();
+						ctx.beginPath();
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+						ctx.strokeStyle = 'red';
+				    	ctx.stroke(); 
+
 				} else if (dectype[dec_num] == 3){
 					//draw an arrow
-					ctx.beginPath();
-					//topright arrowhead
-					ctx.moveTo(window.innerWidth/2 + 80, window.innerHeight/2 - 80);
-					ctx.lineTo(window.innerWidth/2 + 80, window.innerHeight/2 - 70);
-					ctx.moveTo(window.innerWidth/2 + 80, window.innerHeight/2 - 80);
-					ctx.lineTo(window.innerWidth/2 + 70, window.innerHeight/2 - 80);
-					//diagonal line
-					ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 - 80);
-					ctx.lineTo(window.innerWidth/2 + 80, window.innerHeight/2 + 80);
-					// bottomleft arrowhead
-					ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 + 80);
-					ctx.lineTo(window.innerWidth/2 - 80, window.innerHeight/2 + 70);
-					ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 + 80);
-					ctx.lineTo(window.innerWidth/2 - 70, window.innerHeight/2 + 80);
-					ctx.strokeStyle = 'red';
-					ctx.stroke();
+						ctx.beginPath();
+						ctx.moveTo(allApertureCentreX[3] + apertureWidth/2, allApertureCentreY[3]);
+						ctx.lineTo(allApertureCentreX[1] - apertureWidth/2, allApertureCentreY[1]);
+						ctx.strokeStyle = 'red';
+				    	ctx.stroke(); 
+
 				} else if (dectype[dec_num] == 4){
 					//draw an arrow
 					ctx.beginPath();
-					ctx.moveTo(window.innerWidth/2 - 80, window.innerHeight/2 + 80);
-					ctx.lineTo(window.innerWidth/2 + 80, window.innerHeight/2 + 80);
-					ctx.strokeStyle = 'red';
-					ctx.stroke();
+						ctx.moveTo(allApertureCentreX[3] + apertureWidth/2, allApertureCentreY[3]);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+						ctx.strokeStyle = 'red';
+				    	ctx.stroke(); 
 				}
+				
 		}
 
 
