@@ -324,7 +324,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		}
 
 		//Declare global variable to be defined in startKeyboardListener function and to be used in end_trial function
-		var keyboardListener;
+		//var keyboardListener;
 
 
 		updateAndDraw();
@@ -357,15 +357,16 @@ jsPsych.plugins["main-decision"] = (function() {
 		function end_trial() {
 
 			//Kill the keyboard listener if keyboardListener has been defined
-			if (typeof keyboardListener !== 'undefined') {
+			//if (typeof keyboardListener !== 'undefined') {
 				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
-			}
-
+			//}
+			console.log(response.key);
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
-				correct: correctOrNot(), //If the subject response was correct
+
+				// correct: correctOrNot(), //If the subject response was correct
 				choices: trial.choices, //The set of valid keys
 				correct_choice: trial.correct_choice, //The correct choice
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
@@ -410,6 +411,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				window.clearTimeout(timeoutID);
 				end_trial();
 			}
+			console.log("after_response")
 
 		} //End of after_response
 

@@ -29,12 +29,12 @@
 */
 
 
-jsPsych.plugins["main-fb"] = (function() {
+jsPsych.plugins["main-training-fb"] = (function() {
 
 	var plugin = {};
 
 	plugin.info = {
-	    name: "main-fb",
+	    name: "main-training-fb",
 	    parameters: {
 
 		    trial_duration: {
@@ -482,24 +482,37 @@ jsPsych.plugins["main-fb"] = (function() {
 
 		}//End of draw
 
+function text_fb(){
+	if (feedback==0){
+		ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+		ctx.textAlign = "center";
+		ctx.fillText("insert feedback here", apertureCenterX[0], window.innerHeight/2);
+	}
+	else if (feedback==1){
+		ctx.fillStyle = 'white';
+		ctx.textAlign = "center";
+		ctx.fillText("insert feedback here", apertureCenterX[1], window.innerHeight/2);
+	}
+}
+
 function drawfb(){
 	if (feedback==0){
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
 		ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
-		ctx.strokeStyle = 'red';
 		ctx.stroke();
-		
+		ctx.strokeStyle = 'red';
 	} else if (feedback==1){
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
 		ctx.rect(allApertureCentreX[1] - apertureWidth/1.5, allApertureCentreY[1] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
-		ctx.strokeStyle = 'red';
 		ctx.stroke();
-		
+		ctx.strokeStyle = 'red';
 	}
+
+	textfeedbackdelay = window.setTimeout(text_fb,300);
 }
 
 

@@ -52,7 +52,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		    response_ends_trial: {
 		      type: jsPsych.plugins.parameterType.BOOL,
 		      pretty_name: "Response ends trial",
-		      default: true,
+		      default: false,
 		      description: "If true, then any valid key will end the trial"
 		    },
 		    number_of_apertures: {
@@ -1396,7 +1396,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			var frameRequestID = window.requestAnimationFrame(animate);
 
 			//Start to listen to subject's key responses
-			startKeyboardListener();
+			//startKeyboardListener();
 
 			//Delare a timestamp
 			//var previousTimestamp;
