@@ -46,7 +46,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		    response_ends_trial: {
 		      type: jsPsych.plugins.parameterType.BOOL,
 		      pretty_name: "Response ends trial",
-		      default: true,
+		      default: false,
 		      description: "If true, then any valid key will end the trial"
 		    },
 		    aperture_width: {
@@ -487,18 +487,18 @@ function drawfb(){
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
-		ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
+		ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
 		ctx.strokeStyle = 'red';
 		ctx.stroke();
-		
+
 	} else if (feedback==1){
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
-		ctx.rect(allApertureCentreX[1] - apertureWidth/1.5, allApertureCentreY[1] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
+		ctx.rect(allApertureCentreX[1] - apertureWidth/1.5, allApertureCentreY[1] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
 		ctx.strokeStyle = 'red';
 		ctx.stroke();
-		
+
 	}
 }
 

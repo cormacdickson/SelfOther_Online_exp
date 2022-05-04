@@ -324,7 +324,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		}
 
 		//Declare global variable to be defined in startKeyboardListener function and to be used in end_trial function
-		//var keyboardListener;
+		var keyboardListener;
 
 
 		updateAndDraw();
@@ -355,12 +355,12 @@ jsPsych.plugins["main-decision"] = (function() {
 
 		//Function to end the trial proper
 		function end_trial() {
-
+			window.clearTimeout(timeoutID);
 			//Kill the keyboard listener if keyboardListener has been defined
 			//if (typeof keyboardListener !== 'undefined') {
-				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
+			jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
 			//}
-			console.log(response.key);
+			console.log("end_trial");
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				rt: response.rt, //The response time
@@ -400,7 +400,7 @@ jsPsych.plugins["main-decision"] = (function() {
 
 		//Function to record the first response by the subject
 		function after_response(info) {
-
+			console.log("after_response")
 			//If the response has not been recorded, record it
 			if (response.key == -1) {
 				response = info; //Replace the response object created above
@@ -411,7 +411,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				window.clearTimeout(timeoutID);
 				end_trial();
 			}
-			console.log("after_response")
+
 
 		} //End of after_response
 
@@ -536,23 +536,23 @@ jsPsych.plugins["main-decision"] = (function() {
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
 						ctx.lineTo(allApertureCentreX[1] - apertureWidth/2, allApertureCentreY[1]);
 						ctx.strokeStyle = 'red';
-				    	ctx.stroke();  
+				    	ctx.stroke();
 
 				} else if (dectype[dec_num] == 2){
 					//draw an arrow
 						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
-						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] - apertureWidth/2);
 						ctx.strokeStyle = 'red';
-				    	ctx.stroke(); 
+				    	ctx.stroke();
 
 				} else if (dectype[dec_num] == 3){
 					//draw an arrow
 						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[3] + apertureWidth/2, allApertureCentreY[3]);
-						ctx.lineTo(allApertureCentreX[1] - apertureWidth/2, allApertureCentreY[1]);
+						ctx.moveTo(allApertureCentreX[3] + apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
+						ctx.lineTo(allApertureCentreX[1] - apertureWidth/2, allApertureCentreY[1] + apertureWidth/2);
 						ctx.strokeStyle = 'red';
-				    	ctx.stroke(); 
+				    	ctx.stroke();
 
 				} else if (dectype[dec_num] == 4){
 					//draw an arrow
@@ -560,9 +560,9 @@ jsPsych.plugins["main-decision"] = (function() {
 						ctx.moveTo(allApertureCentreX[3] + apertureWidth/2, allApertureCentreY[3]);
 						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
 						ctx.strokeStyle = 'red';
-				    	ctx.stroke(); 
+				    	ctx.stroke();
 				}
-				
+
 		}
 
 
@@ -580,7 +580,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		drawDecisionArrow();
 
 		//Start to listen to subject's key responses
-		//startKeyboardListener();
+		startKeyboardListener();
 
 		}
 
@@ -635,6 +635,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		//-------------------------------------
 
 	// start the response listener
+	/*
     if (trial.choices != jsPsych.NO_KEYS) {
       var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
         callback_function: after_response,
@@ -644,12 +645,15 @@ jsPsych.plugins["main-decision"] = (function() {
         allow_held_key: false
       });
     }
+		*/
 		// end trial if trial_duration is set
+		/*
     if (trial.trial_duration !== null) {
       jsPsych.pluginAPI.setTimeout(function() {
         end_trial();
       }, trial.trial_duration);
     }
+		*/
 
 	}; // END OF TRIAL
 

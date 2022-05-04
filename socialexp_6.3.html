@@ -329,9 +329,10 @@ var main_decision_1 = {
     dec_num: 0, // first or second decison
     dectype: jsPsych.timelineVariable('dectype'),
     outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
-    trial_duration: 5000,
+    trial_duration: 3000,
     response_ends_trial: true,
-    choices: jsPsych.ALL_KEYS,
+    choices: ["arrowleft","arrowright"],
+
     RDK_type: 3, //Applied to all apertures if only one value
     player_position: [0,1,2,3],
     aperture_width: 200, //Applied to all apertures if only one value
@@ -349,6 +350,37 @@ var main_decision_1 = {
                       ]
 };
 
+var main_decision_2 = {
+  // get the subjects initials
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+    return ;
+  },
+    type:"main-decision",
+    dec_num: 1, // first or second decison
+    dectype: jsPsych.timelineVariable('dectype'),
+    outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
+    trial_duration: 3000,
+    response_ends_trial: true,
+    choices: ["arrowleft","arrowright"],
+
+    RDK_type: 3, //Applied to all apertures if only one value
+    player_position: [0,1,2,3],
+    aperture_width: 200, //Applied to all apertures if only one value
+    border: true,
+    background_color: 'grey',
+    border_color: ["white","blue","black","purple"],
+    aperture_center_x: [(window.innerWidth/2-window.innerWidth/5), //topleft
+                        (window.innerWidth/2+window.innerWidth/5), //topright
+                        (window.innerWidth/2+window.innerWidth/5),
+                        (window.innerWidth/2-window.innerWidth/5)],
+    aperture_center_y: [(window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2-window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4),
+                        (window.innerHeight/2+window.innerHeight/4)
+                      ]
+};
 
 
 var main_training_fb = {
@@ -396,7 +428,7 @@ var main_fb = {
 
     type:"main-fb",
     number_of_apertures: 4, //This needs to be set if more than one aperture
-    trial_duration: 3000,
+    trial_duration: 1000,
     RDK_type: 3, //Applied to all apertures if only one value
     player_position: [0,1,2,3],
     aperture_type: 1, // circle
@@ -434,11 +466,20 @@ var main_training_block = {
 }
 
 //timeline.push(main_training_block)
-
+var show_data = {
+    type: "html-button-response",
+    stimulus: function() {
+      var trial_data = jsPsych.data.getLastTrialData().values();
+      var trial_json = JSON.stringify(trial_data, null, 2);
+      return `<p style="margin-bottom:0px;"><strong>Trial data:</strong></p>
+        <pre style="margin-top:0px;text-align:left;">${trial_json}</pre>`;
+    },
+    choices: ['Repeat demo']
+  };
 
 // create timeline for the main block
 var main_block = {
-  timeline: [main_fb_sequence,main_decision_1,main_fb],
+  timeline: [main_fb_sequence,main_decision_1,main_fb,main_decision_2,main_fb],
   timeline_variables: main_trial_schedule,
   //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false
