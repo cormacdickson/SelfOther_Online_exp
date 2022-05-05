@@ -508,7 +508,7 @@ timeline.push(pair_schedules_start)
 
 var pair_schedules_load = {
 	type: 'image-keyboard-response',
-	stimulus_height: 50, 
+	stimulus_height: 40, 
 	stimulus: jsPsych.timelineVariable('stimulus'),
 	choices: jsPsych.NO_KEYS,
 	trial_duration: 500
@@ -537,6 +537,36 @@ var pair_schedules_end = {
        }
 
 timeline.push(pair_schedules_end)
+
+
+var instructions_4 = {
+           type: 'instructions',
+           pages: function() {return [
+
+              '<h1>Part 2 –Group competition task </h1>'+
+              '<p><br>In the group competition task, you will see your performance from part 1 and also performance of the three other players (performance phase). We ask you to make decisions about these performances (decision phase). By making good decisions, you can collect points. The goal of part 2 is to collect as many points as possible.<p>'+
+              '<p><br>During the performance phase:<p>'+
+              '<p>During the performance phase:<p>'+
+              '<p>You will see performances of each player on every round.<p>'+
+
+              '<p>Correct performance will be displayed as:</br><img src="images/fb_correct.png" width="100px" class="center"><p>'+
+
+              '<p>Incorrect performance will be displayed as:</br><img src="images/fb_wrong.png" width="150px" class="center"><p>'+
+
+			  '<p>We will now show you how the performance phase looks like. Press <right arrow> button to start.<p>'
+
+           ]},
+           show_clickable_nav: true,
+           button_label_previous: '',
+           button_label_next: ''
+       }
+
+timeline.push(instructions_4)
+
+
+
+
+
 
 
 
@@ -577,6 +607,8 @@ var main_fb_sequence = {
   aperture_center_x: aperture_x_coords,
     aperture_center_y: aperture_y_coords
 };
+
+timeline.push(main_fb_sequence)
 
 var Porder_schedule = "Porder_"+subject_id;
 
