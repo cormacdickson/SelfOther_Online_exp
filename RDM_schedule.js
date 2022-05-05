@@ -18,8 +18,11 @@ var RDM_schedule = [
     "correct_ans": "arrowleft",
     "coh_D": [180,0,0,0],
     "coh": [0.032,0,0,0]
-  },
-  {
+  }
+   ]
+
+   /*
+    {
       "correct_ans": "arrowleft",
       "coh_D": [180,0,0,0],
       "coh":[0.7,0,0,0]
@@ -34,5 +37,5 @@ var RDM_schedule = [
     "coh_D": [180,0,0,0],
     "coh": [0.7,0,0,0]
   }
-  ]
  
+*/

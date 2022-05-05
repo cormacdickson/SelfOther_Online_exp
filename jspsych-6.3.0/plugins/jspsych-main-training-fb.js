@@ -120,7 +120,37 @@ jsPsych.plugins["main-training-fb"] = (function() {
 	        pretty_name: 'feedback',
 	        default: undefined,
 	        description: '1 if last trial correct,0 otherwise'
-	      }
+	      },
+	      player_colours: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'player_colours',
+	        default: "nan",
+	        description: 'The color of each player'
+	      },
+	      engaged: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'engaged',
+	        default: "nan",
+	        description: 'did they engage on the last trial'
+	      },
+	      	dectype: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'dectype',
+	        default: "nan",
+	        description: 'type of decision to be shown'
+	      },
+				outcomeEngage: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'outcomeEngage',
+	        default: "nan",
+	        description: 'outcome of engaging'
+	      },
+				dec_num: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'dec_num',
+	        default: "nan",
+	        description: 'first or second decicion'
+	      },
 	    }
 	 }
 
@@ -136,7 +166,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.player1 = assignParameterValue(trial.player1, "nan");
-		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
+		trial.trial_duration = assignParameterValue(trial.trial_duration, 1300);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
 		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
@@ -166,7 +196,11 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y; // same but this one wont get set to current aperture and can be used to plot decision arrows
-
+		var player_colours  = trial.player_colours;
+		var engaged  = trial.engaged;  
+		var dectype					= trial.dectype;
+		var outcomeEngage		= trial.outcomeEngage;
+		var dec_num					= trial.dec_num;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -215,7 +249,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		//Border Parameters
 		var border = trial.border; //To display or not to display the border
 		var borderThickness = trial.border_thickness; //The width of the border in pixels
-		var borderColor = trial.border_color; //The color of the border
+		var borderColor = trial.player_colours; //The color of the border
 
 
 
@@ -478,41 +512,77 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
       		}//End of if border === true
           ctx.textAlign = "center";
+          ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
 		}//End of draw
 
 function text_fb(){
-	if (feedback==0){
-		ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
-		ctx.textAlign = "center";
-		ctx.fillText("insert feedback here", apertureCenterX[0], window.innerHeight/2);
-	}
-	else if (feedback==1){
-		ctx.fillStyle = 'white';
-		ctx.textAlign = "center";
-		ctx.fillText("insert feedback here", apertureCenterX[1], window.innerHeight/2);
+
+	var opponents = ["Op1","Op2","Op1","Op2"];
+
+	// first check if outcome engage is positive
+	if (outcomeEngage[dec_num]>0){  // if they should engage
+		if (engaged==0){  // but they didnt engage
+
+			ctx.fillStyle = 'white';
+			ctx.textAlign = "center";
+			ctx.font = '20px sans-serif';
+			ctx.fillText('Incorrect!', allApertureCentreX[0], window.innerHeight/2-20);
+			ctx.fillText('You 0 points.', allApertureCentreX[0], window.innerHeight/2);
+			ctx.fillText('Engaging would have won you '+ outcomeEngage[dec_num]+' point(s).', allApertureCentreX[0], window.innerHeight/2+20);
+
+			
+		} else if (engaged==1){
+			ctx.fillStyle = 'white';
+			ctx.textAlign = "center";
+			ctx.font = '20px sans-serif';
+			ctx.fillText('Correct!', allApertureCentreX[2], window.innerHeight/2-20);
+			ctx.fillText('You gain '+ outcomeEngage[dec_num]+' point(s).', allApertureCentreX[2], window.innerHeight/2);
+			ctx.fillText('Avoiding would have made you lose out.', allApertureCentreX[2], window.innerHeight/2+20);
+		}
+	} else if (outcomeEngage[dec_num]<0){ //if they shouldnt engage
+		if (engaged==0){  // and they didnt engage
+
+			ctx.fillStyle = 'white';
+			ctx.textAlign = "center";
+			ctx.font = '20px sans-serif';
+			ctx.fillText('Correct!', allApertureCentreX[0], window.innerHeight/2-20);
+			ctx.fillText('You dont lose points points. '+ opponents[dectype[dec_num]]+' performed better by '+ outcomeEngage[dec_num]+'.', allApertureCentreX[0], window.innerHeight/2);
+			ctx.fillText('Engaging would have cost you points.', allApertureCentreX[0], window.innerHeight/2+20);
+
+			
+		} else if (engaged==1){
+			ctx.fillStyle = 'white';
+			ctx.textAlign = "center";
+			ctx.font = '20px sans-serif';
+			ctx.fillText('Incorrect!', allApertureCentreX[2], window.innerHeight/2-20);
+			ctx.fillText('You lose '+ outcomeEngage[dec_num]+' point(s), because '+ opponents[dectype[dec_num]]+' performed better by '+ outcomeEngage[dec_num]+'.', allApertureCentreX[2], window.innerHeight/2);
+			ctx.fillText('You should have avoided.', allApertureCentreX[2], window.innerHeight/2+20);
+		}
 	}
 }
 
 function drawfb(){
-	if (feedback==0){
+	
+	if (engaged==0){
 		ctx.lineWidth = borderThickness;
-		ctx.strokeStyle = borderColor;
+		ctx.strokeStyle = 'red';
 		ctx.beginPath();
 		ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
 		ctx.stroke();
-		ctx.strokeStyle = 'red';
-	} else if (feedback==1){
+		
+	} else if (engaged==1){
 		ctx.lineWidth = borderThickness;
-		ctx.strokeStyle = borderColor;
-		ctx.beginPath();
-		ctx.rect(allApertureCentreX[1] - apertureWidth/1.5, allApertureCentreY[1] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
-		ctx.stroke();
 		ctx.strokeStyle = 'red';
+		ctx.beginPath();
+		ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
+		ctx.stroke();
+		
 	}
 
 	textfeedbackdelay = window.setTimeout(text_fb,300);
+	
 }
 
 

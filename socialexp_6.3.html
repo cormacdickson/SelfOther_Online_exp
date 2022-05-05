@@ -7,6 +7,8 @@
     <script src="jspsych-6.3.0/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-instructions.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-multi-choice.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-rdk.js"></script>
@@ -20,6 +22,7 @@
     <script src="jspsych-6.3.0/plugins/jspsych-main-training-fb.js"></script>
     <script src="RDM_training_schedule.js"></script>
     <script src="RDM_schedule.js"></script>
+    <script src="RDM_pair_schedule_loading.js"></script>
     <script src="main_trial_schedule.js"></script>
     <script src="Porder.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -60,6 +63,7 @@
 	var Main_decision_duration  = 3000;
 	var Main_decision_choices   = ["arrowleft","arrowright"];
     var Main_decision_fb_dur    = 1000;
+    var Main_training_decision_fb_dur    = 1300;
 
 
 
@@ -147,7 +151,7 @@ var Get_ID_loop = {
     }
 }
 
-timeline.push(Get_ID_loop);
+//timeline.push(Get_ID_loop);
 
 
 
@@ -467,7 +471,7 @@ var RDM_training_if_block = {
            button_label_next: ''
        }
 
-timeline.push(instructions_3)
+// timeline.push(instructions_3)
 
 var RDM_block = {
   timeline: [RDM_pretrial, RDM_trial,RDM_fb],
@@ -486,8 +490,66 @@ var RDM_block = {
 
 
 //---------------------------------------------
-///------------ Main exp begins ------------///
+///------------ Main exp training begins ------------///
 //----------------------------------------------
+
+// say well done for completin
+
+var pair_schedules_start = {
+	type: 'html-keyboard-response',
+	stimulus: '<h1>Well done for completing the individual performance assessment! </h1>'+
+			  '<h1><br>Part 2 – the group competition task – starts shortly.</h1>'+
+				'<p><br>You are being paired with three other players:<br> your partner (Pa), and two opponents (O1, O2).</p>',
+	choices: jsPsych.NO_KEYS,
+	trial_duration: 2000
+	}
+
+timeline.push(pair_schedules_start)
+
+var pair_schedules_load = {
+	type: 'image-keyboard-response',
+	stimulus_height: 50, 
+	stimulus: jsPsych.timelineVariable('stimulus'),
+	choices: jsPsych.NO_KEYS,
+	trial_duration: 500
+	}
+
+var pair_schedules_block = {
+  timeline: [pair_schedules_load],
+  timeline_variables: loading_imgs,
+  randomize_order:false,
+  repetitions: 1
+}
+timeline.push(pair_schedules_block)
+
+
+var pair_schedules_end = {
+           type: 'instructions',
+           pages: function() {return [
+
+              '<h1>Pairing complete.</h1>'+
+              '<p><br>Press the right arrow to proceed.<p>'
+
+           ]},
+           show_clickable_nav: true,
+           button_label_previous: '',
+           button_label_next: ''
+       }
+
+timeline.push(pair_schedules_end)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /// this node presents the feebcak for each particiapant in order
@@ -575,21 +637,23 @@ var main_decision_2 = {
 
 // draw feedback boxes with text feedback overlayed
 var main_training_fb = {
-  on_start: function(trial){
-    var p1   = jsPsych.data.get().select('player').values[0];
-    trial.player1 = p1;
-  },
-
+	on_start: function(trial){
+	var p1   = jsPsych.data.get().select('player').values[0];
+	trial.player1 = p1;
+	},
+    dec_num: 1, // first or second decison
+    dectype: jsPsych.timelineVariable('dectype'),
     type:"main-training-fb",
     number_of_apertures: Aperturenum, //This needs to be set if more than one aperture
-    trial_duration: Main_decision_fb_dur,
+    trial_duration: Main_training_decision_fb_dur,
     RDK_type: RDktype, //Applied to all apertures if only one value
     player_position: positions,
     player_colours: player_cols,
     aperture_type: Aperturetype, // circle
     aperture_width: aperture_diam, //Applied to all apertures if only one value
     border: true,
-    feedback: function(){
+    outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
+    engaged: function(){
       var last_resp = jsPsych.data.get().last(1).values()[0].response;
       if(jsPsych.pluginAPI.compareKeys(last_resp, 'arrowleft')){
         return 0;
@@ -635,13 +699,7 @@ var main_fb = {
 
 
 
-// create timeline for the main block
-var main_training_block = {
-  timeline: [main_decision_1,main_training_fb],
-  timeline_variables: main_trial_schedule,
-  //timeline_variables: Porder, //"Porder_"+subject_id,
-  randomize_order:false
-}
+
 
 // useful node to insert if you want to check the data output from a given trial
 var show_data = {
@@ -655,15 +713,26 @@ var show_data = {
     choices: ['Repeat demo']
   };
 
+
+
+// create timeline for the main block
+var main_training_block = {
+  timeline: [main_fb_sequence, main_decision_1, main_training_fb, main_decision_2, main_training_fb],
+  timeline_variables: main_trial_schedule,
+  //timeline_variables: Porder, //"Porder_"+subject_id,
+  randomize_order:false
+}
+timeline.push(main_training_block)  
+
 // create timeline for the main block
 var main_block = {
-  timeline: [main_fb_sequence,main_decision_1,main_fb,main_decision_2,main_fb],
+  timeline: [main_fb_sequence, main_decision_1, main_fb, main_decision_2, main_fb],
   timeline_variables: main_trial_schedule,
   //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false
 }
 
-timeline.push(main_block)
+//timeline.push(main_block)
 
 
 
