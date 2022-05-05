@@ -29,12 +29,12 @@
 */
 
 
-jsPsych.plugins["training-trial"] = (function() {
+jsPsych.plugins["RDM-trial"] = (function() {
 
 	var plugin = {};
 
 	plugin.info = {
-	    name: "training-trial",
+	    name: "RDM-trial",
 	    parameters: {
 		    choices: {
 		      type: jsPsych.plugins.parameterType.KEY,
@@ -137,7 +137,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		    background_color: {
 		      type: jsPsych.plugins.parameterType.STRING,
 		      pretty_name: "Background color",
-		      default: "gray",
+		      default: "black",
 		      description: "The background of the stimulus"
 		    },
 		    RDK_type: {
@@ -268,7 +268,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
-		trial.background_color = assignParameterValue(trial.background_color, "gray");
+		trial.background_color = assignParameterValue(trial.background_color, "black");
 		trial.RDK_type = assignParameterValue(trial.RDK_type, 3);
 		trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
 		trial.reinsert_type = assignParameterValue(trial.reinsert_type, 2);
@@ -304,7 +304,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		var moveDistance = trial.move_distance; //How many pixels the dots move per frame
 		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
-		var dotColor = [player_colours[0], 'blue', 'green','yellow']; //trial.dot_color; //Color of the dots
+		var dotColor = player_colours; //trial.dot_color; //Color of the dots
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
@@ -427,7 +427,7 @@ jsPsych.plugins["training-trial"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		var player_on;
-		var player_ids = ['player1','partner','op1','op2'];
+		var player_ids = ['player1','Pa','Op1','Op2'];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -917,25 +917,28 @@ jsPsych.plugins["training-trial"] = (function() {
 
 			// Clear all the current dots
 			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-
-					currentApertureNumber = player_on;
-					//Initialize the variables for each parameter
-					initializeCurrentApertureParameters(currentApertureNumber);
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			currentApertureNumber = player_on;
+			//Initialize the variables for each parameter
+			initializeCurrentApertureParameters(currentApertureNumber);
 
 	        //Clear the canvas by drawing over the current dots
 	        clearDots();
 
+			//Update the dots
+			updateDots();
 
 
+			// Draw all the relevant dots on the canvas
+			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
 
-			// Update all the relevant dots
-			//for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
-			currentApertureNumber = player_on;
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
 
-				//Update the dots
-				updateDots();
+				//Draw on the canvas
+				clearBorder();
+				clearText();
+			}
 
 
 			// Draw all the relevant dots on the canvas
@@ -951,19 +954,37 @@ jsPsych.plugins["training-trial"] = (function() {
 
 		//Function that clears the dots on the canvas by drawing over it with the color of the baclground
 	    function clearDots(){
+	    	//Load in the current set of dot array for easy handling
+	    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
-		    	//Load in the current set of dot array for easy handling
-		    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
-
-				//Loop through the dots one by one and draw them
-				for (var i = 0; i < nDots; i++) {
-					dot = dotArray[i];
-					ctx.beginPath();
-					ctx.arc(dot.x, dot.y, dotRadius+1, 0, Math.PI * 2);
-					ctx.fillStyle = backgroundColor;
-					ctx.fill();
-				}
+			//Loop through the dots one by one and draw them
+			for (var i = 0; i < nDots; i++) {
+				dot = dotArray[i];
+				ctx.beginPath();
+				ctx.arc(dot.x, dot.y, dotRadius+1, 0, Math.PI * 2);
+				ctx.fillStyle = backgroundColor;
+				ctx.fill();
 			}
+		}
+
+
+				//Function that clears the dots on the canvas by drawing over it with the color of the baclground
+	    function clearBorder(){
+    		ctx.lineWidth = borderThickness;
+      		ctx.strokeStyle = backgroundColor;
+      		ctx.beginPath();
+      		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
+      		ctx.stroke();
+		}
+
+
+		function clearText(){
+    		if(currentApertureNumber !== player_on) {
+				ctx.fillStyle = backgroundColor;
+				ctx.textAlign = "center";
+				ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
+			}
+		}
 
 
 		//Draw the dots on the canvas after they're updated

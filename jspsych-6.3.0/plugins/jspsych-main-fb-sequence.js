@@ -130,7 +130,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		    background_color: {
 		      type: jsPsych.plugins.parameterType.STRING,
 		      pretty_name: "Background color",
-		      default: "gray",
+		      default: "black",
 		      description: "The background of the stimulus"
 		    },
 		    RDK_type: {
@@ -252,7 +252,13 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 	        pretty_name: 'O2_perf',
 	        default: "nan",
 	        description: 'O2_perf'
-	      }
+	      },
+	      player1: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'player1',
+	        default: undefined,
+	        description: 'The HTML string to be displayed for player1'
+	      },
 	    }
 	 }
 
@@ -269,6 +275,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.p_order = assignParameterValue(trial.p_order, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
+		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
@@ -283,7 +290,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
-		trial.background_color = assignParameterValue(trial.background_color, "gray");
+		trial.background_color = assignParameterValue(trial.background_color, "black");
 		trial.reinsert_type = assignParameterValue(trial.reinsert_type, 2);
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
@@ -296,7 +303,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
 		trial.border_color = assignParameterValue(trial.border_color, "black");
 
-		trial.player_position = [0,3,1,2];
+		trial.player_position = assignParameterValue(trial.player_position, "nan");
 		trial.aperture_height = trial.aperture_width; //set the aperture height == aperture width
 
 
@@ -304,6 +311,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var player_position 		= trial.player_position; //trial.player_position; // array of each player_position initials in order
 		var p_order 						= trial.p_order;
 		var player_colours 			= trial.player_colours;
+		var player1 = trial.player1;
 		var nApertures 					= 4; //The number of apertures
 		var nDots 							= trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
 		var nSets 							= trial.number_of_sets; //Number of sets to cycle through per frame
@@ -315,7 +323,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var moveDistance 				= trial.move_distance; //How many pixels the dots move per frame
 		var apertureWidth 			= trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight 			= trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
-		var dotColor 						= [player_colours[0], 'blue', 'green','yellow']; //trial.dot_color; //Color of the dots
+		var dotColor 				= player_colours; //trial.dot_color; //Color of the dots
 		var backgroundColor 		= trial.background_color; //Color of the background
 		var apertureCenterX 		= trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
@@ -446,7 +454,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		//var player_position;
 		var fb_index = 0;
-		var player_ids = ['player1','Pa','Op1','Op2'];
+		var player_ids = [player1,'Pa','Op1','Op2'];
 		var trial_duration;// = [300,100,200,100,200,100,200,100,200,100,200,100,200,500];
 		var nDotsArray;
 		var nSetsArray;
@@ -940,20 +948,30 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			//Initialize the variables for each parameter
 			initializeCurrentApertureParameters(currentApertureNumber);
 
-	    //Clear the canvas by drawing over the current dots
-	    clearDots(); // for current player only
+		    //Clear the canvas by drawing over the current dots
+		    clearDots(); // for current player only
 
 			//Update the dots
 			updateDots(); // for current player only
-
 
 			// Draw all the relevant dots & initials on the canvas
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
+
+				clearAperture();
+				
+			}
+
+			// Draw all the relevant dots & initials on the canvas
+			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
+				//Initialize the variables for each parameter
+				initializeCurrentApertureParameters(currentApertureNumber);
+
+				
 				//Draw on the canvas
 				draw();
-				}
+			}
 		}
 
 		//Function that clears the dots on the canvas by drawing over it with the color of the baclground
@@ -971,6 +989,15 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					ctx.fill();
 				}
 			}
+
+		function clearAperture(){
+      		ctx.strokeStyle = backgroundColor;
+      		ctx.beginPath();
+      		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis*1.2, verticalAxis*1.2, 0, 0, Math.PI*2);
+      		ctx.fill();
+		
+		}
+
 
 		// Function to draw the relevant feedback
 		function draw_fb(){

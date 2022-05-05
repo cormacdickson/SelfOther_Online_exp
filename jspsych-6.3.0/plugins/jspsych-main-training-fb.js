@@ -64,7 +64,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		    background_color: {
 		      type: jsPsych.plugins.parameterType.STRING,
 		      pretty_name: "Background color",
-		      default: "gray",
+		      default: "black",
 		      description: "The background of the stimulus"
 		    },
 		    aperture_type: {
@@ -141,7 +141,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
 		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
-		trial.background_color = assignParameterValue(trial.background_color, "gray");
+		trial.background_color = assignParameterValue(trial.background_color, "black");
 		trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);

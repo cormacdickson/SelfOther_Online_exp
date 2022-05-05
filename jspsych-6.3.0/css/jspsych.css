@@ -10,7 +10,7 @@
 /* Container holding jsPsych content */
 
 body {
-      background-color: #808080;
+      background-color: black;
       }
 
 h1 {
@@ -23,6 +23,7 @@ h1 {
    display: flex;
    flex-direction: column;
    overflow-y: auto;
+   color:white;
  }
 
  .jspsych-display-element:focus {

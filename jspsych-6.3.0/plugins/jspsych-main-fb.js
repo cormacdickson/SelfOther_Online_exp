@@ -88,7 +88,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		    border: {
 		      type: jsPsych.plugins.parameterType.BOOL,
 		      pretty_name: "Border",
-		      default: false,
+		      default: true,
 		      description: "The presence of a border around the aperture"
 		    },
 		    border_thickness: {
@@ -106,20 +106,26 @@ jsPsych.plugins["main-fb"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default: "undefined",
 	        description: 'The HTML string to be displayed for each player'
 	      },
 				player1: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player1',
-	        default: undefined,
+	        default: "undefined",
 	        description: 'The HTML string to be displayed for player1'
 	      },
 				feedback: {
 	        type: jsPsych.plugins.parameterType.INT,
 	        pretty_name: 'feedback',
-	        default: undefined,
+	        default: "undefined",
 	        description: '1 if last trial correct,0 otherwise'
+	      },
+	      player_colours: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'player_colours',
+	        default: "nan",
+	        description: 'The color of each player'
 	      }
 	    }
 	 }
@@ -148,7 +154,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		trial.border = assignParameterValue(trial.border, false);
 		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
 		trial.border_color = assignParameterValue(trial.border_color, "black");
-
+		trial.player_colours      = assignParameterValue(trial.player_colours, "nan");
 
 		//For square and circle, set the aperture height == aperture width
 			trial.aperture_height = trial.aperture_width;
@@ -159,6 +165,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		var player_position = trial.player_position; // array of each player_position initials in order
 		var player1 = trial.player1;
 		var feedback = trial.feedback;
+		var player_colours 			= trial.player_colours;
 		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
 		var backgroundColor = trial.background_color; //Color of the background
@@ -215,7 +222,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		//Border Parameters
 		var border = trial.border; //To display or not to display the border
 		var borderThickness = trial.border_thickness; //The width of the border in pixels
-		var borderColor = trial.border_color; //The color of the border
+		var borderColor = trial.player_colours; //The color of the border
 
 
 
@@ -255,7 +262,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		var ctx = canvas.getContext("2d");
 
 		//Declare variables for width and height, and also set the canvas width and height to the window width and height
-		var canvasWidth =     canvas.width = window.innerWidth;
+		var canvasWidth =  canvas.width = window.innerWidth;
 		var canvasHeight = canvas.height = window.innerHeight;
 
 		//Set the canvas background color
@@ -478,6 +485,7 @@ jsPsych.plugins["main-fb"] = (function() {
 
       		}//End of if border === true
           ctx.textAlign = "center";
+          ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
 		}//End of draw
@@ -495,22 +503,12 @@ function drawfb(){
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
-		ctx.rect(allApertureCentreX[1] - apertureWidth/1.5, allApertureCentreY[1] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
+		ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
 		ctx.strokeStyle = 'red';
 		ctx.stroke();
 
 	}
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
