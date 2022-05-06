@@ -29,12 +29,12 @@
 */
 
 
-jsPsych.plugins["main-decision"] = (function() {
+jsPsych.plugins["main-instruction"] = (function() {
 
 	var plugin = {};
 
 	plugin.info = {
-	    name: "main-decision",
+	    name: "main-instruction",
 	    parameters: {
 		    choices: {
 		      type: jsPsych.plugins.parameterType.KEY,
@@ -212,9 +212,9 @@ jsPsych.plugins["main-decision"] = (function() {
 	        default: "nan",
 	        description: 'type of decision to be shown'
 	      },
-				dec_num: {
+				instr_num: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'dec_num',
+	        pretty_name: '',
 	        default: "nan",
 	        description: 'first or second decicion'
 	      },
@@ -291,9 +291,11 @@ jsPsych.plugins["main-decision"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var dectype					= trial.dectype;
-		var dec_num					= trial.dec_num;
+		var instr_num					= trial.instr_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
+		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
+		var num_instr = 2;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -553,6 +555,7 @@ jsPsych.plugins["main-decision"] = (function() {
 
 		//Function to record the first response by the subject
 		function after_response(info) {
+			response_num++;
 
 			//If the response has not been recorded, record it
 			if (response.key == -1) {
@@ -560,11 +563,12 @@ jsPsych.plugins["main-decision"] = (function() {
 			}
 
 			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
-			if (trial.response_ends_trial) {
+			if (trial.response_ends_trial && response_num==num_instr) {
 				window.clearTimeout(timeoutID);
 				end_trial();
 			}
 
+			writeInstructions();
 		} //End of after_response
 
 		//Function that determines if the response is correct
@@ -765,7 +769,7 @@ jsPsych.plugins["main-decision"] = (function() {
 			// need to know if we are in the first decisionor second decisionor
 				// need to know what arrow we want to drawn
 
-				if (dectype[dec_num] == 1){
+				if (dectype == 1){
 						//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
@@ -773,7 +777,7 @@ jsPsych.plugins["main-decision"] = (function() {
 						ctx.strokeStyle = 'red';
 				    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 2){
+				} else if (dectype == 2){
 					//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
@@ -781,7 +785,7 @@ jsPsych.plugins["main-decision"] = (function() {
 						ctx.strokeStyle = 'red';
 				    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 3){
+				} else if (dectype == 3){
 					//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
@@ -789,7 +793,7 @@ jsPsych.plugins["main-decision"] = (function() {
 						ctx.strokeStyle = 'red';
 				    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 4){
+				} else if (dectype == 4){
 					//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
@@ -816,7 +820,46 @@ jsPsych.plugins["main-decision"] = (function() {
 			}
 
 			drawDecisionArrow();
+
+			writeInstructions();
 		}
+
+		function writeInstructions(){
+			// first check if outcome engage is positive
+			if (instr_num==0 && response_num==0){  // if they should engage
+					ctx.fillStyle = 'white';
+					ctx.textAlign = "center";
+					ctx.font = '15px sans-serif';
+					ctx.fillText('This was the performance phase.', window.innerWidth/5, window.innerHeight/4-20);
+					ctx.fillText('In the decision phase, we will ask you to ', window.innerWidth/5, window.innerHeight/4);
+					ctx.fillText('compare the performances between two players from memory.', window.innerWidth/5, window.innerHeight/4+20);
+					ctx.fillText('Arrows indicate the relevant players. Here you need to compare yourself to Op2.', window.innerWidth/5, window.innerHeight/4+40);
+					ctx.fillText('press the right arow key to continue', window.innerWidth/2, window.innerHeight-30);
+
+		} else if (instr_num==0 && response_num==1){
+			ctx.fillText('Respond with <left arrow> to indicate that you thought your performance was better ', 4*(window.innerWidth/5), window.innerHeight/4-20);
+			ctx.fillText('than O2’s performance. Otherwise click <right arrow>.', 4*(window.innerWidth/5), window.innerHeight/4);
+
+			ctx.fillText('<left arrow> means you engage in competition with O2. You will get points if the ', 4*(window.innerWidth/5), window.innerHeight/4+40);
+			ctx.fillText('performance you have just seen was better than O2’s performance and lose points ', 4*(window.innerWidth/5), window.innerHeight/4+60);
+			ctx.fillText('if you had been worse. Points won/lost are equivalent to the true performance difference!', 4*(window.innerWidth/5), window.innerHeight/4+80);
+
+			ctx.fillText('<right arrow> means you avoid competition and in this case you cannot win or lose points. ', 4*(window.innerWidth/5), window.innerHeight/4+120);
+			ctx.fillText('Your point count stays constants.', 4*(window.innerWidth/5), window.innerHeight/4+20);
+
+			ctx.fillText('These rules mean that you should always press <left arrow> when you thought you were better.', 4*(window.innerWidth/5), window.innerHeight/4+140);
+			//ctx.fillText('Otherwise click <right arrow>.', 4*(window.innerWidth/5), window.innerHeight-30);
+
+
+		}
+	}
+
+
+
+
+
+
+
 
 
 		//Draw the dots on the canvas after they're updated

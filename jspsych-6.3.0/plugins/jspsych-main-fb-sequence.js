@@ -329,7 +329,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var trial_duration 			= trial.trial_duration;
 
-		
+
 		var S_perf = trial.S_perf;
 		var P_perf = trial.P_perf;
 		var O1_perf = trial.O1_perf;
@@ -601,7 +601,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
-
+				trial_3d_dot_array: dotArray3d,
 				trial_duration: trial.trial_duration, //The trial duration
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
 				number_of_apertures: trial.number_of_apertures,
@@ -960,7 +960,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				initializeCurrentApertureParameters(currentApertureNumber);
 
 				clearAperture();
-				
+
 			}
 
 			// Draw all the relevant dots & initials on the canvas
@@ -968,7 +968,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
 
-				
+
 				//Draw on the canvas
 				draw();
 			}
@@ -995,7 +995,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
       		ctx.beginPath();
       		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis*1.2, verticalAxis*1.2, 0, 0, Math.PI*2);
       		ctx.fill();
-		
+
 		}
 
 
