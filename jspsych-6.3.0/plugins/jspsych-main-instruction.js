@@ -218,6 +218,12 @@ jsPsych.plugins["main-instruction"] = (function() {
 	        default: "nan",
 	        description: 'first or second decicion'
 	      },
+				screen_num: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: '',
+	        default: "nan",
+	        description: 'first or second decicion'
+	      },
 	    }
 	 }
 
@@ -292,6 +298,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var dectype					= trial.dectype;
 		var instr_num					= trial.instr_num;
+		var screen_num      = trial/screen_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
@@ -557,13 +564,20 @@ jsPsych.plugins["main-instruction"] = (function() {
 		function after_response(info) {
 			response_num++;
 
-			//If the response has not been recorded, record it
-			if (response.key == -1) {
-				response = info; //Replace the response object created above
-			}
+			//record the response
+			response = info; //Replace the response object created above
 
-			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
-			if (trial.response_ends_trial && response_num==num_instr) {
+			// if they already flicked through the screens then this is thier answer to the question so give them feedbak
+			if (instr_num>0 && response_num>screen_num){ // instr_num=0 doesnt get feedback other 2 do
+				if (jsPsych.pluginAPI.compareKeys(response.key, 'arrowleft')){
+					feedback = 0;
+				} else {
+					feedback = 1;
+				}
+				drawfb();
+
+				timeoutID = window.setTimeout(end_trial,500); // then set a timout id to wait for the feedback duration
+			} else if (trial.response_ends_trial && response_num>screen_num) {
 				window.clearTimeout(timeoutID);
 				end_trial();
 			}
@@ -571,39 +585,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 			writeInstructions();
 		} //End of after_response
 
-		//Function that determines if the response is correct
-		function correctOrNot(){
 
-			//Check that the correct_choice has been defined
-			if(typeof trial.correct_choice !== 'undefined'){
-				//If the correct_choice variable holds an array
-				if(trial.correct_choice.constructor === Array){ //If it is an array
-					//If the elements are characters
-					if(typeof trial.correct_choice[0] === 'string' || trial.correct_choice[0] instanceof String){
-						var key_in_choices = trial.correct_choice.every(function(x) {
-							return jsPsych.pluginAPI.compareKeys(x,response.key);
-						});
-						return key_in_choices; //If the response is included in the correct_choice array, return true. Else, return false.
-					}
-					//Else if the elements are numbers (javascript character codes)
-					else if (typeof trial.correct_choice[0] === 'number'){
-						console.error('Error in RDK plugin: correct_choice value must be a string.');
-					}
-				}
-				//Else compare the char with the response key
-				else{
-					//If the element is a character
-					if(typeof trial.correct_choice === 'string' || trial.correct_choice instanceof String){
-						//Return true if the user's response matches the correct answer. Return false otherwise.
-						return jsPsych.pluginAPI.compareKeys(response.key, trial.correct_choice);
-					}
-					//Else if the element is a number (javascript character codes)
-					else if (typeof trial.correct_choice === 'number'){
-						console.error('Error in RDK plugin: correct_choice value must be a string.');
-					}
-				}
-			}
-		}
 
 		//----JsPsych Functions End----
 
@@ -764,6 +746,25 @@ jsPsych.plugins["main-instruction"] = (function() {
 			return tempArray;
 		}
 
+		function drawfb(){
+			if (feedback==0){
+				ctx.lineWidth = borderThickness;
+				ctx.strokeStyle = borderColor;
+				ctx.beginPath();
+				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
+				ctx.strokeStyle = 'red';
+				ctx.stroke();
+
+			} else if (feedback==1){
+				ctx.lineWidth = borderThickness;
+				ctx.strokeStyle = borderColor;
+				ctx.beginPath();
+				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
+				ctx.strokeStyle = 'red';
+				ctx.stroke();
+
+			}
+		}
 
 		function drawDecisionArrow(){
 			// need to know if we are in the first decisionor second decisionor
@@ -836,23 +837,65 @@ jsPsych.plugins["main-instruction"] = (function() {
 					ctx.fillText('Arrows indicate the relevant players. Here you need to compare yourself to Op2.', window.innerWidth/5, window.innerHeight/4+40);
 					ctx.fillText('press the right arow key to continue', window.innerWidth/2, window.innerHeight-30);
 
-		} else if (instr_num==0 && response_num==1){
-			ctx.fillText('Respond with <left arrow> to indicate that you thought your performance was better ', 4*(window.innerWidth/5), window.innerHeight/4-20);
-			ctx.fillText('than O2’s performance. Otherwise click <right arrow>.', 4*(window.innerWidth/5), window.innerHeight/4);
+					} else if (instr_num==0 && response_num==1){
+						ctx.fillText('->Respond with <left arrow> to indicate that you thought your performance was better ', 4*(window.innerWidth/5), window.innerHeight/4-20);
+						ctx.fillText('than O2’s performance. Otherwise click <right arrow>.', 4*(window.innerWidth/5), window.innerHeight/4);
 
-			ctx.fillText('<left arrow> means you engage in competition with O2. You will get points if the ', 4*(window.innerWidth/5), window.innerHeight/4+40);
-			ctx.fillText('performance you have just seen was better than O2’s performance and lose points ', 4*(window.innerWidth/5), window.innerHeight/4+60);
-			ctx.fillText('if you had been worse. Points won/lost are equivalent to the true performance difference!', 4*(window.innerWidth/5), window.innerHeight/4+80);
+						ctx.fillText('-> <left arrow> means you engage in competition with O2. You will get points if the ', 4*(window.innerWidth/5), window.innerHeight/4+40);
+						ctx.fillText('   performance you have just seen was better than O2’s performance and lose points ', 4*(window.innerWidth/5), window.innerHeight/4+60);
+						ctx.fillText('   if you had been worse. Points won/lost are equivalent to the true performance difference!', 4*(window.innerWidth/5), window.innerHeight/4+80);
 
-			ctx.fillText('<right arrow> means you avoid competition and in this case you cannot win or lose points. ', 4*(window.innerWidth/5), window.innerHeight/4+120);
-			ctx.fillText('Your point count stays constants.', 4*(window.innerWidth/5), window.innerHeight/4+20);
+						ctx.fillText('-> <right arrow> means you avoid competition and in this case you cannot win or lose points. ', 4*(window.innerWidth/5), window.innerHeight/4+120);
+						ctx.fillText('   Your point count stays constants.', 4*(window.innerWidth/5), window.innerHeight/4+140);
+						ctx.fillText('   These rules mean that you should always press <left arrow> when you thought you were better.', 4*(window.innerWidth/5), window.innerHeight/4+160);
+						ctx.fillText('   Otherwise click <right arrow>.', 4*(window.innerWidth/5), window.innerHeight+180);
 
-			ctx.fillText('These rules mean that you should always press <left arrow> when you thought you were better.', 4*(window.innerWidth/5), window.innerHeight/4+140);
-			//ctx.fillText('Otherwise click <right arrow>.', 4*(window.innerWidth/5), window.innerHeight-30);
+					} else if (instr_num==0 && response_num==2){
+						ctx.font = '20px sans-serif';
+						ctx.fillText('-> Before making your choice, let us remind you of the performances you have just seen!', window.innerWidth/2, window.innerHeight-60);
 
 
-		}
-	}
+
+					} else if (instr_num==1 && response_num==0){
+						ctx.fillStyle = 'white';
+						ctx.textAlign = "center";
+						ctx.font = '15px sans-serif';
+						ctx.fillText('-> If you have paid attention, you know that your correct performance was 4 and ', window.innerWidth/2, window.innerHeight-20);
+						ctx.fillText('   and the O2’s correct performance was 2.', 4*(window.innerWidth/5), window.innerHeight/4);
+
+						ctx.fillText('-> Here you should engage in the competition (press <left arrow> button). You will ', 4*(window.innerWidth/5), window.innerHeight/4+40);
+						ctx.fillText('   get 2 points for engaging since you performed 2 points better than O2.', 4*(window.innerWidth/5), window.innerHeight/4+60);
+
+						ctx.fillText('->Avoiding always gives you 0 points, so you miss out on 2 points if you ', window.innerWidth/2, window.innerHeight+100);
+						ctx.fillText('  avoid competition here.', 4*(window.innerWidth/5), window.innerHeight/4+120);
+
+						ctx.fillStyle = 'red';
+						ctx.fillText('-> Make a decision now! use left or right arrow button!', 4*(window.innerWidth/5), window.innerHeight/4+160);
+
+					} else if (instr_num==2 && response_num==0){
+					ctx.fillStyle = 'white';
+					ctx.textAlign = "center";
+					ctx.font = '15px sans-serif';
+					ctx.fillText('-> If you remembered their performances, you know that your ', window.innerWidth/2, window.innerHeight-20);
+					ctx.fillText('   partner’s performance was 4 and the O1’s performance was 5', 4*(window.innerWidth/5), window.innerHeight/4);
+
+					ctx.fillText('-> You should avoid the competition (press <right arrow> ', 4*(window.innerWidth/5), window.innerHeight/4+40);
+					ctx.fillText('   button) here. You don’t lose points, since avoiding gives you 0 point. ', 4*(window.innerWidth/5), window.innerHeight/4+60);
+
+					ctx.fillText('-> But if you engaged in the competition, since your partner ', window.innerWidth/2, window.innerHeight+100);
+					ctx.fillText('   performed 1 point worse than O2, you lose 1 point.', 4*(window.innerWidth/5), window.innerHeight/4+120);
+
+					ctx.fillStyle = 'red';
+					ctx.fillText('-> Make a decision now! use left or right arrow button!', 4*(window.innerWidth/5), window.innerHeight/4+160);
+
+					ctx.fillStyle = 'white';
+					ctx.fillText('-> We will also ask you to compare your partner and the one player from the other team. ', window.innerWidth/2, window.innerHeight/6-20);
+					ctx.fillText('-> Note that you get the same points based on how well your partner did in the game.', (window.innerWidth/2), window.innerHeight/6);
+
+					ctx.fillText('-> Here, indicated by the arrow, you are asked ', 4*(window.innerWidth/5), window.innerHeight/2-20);
+					ctx.fillText('   to compare your partner and O1 ', 4*(window.innerWidth/5), window.innerHeight/2);
+			}
+			}
 
 
 
@@ -963,7 +1006,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 	        callback_function: after_response,
 	        valid_responses: trial.choices,
 	        rt_method: 'performance',
-	        persist: false,
+	        persist: true,
 	        allow_held_key: false
 	      });
 	    }

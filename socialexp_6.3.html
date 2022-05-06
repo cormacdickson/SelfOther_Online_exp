@@ -616,11 +616,12 @@ var main_instructions_1 = {
   },
     type:"main-instruction",
     instr_num: 0, // first or second decison
+    screen_num: 1, //number of sscreens that participant has to flicjk through
     dectype: 2,
     outcomeEngage: 0,
     trial_duration: Main_decision_duration,
     response_ends_trial: true,
-    choices: ['arrowright'],
+    choices: Main_decision_choices,
     player_colours: player_cols,
     RDK_type: RDktype, //Applied to all apertures if only one value
     player_position: positions,
@@ -633,7 +634,69 @@ var main_instructions_1 = {
 };
 
 
+var main_instructions_2 = {
+  // get the subjects initials
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+
+    var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
+    trial.previous_dot_positions = dotArray3d;
+    //var test = jsPsych.data.getLastTrialData().select('aperture_center_x').values[1];
+    return ;
+  },
+    type:"main-instruction",
+    instr_num: 1, // first or second decison
+    screen_num: 0, //number of sscreens that participant has to flicjk through
+    dectype: 3,
+    outcomeEngage: 0,
+    trial_duration: Main_decision_duration,
+    response_ends_trial: true,
+    choices: Main_decision_choices,
+    player_colours: player_cols,
+    RDK_type: RDktype, //Applied to all apertures if only one value
+    player_position: positions,
+    aperture_width: aperture_diam, //Applied to all apertures if only one value
+    border: false,
+    background_color: bcgnd_color,
+    border_color: player_cols,
+    aperture_center_x: aperture_x_coords,
+    aperture_center_y: aperture_y_coords
+};
+
+var main_instructions_3 = {
+  // get the subjects initials
+  on_start: function(trial){
+    var p1   = jsPsych.data.get().select('player').values[0];
+    trial.player1 = p1;
+
+    var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
+    trial.previous_dot_positions = dotArray3d;
+    //var test = jsPsych.data.getLastTrialData().select('aperture_center_x').values[1];
+    return ;
+  },
+    type:"main-instruction",
+    instr_num: 2, // first or second decison
+    screen_num: 0, //number of sscreens that participant has to flicjk through
+    dectype: 3,
+    outcomeEngage: 0,
+    trial_duration: Main_decision_duration,
+    response_ends_trial: true,
+    choices: Main_decision_choices,
+    player_colours: player_cols,
+    RDK_type: RDktype, //Applied to all apertures if only one value
+    player_position: positions,
+    aperture_width: aperture_diam, //Applied to all apertures if only one value
+    border: false,
+    background_color: bcgnd_color,
+    border_color: player_cols,
+    aperture_center_x: aperture_x_coords,
+    aperture_center_y: aperture_y_coords
+};
+
 timeline.push(main_instructions_1)
+timeline.push(main_instructions_2)
+timeline.push(main_instructions_3)
 
 
 
