@@ -839,19 +839,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		function writeInstructions(){
 			// first check if outcome engage is positive
 
-			if (instr_num==-1 && response_num==0){  //
-				ctx.fillStyle = 'white';
-				ctx.textAlign = 'left';
-				ctx.font = '15px sans-serif';
-				ctx.fillText('=> This was the performance phase.', left_text_origin_x, left_text_origin_y);
-				ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
-				ctx.fillText('   - compare the performances between two players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*2));
-				ctx.fillText('   - Arrows indicate the relevant players. Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
-				ctx.textAlign = 'centre';
-				ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
-
-
-			} else if (instr_num==0 && response_num==0){  //
+			if (instr_num==0 && response_num==0){  //
 					ctx.fillStyle = 'white';
 					ctx.textAlign = 'left';
 					ctx.font = '15px sans-serif';
