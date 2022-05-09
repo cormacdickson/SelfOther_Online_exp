@@ -29,12 +29,12 @@
 */
 
 
-jsPsych.plugins["main-training-fb"] = (function() {
+jsPsych.plugins["main-decision-training"] = (function() {
 
 	var plugin = {};
 
 	plugin.info = {
-	    name: "main-training-fb",
+	    name: "main-decision-training",
 	    parameters: {
 		    choices: {
 		      type: jsPsych.plugins.parameterType.KEY,
@@ -59,7 +59,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		    response_ends_trial: {
 		      type: jsPsych.plugins.parameterType.BOOL,
 		      pretty_name: "Response ends trial",
-		      default: true,
+		      default: false,
 		      description: "If true, then any valid key will end the trial"
 		    },
 		    number_of_apertures: {
@@ -188,18 +188,6 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		      default: 1,
 		      description: "The color of the border"
 		    },
-				engaged: {
-	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'engaged',
-	        default: "nan",
-	        description: 'did they engage on the last trial'
-	      },
-				outcomeEngage: {
-	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'outcomeEngage',
-	        default: "nan",
-	        description: 'outcome of engaging'
-	      },
 				player_on: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "player being shown",
@@ -225,16 +213,10 @@ jsPsych.plugins["main-training-fb"] = (function() {
 	        description: 'type of decision to be shown'
 	      },
 				dec_num: {
-	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'dec_num',
-	        default: "nan",
-	        description: 'first or second decicion'
-	      },
-				feedback: {
 	        type: jsPsych.plugins.parameterType.INT,
-	        pretty_name: 'feedback',
-	        default: "undefined",
-	        description: '1 if last trial correct,0 otherwise'
+	        pretty_name: 'dec_num',
+	        default: 0,
+	        description: 'first or second decicion'
 	      },
 	    }
 	 }
@@ -255,7 +237,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		trial.choices = assignParameterValue(trial.choices, []);
 		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
-		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
+		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, false);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
 		trial.number_of_dots = assignParameterValue(trial.number_of_dots, 50);
 		trial.number_of_sets = assignParameterValue(trial.number_of_sets, 1);
@@ -312,9 +294,6 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		var dec_num					= trial.dec_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
-		var feedback = trial.feedback;
-		var engaged  = trial.engaged;
-		var outcomeEngage		= trial.outcomeEngage;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -359,12 +338,6 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		*/
 		var reinsertType = trial.reinsert_type;
 
-		//Fixation Cross Parameters
-		var fixationCross = trial.fixation_cross; //To display or not to display the cross
-		var fixationCrossWidth = trial.fixation_cross_width;  //The width of the fixation cross in pixels
-		var fixationCrossHeight = trial.fixation_cross_height; //The height of the fixation cross in pixels
-		var fixationCrossColor = trial.fixation_cross_color; //The color of the fixation cross
-		var fixationCrossThickness = trial.fixation_cross_thickness; //The thickness of the fixation cross, must be positive number above 1
 
 		//Border Parameters
 		var border = trial.border; //To display or not to display the border
@@ -428,6 +401,9 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
 		//3D Array to hold the dots (1st D is Apertures, 2nd D is Sets, 3rd D is Dots)
 		var dotArray3d = trial.previous_dot_positions.values[0];
+		console.log(dotArray3d)
+
+
 
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
@@ -529,69 +505,35 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		}
 
 		//Function to end the trial proper
+		//Function to end the trial proper
 		function end_trial() {
 
-			//Stop the dot motion animation
-			stopDotMotion = true;
-
-			//Store the number of frames
-			numberOfFrames = frameRate.length;
-
-			//Variable to store the frame rate array
-			var frameRateArray = frameRate;
-
-			//Calculate the average frame rate
-			if(frameRate.length > 0){//Check to make sure that the array is not empty
-				frameRate = frameRate.reduce((total,current) => total + current)/frameRate.length; //Sum up all the elements in the array
-			}else{
-				frameRate = 0; //Set to zero if the subject presses an answer before a frame is shown (i.e. if frameRate is an empty array)
-			}
-
 			//Kill the keyboard listener if keyboardListener has been defined
-			if (typeof keyboardListener !== 'undefined') {
+			//if (typeof keyboardListener !== 'undefined') {
 				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
-			}
-
+			//}
+			console.log(response.key);
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
-				correct: correctOrNot(), //If the subject response was correct
+				trial_3d_dot_array: dotArray3d,
+				// correct: correctOrNot(), //If the subject response was correct
 				choices: trial.choices, //The set of valid keys
 				correct_choice: trial.correct_choice, //The correct choice
-				trial_duration: trial.trial_duration, //The trial duration
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
-				number_of_apertures: trial.number_of_apertures,
-				number_of_dots: trial.number_of_dots,
-				number_of_sets: trial.number_of_sets,
-				coherent_direction: trial.coherent_direction,
-				coherence: trial.coherence,
-				opposite_coherence: trial.opposite_coherence,
-				dot_radius: trial.dot_radius,
-				dot_life: trial.dot_life,
-				move_distance: trial.move_distance,
-				aperture_width: trial.aperture_width,
-				aperture_height: trial.aperture_height,
-				dot_color: trial.dot_color,
-				background_color: trial.background_color,
-				RDK_type: trial.RDK_type,
-				aperture_type: trial.aperture_type,
-				reinsert_type: trial.reinsert_type,
-				frame_rate: frameRate, //The average frame rate for the trial
-				frame_rate_array: frameRateArray, //The array of ms per frame in this trial
-				number_of_frames: numberOfFrames, //The number of frames in this trial
-				aperture_center_x: trial.aperture_center_x,
-				aperture_center_y: trial.aperture_center_y,
-				fixation_cross: trial.fixation_cross,
-				fixation_cross_width: trial.fixation_cross_width,
-				fixation_cross_height: trial.fixation_cross_height,
-				fixation_cross_color: trial.fixation_cross_color,
-				fixation_cross_thickness: trial.fixation_cross_thickness,
-				border: trial.border,
-				border_thickness: trial.border_thickness,
-				border_color: trial.border_color,
-				canvas_width: canvasWidth,
-				canvas_height: canvasHeight
+				trial_duration:      trial.trial_duration, //The trial duration
+				aperture_width:      trial.aperture_width,
+				aperture_height:     trial.aperture_height,
+				background_color:    trial.background_color,
+				RDK_type:            trial.RDK_type,
+				aperture_center_x:   trial.aperture_center_x,
+				aperture_center_y:   trial.aperture_center_y,
+				border:              trial.border,
+				border_thickness:    trial.border_thickness,
+				border_color:        trial.border_color,
+				canvas_width:        canvasWidth,
+				canvas_height:       canvasHeight
 			}
 
 			//Remove the canvas as the child of the display_element element
@@ -606,6 +548,8 @@ jsPsych.plugins["main-training-fb"] = (function() {
 			jsPsych.finishTrial(trial_data);
 
 		} //End of end_trial
+
+
 
 		//Function to record the first response by the subject
 		function after_response(info) {
@@ -821,7 +765,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 			// need to know if we are in the first decisionor second decisionor
 				// need to know what arrow we want to drawn
 
-				if (dectype[dec_num] == 1){
+				if (dectype == 1){
 						//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
@@ -829,7 +773,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 						ctx.strokeStyle = 'red';
 				    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 2){
+				} else if (dectype == 2){
 					//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
@@ -837,7 +781,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 						ctx.strokeStyle = 'red';
 				    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 3){
+				} else if (dectype == 3){
 					//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
@@ -845,7 +789,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 						ctx.strokeStyle = 'red';
 				    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 4){
+				} else if (dectype == 4){
 					//draw an arrow
 						ctx.beginPath();
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
@@ -871,7 +815,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 				draw();
 			}
 
-			drawfb();
+			drawDecisionArrow();
 		}
 
 
@@ -907,6 +851,8 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
       		}//End of if border === true
 
+
+
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
@@ -914,73 +860,6 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
 		}//End of draw
 
-		function text_fb(){
-
-			var opponents = ["O1","O2","O1","O2"];
-
-			// first check if outcome engage is positive
-			if (outcomeEngage>0){  // if they should engage
-				if (engaged==0){  // but they didnt engage
-
-					ctx.fillStyle = 'white';
-					ctx.textAlign = "center";
-					ctx.font = '20px sans-serif';
-					ctx.fillText('Incorrect!', allApertureCentreX[0], window.innerHeight/2-20);
-					ctx.fillText('You 0 points.', allApertureCentreX[0], window.innerHeight/2);
-					ctx.fillText('Engaging would have won you '+ outcomeEngage+' point(s).', allApertureCentreX[0], window.innerHeight/2+20);
-
-
-				} else if (engaged==1){
-					ctx.fillStyle = 'white';
-					ctx.textAlign = "center";
-					ctx.font = '20px sans-serif';
-					ctx.fillText('Correct!', allApertureCentreX[2], window.innerHeight/2-20);
-					ctx.fillText('You gain '+ outcomeEngage+' point(s).', allApertureCentreX[2], window.innerHeight/2);
-					ctx.fillText('Avoiding would have made you lose out.', allApertureCentreX[2], window.innerHeight/2+20);
-				}
-			} else if (outcomeEngage<0){ //if they shouldnt engage
-				if (engaged==0){  // and they didnt engage
-
-					ctx.fillStyle = 'white';
-					ctx.textAlign = "center";
-					ctx.font = '20px sans-serif';
-					ctx.fillText('Correct!', allApertureCentreX[0], window.innerHeight/2-20);
-					ctx.fillText('You dont lose points points. '+ opponents[dectype]+' performed better by '+ outcomeEngage+'.', allApertureCentreX[0], window.innerHeight/2);
-					ctx.fillText('Engaging would have cost you points.', allApertureCentreX[0], window.innerHeight/2+20);
-
-
-				} else if (engaged==1){
-					ctx.fillStyle = 'white';
-					ctx.textAlign = "center";
-					ctx.font = '20px sans-serif';
-					ctx.fillText('Incorrect!', allApertureCentreX[2], window.innerHeight/2-20);
-					ctx.fillText('You lose '+ outcomeEngage+' point(s), because '+ opponents[dectype]+' performed better by '+ outcomeEngage+'.', allApertureCentreX[2], window.innerHeight/2);
-					ctx.fillText('You should have avoided.', allApertureCentreX[2], window.innerHeight/2+20);
-				}
-			}
-		}
-
-		function drawfb(){
-
-			if (engaged==0){
-				ctx.lineWidth = borderThickness;
-				ctx.strokeStyle = 'red';
-				ctx.beginPath();
-				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
-				ctx.stroke();
-
-			} else if (engaged==1){
-				ctx.lineWidth = borderThickness;
-				ctx.strokeStyle = 'red';
-				ctx.beginPath();
-				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
-				ctx.stroke();
-
-			}
-
-			textfeedbackdelay = window.setTimeout(text_fb,300);
-
-		}
 
 
 
@@ -1034,12 +913,27 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		//-------------------------------------
 		//-----------FUNCTIONS END-------------
 		//-------------------------------------
+
+		// start the response listener
+	    if (trial.choices != jsPsych.NO_KEYS) {
+	      var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
+	        callback_function: after_response,
+	        valid_responses: trial.choices,
+	        rt_method: 'performance',
+	        persist: false,
+	        allow_held_key: false
+	      });
+	    }
+
+
+
+		/*
 		if (trial.trial_duration !== null) {
 			jsPsych.pluginAPI.setTimeout(function() {
 				end_trial();
 			}, trial.trial_duration);
 		}
-
+		*/
 	}; // END OF TRIAL
 
 	//Return the plugin object which contains the trial

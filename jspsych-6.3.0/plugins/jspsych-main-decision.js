@@ -213,9 +213,9 @@ jsPsych.plugins["main-decision"] = (function() {
 	        description: 'type of decision to be shown'
 	      },
 				dec_num: {
-	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        type: jsPsych.plugins.parameterType.INT,
 	        pretty_name: 'dec_num',
-	        default: "nan",
+	        default: 0,
 	        description: 'first or second decicion'
 	      },
 	    }

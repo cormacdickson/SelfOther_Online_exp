@@ -893,13 +893,11 @@ jsPsych.plugins["main-fb"] = (function() {
 
       		}//End of if border === true
 
-					if(currentApertureNumber !== player_on) {
-
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
-					}
+
 		}//End of draw
 
 		function drawfb(){

@@ -221,7 +221,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
 				player_on: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "player being shown",
-		      default: 1,
+		      default: 0,
 		      description: "index of rdk to turn on"
 		    },
 				player_position: {

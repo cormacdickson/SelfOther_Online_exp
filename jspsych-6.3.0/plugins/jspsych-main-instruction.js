@@ -843,9 +843,9 @@ jsPsych.plugins["main-instruction"] = (function() {
 					ctx.textAlign = 'left';
 					ctx.font = '15px sans-serif';
 					ctx.fillText('=> This was the performance phase.', left_text_origin_x, left_text_origin_y);
-					ctx.fillText('   In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
+					ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
 					ctx.fillText('   - compare the performances between two players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*2));
-					ctx.fillText('   Arrows indicate the relevant players. Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
+					ctx.fillText('   - Arrows indicate the relevant players. Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
 					ctx.textAlign = 'centre';
 					ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
@@ -880,8 +880,8 @@ jsPsych.plugins["main-instruction"] = (function() {
 						ctx.fillText('=> Here you should engage in the competition (press <left arrow> button). You will ', right_text_origin_x, right_text_origin_y+(line_offset*3));
 						ctx.fillText('   - get 2 points for engaging since you performed 2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*4));
 
-						ctx.fillText('=>Avoiding always gives you 0 points, so you miss out on 2 points if you ', right_text_origin_x, right_text_origin_y+(line_offset*6));
-						ctx.fillText('  - avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*7));
+						ctx.fillText('=> Avoiding always gives you 0 points, so you miss out on 2 points if you ', right_text_origin_x, right_text_origin_y+(line_offset*6));
+						ctx.fillText('   - avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
 						ctx.fillStyle = 'red';
 						ctx.textAlign = 'left';

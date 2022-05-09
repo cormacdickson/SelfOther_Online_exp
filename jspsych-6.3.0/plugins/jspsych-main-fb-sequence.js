@@ -392,7 +392,9 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var borderThickness = trial.border_thickness; //The width of the border in pixels
 		var borderColor = trial.player_colours; //trial.border_color; //The color of the border
 
-
+		for (i = 0; i < 4; i++){
+	    coherentDirection[i] = Math.random() < 0.5 ? 0 : 180;
+		};
 
 		//--------------------------------------
 		//----------SET PARAMETERS END----------
