@@ -1,4 +1,4 @@
-var main_trial_schedule = [
+var main_sch_1 = [
   {
     "S_perf": [0,0,1,0,0,0],
     "P_perf": [0,1,0,1,0,0],

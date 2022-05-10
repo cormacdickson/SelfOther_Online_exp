@@ -30,6 +30,7 @@
     <script src="main_trial_schedule.js"></script>
     <script src="main_trial_training_schedule.js"></script>
     <script src="Porder.js"></script>
+    <script src="rdmperf.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="style.css" rel="stylesheet" type="text/css" />
   	</head>
@@ -42,6 +43,14 @@
     // hardcode important Variables
     var subject_id            = jsPsych.randomization.randomID(15); // generat a 15 digit subejcet ID
     var colours               = ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
+
+    // figure out appropriate way of assigning Porder nb
+    //var Porder
+
+
+    var this_subs_schedule; // will assign to a specific schedule later
+
+
     var aperture_x_coords     = [(window.innerWidth/2-window.innerWidth/5), //the cordinates of each of the 4 aperturesopleft
     						                 (window.innerWidth/2-window.innerWidth/5),
                         	       (window.innerWidth/2+window.innerWidth/5), //topright
@@ -68,6 +77,10 @@
     var Main_training_decision_fb_dur    = 2000;
     var trial_count           = 0; // used to check if this trial is a break trial
     var borders               = false;
+    var RDM_performance  = 0;
+    var num_RDM_trials        = 3;
+    var closest_sch_value;
+    var closest_sch_index;
 
 
 	// intialise variables for rdm training so wecan determine coherance direction and the corresponding correct answer
@@ -84,20 +97,21 @@
     type: "fullscreen",
     fullscreen_mode: true
   }
-  timeline.push(enter_fullscreen)
+  //timeline.push(enter_fullscreen)
 
   var instructions_1 = {
          type: 'instructions',
          pages: function() {return [
              '<h1>Welcome to the group competition game!</h1>'+
 
-             '<p>This game is about working together with another person in a team. Your team is playing against another team of two people. To Identify you, we will ask you to enter your initials on the next screen.</p>'+
-
+             '<p>This game is about working together with another person in a team. Your team is playing</p>'+
+             '<p>- against another team of two people. To Identify you, we will ask you to enter your </p>'+
+             '<p>- initials on the next screen.</p>'+
              '<p>The game will take about 30 minutes and has two parts:</p>'+
 
-             '<p>- Part 1: Individual performance assessment(~5min) </br> -Part 2: The group competition task<p>'+
+             '<p>--> Part 1: Individual performance assessment(~5min) </br>--> Part 2: The group competition task<p>'+
 
-             '<p>Press the arrow to procee to the next screen and enter you initials.</p>'
+             '<p></br>Press the arrow to procee to the next screen and enter you initials.</p>'
 
          ]},
          show_clickable_nav: true,
@@ -105,7 +119,7 @@
          button_label_next: ''
   }
 
-  timeline.push(instructions_1)
+  //timeline.push(instructions_1)
 
 
 
@@ -149,7 +163,7 @@ var Get_ID_loop = {
     }
 }
 
-timeline.push(Get_ID_loop);
+//timeline.push(Get_ID_loop);
 
 
 
@@ -165,7 +179,7 @@ var rdm_instructions_1 = {
   },
     type:"RDM-instruction",
     instr_num: -1, //
-    screen_num: 1, //number of sscreens that participant has to flicjk through
+    screen_num: 0, //number of sscreens that participant has to flicjk through
     dectype: 2,
     outcomeEngage: 0,
     trial_duration: Main_decision_duration,
@@ -182,7 +196,7 @@ var rdm_instructions_1 = {
     aperture_center_y: aperture_y_coords
 };
 
-timeline.push(rdm_instructions_1)
+//timeline.push(rdm_instructions_1)
 
 var rdm_instructions_2 = {
            type: 'instructions',
@@ -190,16 +204,16 @@ var rdm_instructions_2 = {
 
                '<h1>Part 1 - Individual performance assessment: Random dot motion task!</h1>'+
 
-               '<p>We ask you to perform a “random dot motion” task, in which you will see dot motion clouds moving to the left or to the right at your position where your initials are.<p>'+
-
+               '<p>We ask you to perform a “random dot motion” task, in which you will see <p>'+
+               '<p>- dot motion clouds moving to the left or to the right at your position where your initials are.<p>'+
                '<p>Please press the “left” or “right” arrow button to indicate the correct direction.<p>'+
 
               '<p>Correct performance will be displayed as:</br><img src="images/fb_correct.png" width="40px" class="center"><p>'+
 
               '<p>Incorrect performance will be displayed as:</br><img src="images/fb_wrong.png" width="50px" class="center"><p>'+
 
-              '<p>Note that you will have to respond very quickly after the dots have appeared, otherwise your performance will be counted as incorrect.<p>'+
-
+              '<p></br>Note that you will have to respond very quickly after the dots have appeared, <p>'+
+              '<p>- otherwise your performance will be counted as incorrect.<p>'+
               '<p>We will collect your peformance information when you do so.<p>'+
 
               '<p>Try it now! Press the right arrow to start.</p>'
@@ -211,7 +225,7 @@ var rdm_instructions_2 = {
            button_label_next: ''
        }
 
- timeline.push(rdm_instructions_2)
+ //timeline.push(rdm_instructions_2)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -444,7 +458,7 @@ var RDM_training_block = {
   timeline_variables: RDM_training_schedule,
   randomize_order:false
 }
- timeline.push(RDM_training_block)
+ //timeline.push(RDM_training_block)
 
 ///////////////////////////////////
 // this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -454,7 +468,7 @@ var RDM_training_if_block = {
   randomize_order:false,
   repetitions:1
 }
-  timeline.push(RDM_training_if_block)
+  //timeline.push(RDM_training_if_block)
 //---------------------------------------------
 ///------------ Training Ends ------------///
 //----------------------------------------------
@@ -469,19 +483,19 @@ var instructions_3 = {
        pages: function() {return [
            '<h1>Part1 – Individual performance assessment: Random dot motion task</h1>'+
 
-           '<p>- We ask you to perform a “random dot motion” task, in which you will see dot motion clouds moving to the left or to the right at your position where your initials are.</p>'+
-
-           '<p>- Please press the “left” or “right” arrow button to indicate the correct direction.<p>'+
+           '<p>We ask you to perform a “random dot motion” task, in which you will </p>'+
+           '<p>- see dot motion clouds moving to the left or to the right at your position where your initials are.<p>'+
+           '<p>Please press the “left” or “right” arrow button to indicate the correct direction.<p>'+
 
           '<p>Correct performance will be displayed as:</br><img src="images/fb_correct.png" width="30px" class="center"><p>'+
 
           '<p>Incorrect performance will be displayed as:</br><img src="images/fb_wrong.png" width="70px" class="center"><p>'+
 
-           '<p>- Note that you will have to respond very quickly after the dots have appeared, otherwise you will see a “Miss” on the screen and the performance will be counted as incorrect.<p>'+
+           '<p></br>- Note that you will have to respond very quickly after the dots have appeared, otherwise you <p>'+
+           '<p>- will see a “Miss” on the screen and the performance will be counted as incorrect.<p>'+
+           '<p>We will collect your performance information when you do so.<p>'+
 
-           '<p>- We will collect your performance information when you do so.<p>'+
-
-           '<p>Try it now! Press right arrow button to start.</p>'
+           '<p></br>Try it now! Press right arrow button to start.</p>'
 
        ]},
        show_clickable_nav: true,
@@ -489,13 +503,45 @@ var instructions_3 = {
        button_label_next: ''
 }
 
- timeline.push(instructions_3)
+ //timeline.push(instructions_3)
+
+
+ // useful node to insert if you want to check the data output from a given trial
+ var show_data = {
+     type: "html-button-response",
+     stimulus: function() {
+       var trial_data = jsPsych.data.getLastTrialData().values();
+       var trial_json = JSON.stringify(trial_data, null, 2);
+       return `<p style="margin-bottom:0px;"><strong>Trial data:</strong></p>
+         <pre style="margin-top:0px;text-align:left;">${trial_json}</pre>`;
+     },
+     choices: ['Repeat demo']
+   };
+
 
 var RDM_block = {
   timeline: [RDM_pretrial, RDM_trial,RDM_fb],
   timeline_variables: RDM_schedule,
-  randomize_order:false
+  randomize_order:false,
+  on_timeline_finish: function(){
+    RDM_performance = jsPsych.data.get().filter({trial_type:"RDM-trial", correct:true}).count();
+    RDM_performance = RDM_performance/num_RDM_trials;
+
+    // pair schedules
+    closest_sch_value = rdmperf.reduce((a, b) => {
+    return Math.abs(b - RDM_performance) < Math.abs(a - RDM_performance) ? b : a;
+    });
+    // now get the index of this schedule
+    closest_sch_index = rdmperf.indexOf(closest_sch_value);
+    this_subs_schedule = "main_sch_"+ closest_sch_index;
+
+    this_subs_schedule = "main_sch_1";
+    console.log(eval(this_subs_schedule));
+    console.log(this_subs_schedule);
+
+  }
 }
+
 timeline.push(RDM_block)
 
 
@@ -504,21 +550,26 @@ timeline.push(RDM_block)
 //----------------------------------------------
 
 
-
-
-
-
-
 //---------------------------------------------
 ///------------ interlude: pairing schedules ------------///
 //----------------------------------------------
+var Porder_schedule = 'Porder_'+subject_id;
+
+
+
+
+
+
+
+
+// tell participants we are pairing schedules
 var pair_schedules = {
   type: 'preparing-schedules',
   response_ends_trial: false,
   background_color:bcgnd_color
 }
 
-timeline.push(pair_schedules)
+//timeline.push(pair_schedules)
 
 
 
@@ -530,7 +581,11 @@ var instructions_4 = {
            pages: function() {return [
 
               '<h1>Part 2 –Group competition task </h1>'+
-              '<p><br>In the group competition task, you will see your performance from part 1 and also performance of the three other players (performance phase). We ask you to make decisions about these performances (decision phase). By making good decisions, you can collect points. The goal of part 2 is to collect as many points as possible.<p>'+
+              '<p><br>In the group competition task, you will see your performance from part 1 and<p>'+
+               '<p>also performance of the three other players (performance phase). <p>'+
+               '<p>We ask you to make decisions about these performances (decision phase). By making good<p>'+
+               '<p>decisions, you can collect points. The goal of part 2 is to collect as many points as possible.<p>'+
+              '<p><br>During the performance phase:<p>'+
               '<p><br>During the performance phase:<p>'+
               '<p>You will see performances of each player on every round.<p>'+
               '<p>Correct performance will be displayed as:</br><img src="images/fb_correct.png" width="100px" class="center"><p>'+
@@ -543,7 +598,7 @@ var instructions_4 = {
            button_label_next: ''
        }
 
- timeline.push(instructions_4)
+ //timeline.push(instructions_4)
 
 
 
@@ -573,7 +628,7 @@ var main_practice_sequence = {
   aperture_center_x: aperture_x_coords,
   aperture_center_y: aperture_y_coords
 };
-timeline.push(main_practice_sequence)
+//timeline.push(main_practice_sequence)
 
 
 
@@ -649,7 +704,7 @@ var main_instructions_3 = {
     trial.previous_dot_positions = dotArray3d;
     //var test = jsPsych.data.getLastTrialData().select('aperture_center_x').values[1];
     return ;
-  },
+    },
     type:"main-instruction",
     instr_num: 2, // first or second decison
     screen_num: 0, //number of sscreens that participant has to flicjk through
@@ -669,10 +724,10 @@ var main_instructions_3 = {
     aperture_center_y: aperture_y_coords
 };
 
-timeline.push(main_instructions_1)
-timeline.push(main_practice_sequence)
-timeline.push(main_instructions_2)
-timeline.push(main_instructions_3)
+//timeline.push(main_instructions_1)
+//timeline.push(main_practice_sequence)
+//timeline.push(main_instructions_2)
+//timeline.push(main_instructions_3)
 
 var main_instructions_4 = {
        type: 'instructions',
@@ -702,7 +757,7 @@ var main_instructions_4 = {
        button_label_next: ''
 }
 
-timeline.push(main_instructions_4)
+//timeline.push(main_instructions_4)
 
 
 // draw feedback boxes with text feedback overlayed
@@ -904,8 +959,8 @@ var main_training_block = {
   randomize_order:false
 }
 
-timeline.push(main_practice_sequence)
-timeline.push(main_training_block)
+//timeline.push(main_practice_sequence)
+//timeline.push(main_training_block)
 
 var main_instructions_5 = {
        type: 'instructions',
@@ -914,15 +969,19 @@ var main_instructions_5 = {
 
          '<p>Well done! We now ask you to do this task for approximately 16 minutes. </p>'+
 
-         '<p> - Try to keep track of everyone’s performance as well as you can and make accurate decisions.</p>'+
+         '<p>Try to keep track of everyone’s performance as well as you can and make accurate decisions.</p>'+
 
-         '<p> - After every performance phase, you only need to do two decisions (one after the other).</p>' +
+         '<p>After every performance phase, you only need to do two decisions (one after the other).</p>' +
 
-         '<p> - The decisions always refer to the performances you have seen just before. These performances will be NEW every time you see them. This will be different to the practical round just now and it will be a real challenge to keep track of the information!</p>'+
+         '<p>The decisions always refer to the performances you have seen just before. These performances will </p>'+
 
-         '<p> - Your decision outcome will not be shown on every round, but you will know your cumulative points when you finish one session. </p>'+
+         '<p>- be NEW every time you see them. This will be different to the practical round just now and it will  </p>'+
 
-         '<p> - If you are ready, press <right arrow> key to start.</p>'
+         '<p>- be a real challenge to keep track of the information!</p>'+
+
+         '<p>Your decision outcome will not be shown on every round, but you will know your cumulative points when you finish one session. </p>'+
+
+         '<p></br>If you are ready, press <right arrow> key to start.</p>'
 
        ]},
        show_clickable_nav: true,
@@ -930,20 +989,10 @@ var main_instructions_5 = {
        button_label_next: ''
 }
 
-timeline.push(main_instructions_5)
+//timeline.push(main_instructions_5)
 
 
-// useful node to insert if you want to check the data output from a given trial
-var show_data = {
-    type: "html-button-response",
-    stimulus: function() {
-      var trial_data = jsPsych.data.getLastTrialData().values();
-      var trial_json = JSON.stringify(trial_data, null, 2);
-      return `<p style="margin-bottom:0px;"><strong>Trial data:</strong></p>
-        <pre style="margin-top:0px;text-align:left;">${trial_json}</pre>`;
-    },
-    choices: ['Repeat demo']
-  };
+
 
 var break_trial = {
   type: 'html-keyboard-response',
@@ -971,11 +1020,17 @@ var break_conditional = {
 
 // create timeline for the main block
 var main_block = {
+
   timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
-  timeline_variables: main_trial_schedule,
+  //timeline_variables: main_sch_1,//eval(this_subs_schedule),//eval(this_subs_schedule),
   //timeline_variables: Porder, //"Porder_"+subject_id,
-  randomize_order:false
-}
+  randomize_order:false,
+  on_timeline_start: function(timeline_parameters) {
+    timeline_parameters.timeline_variables = this_subs_schedule;//+ closest_sch_index;
+  }
+  }
+
+
 
 timeline.push(main_block)
 

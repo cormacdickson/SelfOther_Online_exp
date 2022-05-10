@@ -224,6 +224,12 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 	        default: "nan",
 	        description: 'first or second decicion'
 	      },
+				player1: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'player1',
+	        default: undefined,
+	        description: 'The HTML string to be displayed for player1'
+	      },
 	    }
 	 }
 
@@ -239,6 +245,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.player_on = assignParameterValue(trial.player_on, "nan");
+		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
 		trial.choices = assignParameterValue(trial.choices, []);
 		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
@@ -280,6 +287,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		//Convert the parameter variables to those that the code below can use
 		var player_position = trial.player_position; // array of each player_position initials in order
 		var player_on = trial.player_on;
+		var player1 = trial.player1;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
@@ -304,8 +312,8 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
 		var num_instr = 2;
 
-		var left_text_origin_x = (window.innerWidth/10)*2;
-		var left_text_origin_y = (window.innerHeight/10)*4;
+		var left_text_origin_x = (window.innerWidth/10)*1;
+		var left_text_origin_y = (window.innerHeight/10)*1;
 		var right_text_origin_x = (window.innerWidth/10)*6;
 		var right_text_origin_y = (window.innerHeight/10)*4;
 		var centre_bottom_text_origin_x = (window.innerWidth/10)*5;
@@ -426,7 +434,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		var player_on;
-		var player_ids = ['player1','Pa','Op1','Op2'];
+		var player_ids = [player1,'Pa','O1','O2'];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -840,12 +848,13 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			// first check if outcome engage is positive
 			if (instr_num==-1 && response_num==0){  // if they should engage
 					ctx.fillStyle = 'white';
-					ctx.textAlign = 'left';
-					ctx.font = '15px sans-serif';
-					ctx.fillText('=> First of all, this is how we will display the two teams on-screen.', left_text_origin_x, left_text_origin_y);
+					ctx.textAlign = 'centre';
+					ctx.font = '25px Open Sans';
+					ctx.fillText('=> First of all, this is how we will display the two teams on-screen.', centre_bottom_text_origin_x, left_text_origin_y);
+
 					ctx.fillText('   (Note: the abbreviations wil be shown on this task', centre_bottom_text_origin_x, centre_bottom_text_origin_y-3*line_offset);
 
-					ctx.textAlign = 'centre';
+					ctx.font = '18px Open Sans';
 					ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 					}
 
