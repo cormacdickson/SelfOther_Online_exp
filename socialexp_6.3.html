@@ -29,7 +29,7 @@
     <script src="RDM_pair_schedule_loading.js"></script>
     <script src="main_trial_schedule.js"></script>
     <script src="main_trial_training_schedule.js"></script>
-    <script src="Porder.js"></script>
+    <script src="Porder_schedule.js"></script>
     <script src="rdmperf.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -47,7 +47,7 @@
     // figure out appropriate way of assigning Porder nb
     //var Porder
     // just using this to debug:
-    var this_subjects_porder = [0,1,2,3];
+    var this_subjects_porder = Porder_1;
 
 
     var this_subs_schedule; // will assign to a specific schedule later
@@ -121,7 +121,7 @@
          button_label_next: ''
   }
 
-  timeline.push(instructions_1)
+  //timeline.push(instructions_1)
 
 
 
@@ -165,7 +165,7 @@ var Get_ID_loop = {
     }
 }
 
-timeline.push(Get_ID_loop);
+//timeline.push(Get_ID_loop);
 
 
 
@@ -198,7 +198,7 @@ var rdm_instructions_1 = {
     aperture_center_y: aperture_y_coords
 };
 
-timeline.push(rdm_instructions_1)
+//timeline.push(rdm_instructions_1)
 
 var rdm_instructions_2 = {
            type: 'instructions',
@@ -227,7 +227,7 @@ var rdm_instructions_2 = {
            button_label_next: ''
        }
 
- timeline.push(rdm_instructions_2)
+ //timeline.push(rdm_instructions_2)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -469,7 +469,7 @@ var RDM_training_block = {
   timeline_variables: RDM_training_schedule,
   randomize_order:false
 }
- timeline.push(RDM_training_block)
+ //timeline.push(RDM_training_block)
 
 ///////////////////////////////////
 // this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -479,7 +479,7 @@ var RDM_training_if_block = {
   randomize_order:false,
   repetitions:1
 }
-  timeline.push(RDM_training_if_block)
+  //timeline.push(RDM_training_if_block)
 //---------------------------------------------
 ///------------ Training Ends ------------///
 //----------------------------------------------
@@ -514,7 +514,7 @@ var instructions_3 = {
        button_label_next: ''
 }
 
- timeline.push(instructions_3)
+ //timeline.push(instructions_3)
 
 
  // useful node to insert if you want to check the data output from a given trial
@@ -554,7 +554,7 @@ var RDM_block = {
   }
 }
 
-timeline.push(RDM_block)
+//timeline.push(RDM_block)
 
 
 //---------------------------------------------
@@ -581,7 +581,7 @@ var pair_schedules = {
   background_color:bcgnd_color
 }
 
-timeline.push(pair_schedules)
+//timeline.push(pair_schedules)
 
 
 
@@ -610,7 +610,7 @@ var instructions_4 = {
            button_label_next: ''
        }
 
- timeline.push(instructions_4)
+ //timeline.push(instructions_4)
 
 
 
@@ -640,7 +640,7 @@ var main_practice_sequence = {
   aperture_center_x: aperture_x_coords,
   aperture_center_y: aperture_y_coords
 };
-timeline.push(main_practice_sequence)
+//timeline.push(main_practice_sequence)
 
 
 
@@ -736,10 +736,10 @@ var main_instructions_3 = {
     aperture_center_y: aperture_y_coords
 };
 
-timeline.push(main_instructions_1)
-timeline.push(main_practice_sequence)
-timeline.push(main_instructions_2)
-timeline.push(main_instructions_3)
+//timeline.push(main_instructions_1)
+//timeline.push(main_practice_sequence)
+//timeline.push(main_instructions_2)
+//timeline.push(main_instructions_3)
 
 var main_instructions_4 = {
        type: 'instructions',
@@ -769,7 +769,7 @@ var main_instructions_4 = {
        button_label_next: ''
 }
 
-timeline.push(main_instructions_4)
+//timeline.push(main_instructions_4)
 
 
 // draw feedback boxes with text feedback overlayed
@@ -973,8 +973,8 @@ var main_training_block = {
   randomize_order:false
 }
 
-timeline.push(main_practice_sequence) // only show the sequence once
-timeline.push(main_training_block)    // then ask 4 questions  
+//timeline.push(main_practice_sequence) // only show the sequence once
+//timeline.push(main_training_block)    // then ask 4 questions  
 
 var main_instructions_5 = {
        type: 'instructions',
@@ -1003,7 +1003,7 @@ var main_instructions_5 = {
        button_label_next: ''
 }
 
-timeline.push(main_instructions_5)
+//timeline.push(main_instructions_5)
 
 
 
@@ -1031,7 +1031,7 @@ var break_conditional = {
 };
 
 
-/*
+
 // create timeline for the main block
 var main_block = {
 
@@ -1039,7 +1039,7 @@ var main_block = {
   //timeline_variables: main_sch_1,//eval(this_subs_schedule),//eval(this_subs_schedule),
   //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false,
-  timeline_variables: main_sch_2
+  timeline_variables: main_sch_1
   // this part is a work in progress, not sure how to use the string I create ablove to dynamically call the variable for the schedule index we want in main trial schedule
   /*
   on_timeline_start: function(timeline_parameters) {
@@ -1050,7 +1050,7 @@ var main_block = {
 
 timeline.push(main_block)
 
-*/
+
 
 
 // select all trials

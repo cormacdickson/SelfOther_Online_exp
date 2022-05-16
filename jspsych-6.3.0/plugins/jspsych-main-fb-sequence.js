@@ -309,9 +309,9 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Convert the parameter variables to those that the code below can use
 		var player_position 		= trial.player_position; //trial.player_position; // array of each player_position initials in order
-		var p_order 						= trial.p_order;
+		var Porder 				= trial.p_order;
 		var player_colours 			= trial.player_colours;
-		var player1 = trial.player1;
+		var player1  				= trial.player1;
 		var nApertures 					= 4; //The number of apertures
 		var nDots 							= trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
 		var nSets 							= trial.number_of_sets; //Number of sets to cycle through per frame
@@ -473,6 +473,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterYArray;
 		var loop_number = 0;
 		var previousTimestamp;
+		var porderArray;
 
 		// Set up multiple apertures
 		setUpMultipleApertures();
@@ -700,6 +701,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			borderThicknessArray = setParameter(borderThickness);
 			borderColorArray = setParameter(borderColor);
 			currentSetArray = setParameter(0); //Always starts at zero
+			porderArray = setParameter(Porder);
 
 			//Loop through the number of apertures to make the dots
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
@@ -766,7 +768,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			border = borderArray[currentApertureNumber];
 			borderThickness = borderThicknessArray[currentApertureNumber];
 			borderColor = borderColorArray[currentApertureNumber];
-
+			Porder = porderArray[currentApertureNumber];
 			//Calculate the x and y jump sizes for coherent dots
 			coherentJumpSizeX = calculateCoherentJumpSizeX(coherentDirection);
 			coherentJumpSizeY = calculateCoherentJumpSizeY(coherentDirection);
@@ -927,16 +929,16 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		// function to index performance to the player we are currently showing
 		function assignPerfToCurrentPlayer(){
-			if (p_order[loop_number]== 0){
+			if (Porder[loop_number]== 0){
 				current_perf = S_perf;
 			}
-			else if (p_order[loop_number]== 1) {
+			else if (Porder[loop_number]== 1) {
 				current_perf = P_perf;
 			}
-			else if (p_order[loop_number]== 2) {
+			else if (Porder[loop_number]== 2) {
 				current_perf = O1_perf;
 			}
-			else if (p_order[loop_number]== 3) {
+			else if (Porder[loop_number]== 3) {
 				current_perf = O2_perf;
 			}
 		}
@@ -946,7 +948,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			assignPerfToCurrentPlayer();   // get performance for this pla
 
-			currentApertureNumber = p_order[loop_number];
+			currentApertureNumber = Porder[loop_number];
 			//Initialize the variables for each parameter
 			initializeCurrentApertureParameters(currentApertureNumber);
 
@@ -1037,7 +1039,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Draw the dots on the canvas after they're updated
 		function draw() {
-			if (currentApertureNumber===p_order[loop_number]){
+			if (currentApertureNumber===Porder[loop_number]){
 	    	//Load in the current set of dot array for easy handling
 	    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
