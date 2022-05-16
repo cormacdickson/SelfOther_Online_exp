@@ -44,14 +44,19 @@
     var subject_id            = jsPsych.randomization.randomID(15); // generat a 15 digit subejcet ID
     var colours               = ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
 
-    // figure out appropriate way of assigning Porder nb
-    //var Porder
-    // just using this to debug:
-    var this_subjects_porder = Porder_1;
+    // generate a random index and use this value to access one of the porder schedules
+    var random_porder_index = Math.floor(Math.random() * (1000 - 0) + 0);
+    var this_subjects_porder = "Porder_"+random_porder_index;
+    // until schedule is properly created
+    this_subjects_porder = "Porder_1"
+    var porder_sch = eval(this_subjects_porder)
+
+
+    var main_trial_count = 0;
 
 
     var this_subs_schedule; // will assign to a specific schedule later
-
+    this_subs_schedule = eval("main_sch_1");
 
     var aperture_x_coords     = [(window.innerWidth/2-window.innerWidth/5), //the cordinates of each of the 4 aperturesopleft
     						                 (window.innerWidth/2-window.innerWidth/5),
@@ -544,12 +549,11 @@ var RDM_block = {
     });
     // now get the index of this schedule
     closest_sch_index = rdmperf.indexOf(closest_sch_value);
-    this_subs_schedule = "main_sch_"+ closest_sch_index;
+    this_subs_schedule = eval("main_sch_1");
+    //this_subs_schedule = eval("main_sch_"+ closest_sch_index);
 
-    this_subs_schedule = "main_sch_1";
-    console.log(eval(this_subs_schedule));
-    console.log(this_subs_schedule);
-    console.log(eval(this_subs_schedule));
+
+
 
   }
 }
@@ -816,6 +820,8 @@ var Porder_schedule = "Porder_"+subject_id;
 /// this node presents the performance feebcak from the rdm task for each particiapant in order using the schedules
 var main_fb_sequence = {
   on_start: function(trial){
+    trial.p_order = Object.values(porder_sch[main_trial_count]); // access the actual values
+    main_trial_count++; // increment trial counter
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
     return ;
@@ -851,9 +857,9 @@ var main_decision_practice = {
     trial.previous_dot_positions = dotArray3d;
     //var test = jsPsych.data.getLastTrialData().select('aperture_center_x').values[1];
     return ;
-  },
+    },
     type:"main-decision-training",
-//    dec_num: 0, // first or second decison
+              //    dec_num: 0, // first or second decison
     dectype: jsPsych.timelineVariable('dectype'),
     outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
     trial_duration: Main_decision_duration,
@@ -970,11 +976,14 @@ var main_training_block = {
   timeline: [ main_decision_practice, main_training_fb],
   timeline_variables: main_trial_training_schedule,
   //timeline_variables: Porder, //"Porder_"+subject_id,
-  randomize_order:false
+  randomize_order:false,
+  on_timeline_start: function(){
+    console.log(main_training_block);
+  }
 }
 
-//timeline.push(main_practice_sequence) // only show the sequence once
-//timeline.push(main_training_block)    // then ask 4 questions  
+timeline.push(main_practice_sequence) // only show the sequence once
+timeline.push(main_training_block)    // then ask 4 questions
 
 var main_instructions_5 = {
        type: 'instructions',
@@ -1036,15 +1045,11 @@ var break_conditional = {
 var main_block = {
 
   timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
-  //timeline_variables: main_sch_1,//eval(this_subs_schedule),//eval(this_subs_schedule),
-  //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false,
-  timeline_variables: main_sch_1
-  // this part is a work in progress, not sure how to use the string I create ablove to dynamically call the variable for the schedule index we want in main trial schedule
-  /*
-  on_timeline_start: function(timeline_parameters) {
-    timeline_parameters.timeline_variables = this_subs_schedule;//+ closest_sch_index;
-  } */
+  on_timeline_start: function() {
+    main_block.timeline_variables = this_subs_schedule//+ closest_sch_index;
+    console.log(main_block);
+  }
 }
 
 
