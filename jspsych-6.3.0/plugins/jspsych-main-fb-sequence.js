@@ -309,7 +309,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Convert the parameter variables to those that the code below can use
 		var player_position 		= trial.player_position; //trial.player_position; // array of each player_position initials in order
-		var porder 							= trial.p_order[0];
+		var porder 					= [0,3,2,1];//trial.p_order;
 		var player_colours 			= trial.player_colours;
 		var player1  						= trial.player1;
 		var nApertures 					= 4; //The number of apertures

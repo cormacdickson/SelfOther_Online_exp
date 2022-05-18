@@ -40,19 +40,19 @@
   	</body>
   	<script>
 
-    // hardcode important Variables
+    // hardcode important Variables //////////////
     var subject_id            = jsPsych.randomization.randomID(15); // generat a 15 digit subejcet ID
     var colours               = ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
 
     // generate a random index and use this value to access one of the porder schedules
-    var random_porder_index = Math.floor(Math.random() * (1000 - 0) + 0);
-    var this_subjects_porder = "Porder_"+random_porder_index;
+    var random_porder_index   = Math.floor(Math.random() * 1000);
+    var this_subjects_porder  = "Porder_"+random_porder_index;
     // until schedule is properly created
-    this_subjects_porder = "Porder_1"
-    var porder_sch = eval(this_subjects_porder)
+    this_subjects_porder      = "Porder_1"
+    var porder_sch            = eval(this_subjects_porder);
 
 
-    var main_trial_count = 0;
+    var main_trial_count = 0; // counter used to access correct value from porder schedule
 
 
     var this_subs_schedule; // will assign to a specific schedule later
@@ -539,6 +539,9 @@ var RDM_block = {
   timeline: [RDM_pretrial, RDM_trial,RDM_fb],
   timeline_variables: RDM_schedule,
   randomize_order:true,
+  on_timeline_start: function(){
+    console.log(RDM_block.timeline_variables)
+  },
   on_timeline_finish: function(){
     RDM_performance = jsPsych.data.get().filter({trial_type:"RDM-trial", correct:true}).count();
     RDM_performance = RDM_performance/num_RDM_trials;
@@ -820,7 +823,7 @@ var Porder_schedule = "Porder_"+subject_id;
 /// this node presents the performance feebcak from the rdm task for each particiapant in order using the schedules
 var main_fb_sequence = {
   on_start: function(trial){
-    trial.p_order = Object.values(porder_sch[main_trial_count]); // access the actual values
+    //trial.p_order = Object.values(porder_sch[main_trial_count]); // access the actual values
     main_trial_count++; // increment trial counter
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
@@ -829,14 +832,14 @@ var main_fb_sequence = {
   type:"main-fb-sequence",
   //trial_duration: 10000,
   trial_duration: Main_fb_sequence_dur,
-  coherent_direction: [0,0,0,0],  //// how do we want to assign this , same for each pplayer?
+  coherent_direction: [0,0,0,0],  //// how do we want to assign this , same for each pplayer? ANS needs to be updated to be randomly assigned
   S_perf : jsPsych.timelineVariable('S_perf'),//[0,1,0,1,0,1],
   P_perf : jsPsych.timelineVariable('P_perf'),//[0,1,0,1,0,1],
   O1_perf : jsPsych.timelineVariable('O1_perf'),//[0,1,0,1,0,1],
   O2_perf : jsPsych.timelineVariable('O2_perf'),//[0,1,0,1,0,1],
-  coherence: 0.5,
+  coherence: 0.75,
   player_position: positions,
-  p_order: this_subjects_porder, // index of the player to show rdk for [self,partner,op1,op2]
+  //p_order: this_subjects_porder, // index of the player to show rdk for [self,partner,op1,op2]
   aperture_width: aperture_diam, //Applied to all apertures if only one value
   border: false,
   player_colours: player_cols,
@@ -982,8 +985,8 @@ var main_training_block = {
   }
 }
 
-timeline.push(main_practice_sequence) // only show the sequence once
-timeline.push(main_training_block)    // then ask 4 questions
+//timeline.push(main_practice_sequence) // only show the sequence once
+//timeline.push(main_training_block)    // then ask 4 questions
 
 var main_instructions_5 = {
        type: 'instructions',
@@ -1046,10 +1049,17 @@ var main_block = {
 
   timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
   randomize_order:false,
+  //timeline_variables: eval("main_sch_1"),
+
   on_timeline_start: function() {
-    main_block.timeline_variables = this_subs_schedule//+ closest_sch_index;
+    main_block.timeline_variables = main_sch_1; //eval("main_sch_1")this_subs_schedule//+ closest_sch_index;
+    console.log(main_block.timeline_variables);
+    //return main_block
+  },
+  on_timeline_finish: function(){
     console.log(main_block);
   }
+  
 }
 
 
