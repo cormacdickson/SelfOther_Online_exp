@@ -50,13 +50,14 @@
     // until schedule is properly created
     this_subjects_porder      = "Porder_1"
     var porder_sch            = eval(this_subjects_porder);
-
+    var rdm_complete = false;
 
     var main_trial_count = 0; // counter used to access correct value from porder schedule
 
-
+    //var main_block = {};
     var this_subs_schedule; // will assign to a specific schedule later
     this_subs_schedule = eval("main_sch_1");
+    console.log(this_subs_schedule)
 
     var aperture_x_coords     = [(window.innerWidth/2-window.innerWidth/5), //the cordinates of each of the 4 aperturesopleft
     						                 (window.innerWidth/2-window.innerWidth/5),
@@ -104,7 +105,7 @@
     type: "fullscreen",
     fullscreen_mode: true
   }
-  timeline.push(enter_fullscreen)
+  //timeline.push(enter_fullscreen)
 
   var instructions_1 = {
          type: 'instructions',
@@ -553,6 +554,7 @@ var RDM_block = {
     // now get the index of this schedule
     closest_sch_index = rdmperf.indexOf(closest_sch_value);
     this_subs_schedule = eval("main_sch_1");
+    rdm_complete = true;
     //this_subs_schedule = eval("main_sch_"+ closest_sch_index);
 
 
@@ -817,16 +819,35 @@ var main_training_fb = {
 
 
 
-var Porder_schedule = "Porder_"+subject_id;
+var assignMainSch = function(){
 
+}
+var myfunc = function() {
+    return 'you called?';
+}
+
+var trial = {
+    type: 'call-function',
+    func: myfunc
+}
 
 /// this node presents the performance feebcak from the rdm task for each particiapant in order using the schedules
 var main_fb_sequence = {
   on_start: function(trial){
-    //trial.p_order = Object.values(porder_sch[main_trial_count]); // access the actual values
-    main_trial_count++; // increment trial counter
+    // get the players name
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
+
+    // get the values from the schedule assigned to this player
+    trial.p_order = Object.values(porder_sch[main_trial_count]); // access the actual values
+    trial.S_perf = Object.values(this_subs_schedule[main_trial_count].S_perf);
+    trial.P_perf = Object.values(this_subs_schedule[main_trial_count].P_perf);
+    trial.O1_perf = Object.values(this_subs_schedule[main_trial_count].O1_perf);
+    trial.O2_perf = Object.values(this_subs_schedule[main_trial_count].O2_perf);
+
+    // increment the trial counter ( this only happens in this trial node but applies to all nodes in this timeline)
+    main_trial_count++; // increment trial counter
+
     return ;
   },
   type:"main-fb-sequence",
@@ -883,9 +904,15 @@ var main_decision_practice = {
 var main_decision_1 = {
   // get the subjects initials
   on_start: function(trial){
+    // get the players name
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
 
+    // get the values from the schedule assigned to this player
+    trial.dectype = Object.values(this_subs_schedule[main_trial_count].dectype);
+    trial.outcomeEngage = Object.values(this_subs_schedule[main_trial_count].outcomeEngage);
+
+      // take the array of dots from the last screen to keep display consistant
     var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
     trial.previous_dot_positions = dotArray3d;
     //var test = jsPsych.data.getLastTrialData().select('aperture_center_x').values[1];
@@ -893,8 +920,8 @@ var main_decision_1 = {
   },
     type:"main-decision",
     dec_num: 0, // first or second decison
-    dectype: jsPsych.timelineVariable('dectype'),
-    outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
+    //dectype: jsPsych.timelineVariable('dectype'),
+    //outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
     trial_duration: Main_decision_duration,
     response_ends_trial: true,
     choices: Main_decision_choices,
@@ -915,17 +942,23 @@ var main_decision_1 = {
 var main_decision_2 = {
   // get the subjects initials
   on_start: function(trial){
+    // get the players name
     var p1   = jsPsych.data.get().select('player').values[0];
     trial.player1 = p1;
 
+    // get the values from the schedule assigned to this player
+    trial.dectype = Object.values(this_subs_schedule[main_trial_count].dectype);
+    trial.outcomeEngage = Object.values(this_subs_schedule[main_trial_count].outcomeEngage);
+
+    // take the array of dots from the last screen to keep display consistant
     var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
     trial.previous_dot_positions = dotArray3d;
     return ;
   },
     type:"main-decision",
     dec_num: 1, // first or second decison
-    dectype: jsPsych.timelineVariable('dectype'),
-    outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
+    //dectype: jsPsych.timelineVariable('dectype'),
+    //outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
     trial_duration: Main_decision_duration,
     response_ends_trial: true,
     choices: Main_decision_choices,
@@ -1046,20 +1079,9 @@ var break_conditional = {
 
 // create timeline for the main block
 var main_block = {
-
   timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
-  randomize_order:false,
-  //timeline_variables: eval("main_sch_1"),
-
-  on_timeline_start: function() {
-    main_block.timeline_variables = main_sch_1; //eval("main_sch_1")this_subs_schedule//+ closest_sch_index;
-    console.log(main_block.timeline_variables);
-    //return main_block
-  },
-  on_timeline_finish: function(){
-    console.log(main_block);
-  }
-  
+  timeline_variables : main_sch_2 // Now give the block an empty set of arrays of length = number of trials we warrant
+  // the paramaters we want are assigned dynamically in the
 }
 
 
