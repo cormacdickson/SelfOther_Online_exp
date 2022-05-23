@@ -1082,6 +1082,16 @@ timeline.push(main_block)
 
 
 
+function saveData(name, data){
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({filename: name, filedata: data}));
+}
+
+saveData('C:\Users\cdickson\Documents\Phd_local\SelfOther_Online_exp', jsPsych.data.get().csv());
+
+
 
 // select all trials
 // var all_data = jsPsych.data.get();
