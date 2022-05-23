@@ -57,7 +57,7 @@
     //var main_block = {};
     var this_subs_schedule; // will assign to a specific schedule later
     this_subs_schedule = eval("main_sch_1");
-    console.log(this_subs_schedule)
+    //console.log(this_subs_schedule)
 
     var aperture_x_coords     = [(window.innerWidth/2-window.innerWidth/5), //the cordinates of each of the 4 aperturesopleft
     						                 (window.innerWidth/2-window.innerWidth/5),
@@ -127,7 +127,7 @@
          button_label_next: ''
   }
 
-  //timeline.push(instructions_1)
+  timeline.push(instructions_1)
 
 
 
@@ -171,7 +171,7 @@ var Get_ID_loop = {
     }
 }
 
-//timeline.push(Get_ID_loop);
+timeline.push(Get_ID_loop);
 
 
 
@@ -204,7 +204,7 @@ var rdm_instructions_1 = {
     aperture_center_y: aperture_y_coords
 };
 
-//timeline.push(rdm_instructions_1)
+timeline.push(rdm_instructions_1)
 
 var rdm_instructions_2 = {
            type: 'instructions',
@@ -233,7 +233,7 @@ var rdm_instructions_2 = {
            button_label_next: ''
        }
 
- //timeline.push(rdm_instructions_2)
+ timeline.push(rdm_instructions_2)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ var RDM_training_block = {
   timeline_variables: RDM_training_schedule,
   randomize_order:false
 }
- //timeline.push(RDM_training_block)
+ timeline.push(RDM_training_block)
 
 ///////////////////////////////////
 // this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -485,7 +485,7 @@ var RDM_training_if_block = {
   randomize_order:false,
   repetitions:1
 }
-  //timeline.push(RDM_training_if_block)
+  timeline.push(RDM_training_if_block)
 //---------------------------------------------
 ///------------ Training Ends ------------///
 //----------------------------------------------
@@ -520,7 +520,7 @@ var instructions_3 = {
        button_label_next: ''
 }
 
- //timeline.push(instructions_3)
+ timeline.push(instructions_3)
 
 
  // useful node to insert if you want to check the data output from a given trial
@@ -541,7 +541,7 @@ var RDM_block = {
   timeline_variables: RDM_schedule,
   randomize_order:true,
   on_timeline_start: function(){
-    console.log(RDM_block.timeline_variables)
+    //console.log(RDM_block.timeline_variables)
   },
   on_timeline_finish: function(){
     RDM_performance = jsPsych.data.get().filter({trial_type:"RDM-trial", correct:true}).count();
@@ -563,7 +563,7 @@ var RDM_block = {
   }
 }
 
-//timeline.push(RDM_block)
+timeline.push(RDM_block)
 
 
 //---------------------------------------------
@@ -590,7 +590,7 @@ var pair_schedules = {
   background_color:bcgnd_color
 }
 
-//timeline.push(pair_schedules)
+timeline.push(pair_schedules)
 
 
 
@@ -619,7 +619,7 @@ var instructions_4 = {
            button_label_next: ''
        }
 
- //timeline.push(instructions_4)
+ timeline.push(instructions_4)
 
 
 
@@ -649,7 +649,7 @@ var main_practice_sequence = {
   aperture_center_x: aperture_x_coords,
   aperture_center_y: aperture_y_coords
 };
-//timeline.push(main_practice_sequence)
+timeline.push(main_practice_sequence)
 
 
 
@@ -745,10 +745,10 @@ var main_instructions_3 = {
     aperture_center_y: aperture_y_coords
 };
 
-//timeline.push(main_instructions_1)
-//timeline.push(main_practice_sequence)
-//timeline.push(main_instructions_2)
-//timeline.push(main_instructions_3)
+timeline.push(main_instructions_1)
+timeline.push(main_practice_sequence)
+timeline.push(main_instructions_2)
+timeline.push(main_instructions_3)
 
 var main_instructions_4 = {
        type: 'instructions',
@@ -778,7 +778,7 @@ var main_instructions_4 = {
        button_label_next: ''
 }
 
-//timeline.push(main_instructions_4)
+timeline.push(main_instructions_4)
 
 
 // draw feedback boxes with text feedback overlayed
@@ -819,17 +819,7 @@ var main_training_fb = {
 
 
 
-var assignMainSch = function(){
 
-}
-var myfunc = function() {
-    return 'you called?';
-}
-
-var trial = {
-    type: 'call-function',
-    func: myfunc
-}
 
 /// this node presents the performance feebcak from the rdm task for each particiapant in order using the schedules
 var main_fb_sequence = {
@@ -844,9 +834,6 @@ var main_fb_sequence = {
     trial.P_perf = Object.values(this_subs_schedule[main_trial_count].P_perf);
     trial.O1_perf = Object.values(this_subs_schedule[main_trial_count].O1_perf);
     trial.O2_perf = Object.values(this_subs_schedule[main_trial_count].O2_perf);
-
-    // increment the trial counter ( this only happens in this trial node but applies to all nodes in this timeline)
-    main_trial_count++; // increment trial counter
 
     return ;
   },
@@ -950,6 +937,9 @@ var main_decision_2 = {
     trial.dectype = Object.values(this_subs_schedule[main_trial_count].dectype);
     trial.outcomeEngage = Object.values(this_subs_schedule[main_trial_count].outcomeEngage);
 
+    // increment the trial counter ( this only happens in this trial node but applies to all nodes in this timeline)
+    main_trial_count++; // increment trial counter
+
     // take the array of dots from the last screen to keep display consistant
     var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
     trial.previous_dot_positions = dotArray3d;
@@ -1014,12 +1004,12 @@ var main_training_block = {
   //timeline_variables: Porder, //"Porder_"+subject_id,
   randomize_order:false,
   on_timeline_start: function(){
-    console.log(main_training_block);
+    //console.log(main_training_block);
   }
 }
 
-//timeline.push(main_practice_sequence) // only show the sequence once
-//timeline.push(main_training_block)    // then ask 4 questions
+timeline.push(main_practice_sequence) // only show the sequence once
+timeline.push(main_training_block)    // then ask 4 questions
 
 var main_instructions_5 = {
        type: 'instructions',
@@ -1048,7 +1038,7 @@ var main_instructions_5 = {
        button_label_next: ''
 }
 
-//timeline.push(main_instructions_5)
+timeline.push(main_instructions_5)
 
 
 
@@ -1080,8 +1070,11 @@ var break_conditional = {
 // create timeline for the main block
 var main_block = {
   timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
-  timeline_variables : main_sch_2 // Now give the block an empty set of arrays of length = number of trials we warrant
+  timeline_variables : main_sch_2, // Now give the block an empty set of arrays of length = number of trials we warrant
   // the paramaters we want are assigned dynamically in the
+  on_timeline_start: function(){
+    main_trial_count = 0;
+  }
 }
 
 

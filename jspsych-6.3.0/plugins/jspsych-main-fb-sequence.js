@@ -309,7 +309,14 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Convert the parameter variables to those that the code below can use
 		var player_position 		= trial.player_position; //trial.player_position; // array of each player_position initials in order
-		var porder 					= trial.p_order[0];//[0,3,2,1];//
+
+		var porder
+
+		if (trial.p_order.length>1){
+			porder = trial.p_order;//[0,3,2,1];//
+		} else {
+			porder = trial.p_order[0];
+		}
 		var player_colours 			= trial.player_colours;
 		var player1  						= trial.player1;
 		var nApertures 					= 4; //The number of apertures
@@ -929,7 +936,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		// function to index performance to the player we are currently showing
 		function assignPerfToCurrentPlayer(){
-			console.log(porder[loop_number]);
+			//console.log(porder[loop_number]);
 			if (porder[loop_number]== 0){
 				current_perf = S_perf;
 			}

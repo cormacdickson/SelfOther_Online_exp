@@ -46,7 +46,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		    correct_choice: {
 		      type: jsPsych.plugins.parameterType.KEY,
 		      pretty_name: "Correct choice",
-		      default: undefined,
+		      default: 'nan',
 		      array: true,
 		      description: "The correct keys for that trial"
 		    },
@@ -197,13 +197,13 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default:  'nan',
 	        description: 'The location for each player'
 	      },
 				player_colours: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_colours',
-	        default: undefined,
+	        default:  'nan',
 	        description: 'The color of each player'
 	      },
 				dectype: {
@@ -227,7 +227,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 				player1: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player1',
-	        default: undefined,
+	        default:  'nan',
 	        description: 'The HTML string to be displayed for player1'
 	      },
 	    }
