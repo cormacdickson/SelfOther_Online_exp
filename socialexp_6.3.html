@@ -71,6 +71,7 @@
     var borders                  = false;
     var RDM_performance          = 0;
     var num_RDM_trials           = 3; // 
+    var num_RDM_repeat_trials    = 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
 
@@ -640,7 +641,7 @@ var RDM_block = {
   timeline: [RDM_pretrial, RDM_trial,RDM_fb],
   //timeline_variables: RDM_schedule,
   //randomize_order:true,
-  repetitions: 1,
+  repetitions: num_RDM_trials,
   on_timeline_start: function(){
     //console.log(RDM_block.timeline_variables)
   },
@@ -660,17 +661,51 @@ var RDM_block = {
 }
 
 timeline.push(RDM_block)
+// why is this showing more trials then I tell itt to?
 
 // if none right we want to show two of additional trial sequences
 var if_missed_lots = {
-	repetitions: 1,
+	repetitions: num_RDM_repeat_trials,
     timeline: [RDM_pretrial, RDM_trial,RDM_fb],
-    timeline_variables: RDM_schedule,
+    //timeline_variables: RDM_schedule,
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check which key was pressed
+        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
+        var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
+        var percent_no_resp = sum_no_response/total_trial_num;
+        if(percent_no_resp > .2){
+            return true;
+        } else {
+            return false;
+        }
+    },
     loop_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
+        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
+        var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
+        var percent_no_resp = sum_no_response/total_trial_num;
+        if(percent_no_resp > .2){
+            return true;
+        } else {
+            return false;
+        }   
+    },
+}
+
+timeline.push(if_missed_lots)
+
+/*
+var still_missed_lots = {
+	repetitions: num_RDM_repeat_trials,
+    timeline: [RDM_pretrial, RDM_trial,RDM_fb],
+    //timeline_variables: RDM_schedule,
+    loop: function(){
+        // get the data from the previous trial,
+        // and check which key was pressed
         var sum_no_response = jsPsych.data.get().select('no_response').sum();
-        var total_trial_num = jsPsych.data.get().select('rdm_trial_count').sum();
+        var total_trial_num = num_RDM_trials; //jsPsych.data.get().select('rdm_trial_count').sum();
         var percent_no_resp = sum_no_response/total_trial_num;
         if(percent_no_resp > .2){
             return true;
@@ -680,8 +715,8 @@ var if_missed_lots = {
     }
 }
 
-timeline.push(if_missed_lots)
-
+timeline.push(still_missed_lots)
+*/
 
 //---------------------------------------------
 ///------------ RDM task ends ------------///
