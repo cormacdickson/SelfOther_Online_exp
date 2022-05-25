@@ -307,7 +307,10 @@ var RDM_trial = {
     player_colours: player_cols,
     number_of_dots: total_dots, //Different parameter for each aperture. Array length must equal number_of_apertures
     aperture_center_x: aperture_x_coords,
-    aperture_center_y: aperture_y_coords
+    aperture_center_y: aperture_y_coords,
+    on_finish: function(){
+      saveData(outfile, jsPsych.data.get().csv());
+    }
 };
 
 // this node presents feedback on rdm choices
@@ -1098,7 +1101,7 @@ function saveData(name, data){
 jsPsych.init({
       timeline: timeline,
       on_finish: function() {
-        saveData('localhost:8888', jsPsych.data.get().csv());
+        saveData(outfile, jsPsych.data.get().csv());
         jsPsych.data.displayData('csv');
     }
     });
