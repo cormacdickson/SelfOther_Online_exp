@@ -1,30 +1,9 @@
 /*
 
-	RDK plugin for JsPsych
-	----------------------
+	Plugin for Jspsych which displays the instructions for participants
+	for the RDM aspect of the task ("First of all, this is how we will
+	display the two teams on-screen)
 
-	This code was created in the Consciousness and Metacognition Lab at UCLA,
-	under the supervision of Brian Odegaard and Hakwan Lau
-
-	We would appreciate it if you cited this paper when you use the RDK:
-	Rajananda, S., Lau, H. & Odegaard, B., (2018). A Random-Dot Kinematogram for Web-Based Vision Research. Journal of Open Research Software. 6(1), p.6. DOI: [http://doi.org/10.5334/jors.194]
-
-	----------------------
-
-	Copyright (C) 2017  Sivananda Rajananda
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -42,19 +21,6 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		      default: jsPsych.ALL_KEYS,
 		      array: true,
 		      description: "The valid keys that the subject can press to indicate a response"
-		    },
-		    correct_choice: {
-		      type: jsPsych.plugins.parameterType.KEY,
-		      pretty_name: "Correct choice",
-		      default: 'nan',
-		      array: true,
-		      description: "The correct keys for that trial"
-		    },
-		    trial_duration: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Trial duration",
-		      default: 500,
-		      description: "The length of stimulus presentation"
 		    },
 		    response_ends_trial: {
 		      type: jsPsych.plugins.parameterType.BOOL,
@@ -80,41 +46,11 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		      default: 1,
 		      description: "The number of sets of dots to cycle through"
 		    },
-		    coherent_direction: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Coherent direction",
-		      default: 0,
-		      description: "The direction of coherent motion in degrees"
-		    },
-		    coherence: {
-		      type: jsPsych.plugins.parameterType.FLOAT,
-		      pretty_name: "Coherence",
-		      default: 0.5,
-		      description: "The percentage of dots moving in the coherent direction"
-		    },
-		    opposite_coherence: {
-		      type: jsPsych.plugins.parameterType.FLOAT,
-		      pretty_name: "Opposite coherence",
-		      default: 0,
-		      description: "The percentage of dots moving in the direction opposite of the coherent direction"
-		    },
 		    dot_radius: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Dot radius",
 		      default: 2,
 		      description: "The radius of the dots in pixels"
-		    },
-		    dot_life: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Dot life",
-		      default: -1,
-		      description: "The number of frames that pass before each dot disappears and reappears somewhere else"
-		    },
-		    move_distance: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Move distance",
-		      default: 1,
-		      description: "The distance in pixels each dot moves per frame"
 		    },
 		    aperture_width: {
 		      type: jsPsych.plugins.parameterType.INT,
@@ -140,23 +76,12 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		      default: "black",
 		      description: "The background of the stimulus"
 		    },
-		    RDK_type: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "RDK type",
-		      default: 3,
-		      description: "The Type of RDK (refer to documentation for details)"
-		    },
+
 		    aperture_type: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Aperture Type",
 		      default: 1,
 		      description: "The shape of the aperture"
-		    },
-		    reinsert_type: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Reinsert type",
-		      default: 2,
-		      description: "The reinsertion rule for dots that move out of the aperture"
 		    },
 		    aperture_center_x: {
 		      type: jsPsych.plugins.parameterType.INT,
@@ -188,12 +113,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		      default: 1,
 		      description: "The color of the border"
 		    },
-				player_on: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "player being shown",
-		      default: 1,
-		      description: "index of rdk to turn on"
-		    },
+
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
@@ -205,12 +125,6 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 	        pretty_name: 'player_colours',
 	        default:  'nan',
 	        description: 'The color of each player'
-	      },
-				dectype: {
-	        type: jsPsych.plugins.parameterType.HTML_STRING,
-	        pretty_name: 'dectype',
-	        default: "nan",
-	        description: 'type of decision to be shown'
 	      },
 				instr_num: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
@@ -244,29 +158,19 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		trial.player_position = assignParameterValue(trial.player_position, "nana");
-		trial.player_on = assignParameterValue(trial.player_on, "nan");
 		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
 		trial.choices = assignParameterValue(trial.choices, []);
-		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
-		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, false);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
 		trial.number_of_dots = assignParameterValue(trial.number_of_dots, 50);
 		trial.number_of_sets = assignParameterValue(trial.number_of_sets, 1);
-		trial.coherent_direction = assignParameterValue(trial.coherent_direction, 0);
-		trial.coherence = assignParameterValue(trial.coherence, 0.5);
-		trial.opposite_coherence = assignParameterValue(trial.opposite_coherence, 0);
 		trial.dot_radius = assignParameterValue(trial.dot_radius, 2);
-		trial.dot_life = assignParameterValue(trial.dot_life, -1);
-		trial.move_distance = assignParameterValue(trial.move_distance, 1);
 		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
 		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
 		trial.background_color = assignParameterValue(trial.background_color, "black");
-		trial.RDK_type = assignParameterValue(trial.RDK_type, 3);
 		trial.aperture_type = assignParameterValue(trial.aperture_type, 1);
-		trial.reinsert_type = assignParameterValue(trial.reinsert_type, 2);
 		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
 		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
 		trial.fixation_cross = assignParameterValue(trial.fixation_cross, false);
@@ -277,98 +181,42 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		trial.border = assignParameterValue(trial.border, false);
 		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
 		trial.border_color = assignParameterValue(trial.border_color, "black");
+	  trial.aperture_height = trial.aperture_width; //For square and circle
 
-
-		//For square and circle, set the aperture height == aperture width
-		if (apertureType == 1 || apertureType == 3) {
-			trial.aperture_height = trial.aperture_width;
-		}
 
 		//Convert the parameter variables to those that the code below can use
 		var player_position = trial.player_position; // array of each player_position initials in order
-		var player_on = trial.player_on;
 		var player1 = trial.player1;
 		var player_colours = trial.player_colours;
-		var nApertures = 4; //The number of apertures
+		var nApertures = trial.number_of_apertures; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
 		var nSets = trial.number_of_sets; //Number of sets to cycle through per frame
-		var coherentDirection = trial.coherent_direction; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
-		var coherence = trial.coherence; //Proportion of dots to move together, range from 0 to 1
-		var oppositeCoherence = trial.opposite_coherence; // The coherence for the dots going the opposite direction as the coherent dots
 		var dotRadius = trial.dot_radius; //Radius of each dot in pixels
-		var dotLife = trial.dot_life; //How many frames a dot will keep following its trajectory before it is redrawn at a random location. -1 denotes infinite life (the dot will only be redrawn if it reaches the end of the aperture).
-		var moveDistance = trial.move_distance; //How many pixels the dots move per frame
 		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
 		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
 		var dotColor = player_colours; //trial.dot_color; //Color of the dots
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-		var dectype					= trial.dectype;
 		var instr_num					= trial.instr_num;
 		var screen_num      = trial.screen_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
 		var num_instr = 2;
+		var apertureType = trial.aperture_type;
+		var border = trial.border; //To display or not to display the border
+		var borderThickness = trial.border_thickness; //The width of the border in pixels
+		var borderColor = trial.player_colours; //trial.border_color; //The color of the border
 
+		// next vars are used to set the locations for text boxes
 		var left_text_origin_x = (window.innerWidth/10)*1;
 		var left_text_origin_y = (window.innerHeight/10)*1;
 		var right_text_origin_x = (window.innerWidth/10)*6;
 		var right_text_origin_y = (window.innerHeight/10)*4;
 		var centre_bottom_text_origin_x = (window.innerWidth/10)*5;
 		var centre_bottom_text_origin_y = (window.innerHeight/10)*9;
-
-		var line_offset 			 = 20;
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
-
-		var RDK = trial.RDK_type;
-
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
-		var apertureType = trial.aperture_type;
-
-		/*
-		Out of Bounds Decision
-		How we reinsert a dot that has moved outside the edges of the aperture:
-		1 - Randomly appear anywhere in the aperture
-		2 - Appear on the opposite edge of the aperture (Random if square or rectangle, reflected about origin in circle and ellipse)
-		*/
-		var reinsertType = trial.reinsert_type;
-
-
-		//Border Parameters
-		var border = trial.border; //To display or not to display the border
-		var borderThickness = trial.border_thickness; //The width of the border in pixels
-		var borderColor = trial.player_colours; //trial.border_color; //The color of the border
+		var line_offset 			 = 20; // gap between lines
 
 
 
@@ -430,19 +278,13 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		var dotArray3d = [];
 
 
-
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
-		var player_on;
+		//var player_on;
 		var player_ids = [player1,'Pa','O1','O2'];
 		var nDotsArray;
 		var nSetsArray;
-		var coherentDirectionArray;
-		var coherenceArray;
-		var oppositeCoherenceArray;
 		var dotRadiusArray;
-		var dotLifeArray;
-		var moveDistanceArray;
 		var apertureWidthArray;
 		var apertureHeightArray;
 		var dotColorArray;
@@ -460,17 +302,11 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		var coherentJumpSizeX;
 		var coherentJumpSizeY;
 
-		//Calculate the number of coherent, opposite coherent, and incoherent dots
-		var nCoherentDots;
-		var nOppositeCoherentDots;
-		var nIncoherentDots;
-
 		//Make the array of arrays containing dot objects
 		var dotArray2d;
 
 		var dotArray; //Declare a global variable to hold the current array
 		var currentSetArray; //Declare and initialize a global variable to cycle through the dot arrays
-
 
 		//Initialize stopping condition for animateDotMotion function that runs in a loop
 		var stopDotMotion = false;
@@ -544,15 +380,11 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
 				trial_3d_dot_array: dotArray3d,
-				// correct: correctOrNot(), //If the subject response was correct
 				choices: trial.choices, //The set of valid keys
-				correct_choice: trial.correct_choice, //The correct choice
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
-				trial_duration:      trial.trial_duration, //The trial duration
 				aperture_width:      trial.aperture_width,
 				aperture_height:     trial.aperture_height,
 				background_color:    trial.background_color,
-				RDK_type:            trial.RDK_type,
 				aperture_center_x:   trial.aperture_center_x,
 				aperture_center_y:   trial.aperture_center_y,
 				border:              trial.border,
@@ -612,23 +444,16 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		function setUpMultipleApertures(){
 			nDotsArray = setParameter(nDots);
 			nSetsArray = setParameter(nSets);
-			coherentDirectionArray = setParameter(coherentDirection);
-			coherenceArray = setParameter(coherence);
-			oppositeCoherenceArray = setParameter(oppositeCoherence);
 			dotRadiusArray = setParameter(dotRadius);
-			dotLifeArray = setParameter(dotLife);
-			moveDistanceArray = setParameter(moveDistance);
 			apertureWidthArray = setParameter(apertureWidth);
 			apertureHeightArray = setParameter(apertureHeight);
 			dotColorArray = setParameter(dotColor);
 			apertureCenterXArray = setParameter(apertureCenterX);
 			apertureCenterYArray = setParameter(apertureCenterY);
-			RDKArray = setParameter(RDK);
 			apertureTypeArray = setParameter(apertureType);
 			borderArray = setParameter(border);
 			borderThicknessArray = setParameter(borderThickness);
 			borderColorArray = setParameter(borderColor);
-
 			currentSetArray = setParameter(0); //Always starts at zero
 
 
@@ -676,34 +501,21 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			//Set the global variables to that relevant to the current aperture
 			nDots = nDotsArray[currentApertureNumber];
 			nSets = nSetsArray[currentApertureNumber];
-			coherentDirection = coherentDirectionArray[currentApertureNumber];
-			coherence = coherenceArray[currentApertureNumber];
-			oppositeCoherence = oppositeCoherenceArray[currentApertureNumber];
 			dotRadius = dotRadiusArray[currentApertureNumber];
-			dotLife = dotLifeArray[currentApertureNumber];
-			moveDistance = moveDistanceArray[currentApertureNumber];
 			apertureWidth = apertureWidthArray[currentApertureNumber];
 			apertureHeight = apertureHeightArray[currentApertureNumber];
 			dotColor = dotColorArray[currentApertureNumber];
 			apertureCenterX = apertureCenterXArray[currentApertureNumber];
 			apertureCenterY = apertureCenterYArray[currentApertureNumber];
-			RDK = RDKArray[currentApertureNumber];
+			//RDK = RDKArray[currentApertureNumber];
 			apertureType = apertureTypeArray[currentApertureNumber];
 			border = borderArray[currentApertureNumber];
 			borderThickness = borderThicknessArray[currentApertureNumber];
 			borderColor = borderColorArray[currentApertureNumber];
 
-			//Calculate the x and y jump sizes for coherent dots
-			//coherentJumpSizeX = calculateCoherentJumpSizeX(coherentDirection);
-			//coherentJumpSizeY = calculateCoherentJumpSizeY(coherentDirection);
 
 			//Initialize the aperture parameters
 			initializeApertureDimensions();
-
-			//Calculate the number of coherent, opposite coherent, and incoherent dots
-			nCoherentDots = nDots * coherence;
-			nOppositeCoherentDots = nDots * oppositeCoherence;
-			nIncoherentDots = nDots - (nCoherentDots + nOppositeCoherentDots);
 
 			//If the 3d array has been made, then choose the 2d array and the current set
 			dotArray2d = dotArray3d.length !==0 ? dotArray3d[currentApertureNumber] : undefined;
@@ -714,15 +526,8 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 
 		//Initialize the parameters for the aperture for further calculation
 		function initializeApertureDimensions() {
-			//For circle and square
-			if (apertureType == 1 || apertureType == 3) {
+			//For circle
 				horizontalAxis = verticalAxis = apertureWidth/2;
-			}
-			//For ellipse and rectangle
-			else if (apertureType == 2 || apertureType == 4) {
-				horizontalAxis = apertureWidth / 2;
-				verticalAxis = apertureHeight / 2;
-			}
 		}
 
 		//Make the 2d array, which is an array of array of dots
@@ -751,7 +556,6 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					vy2: 0, //incoherent (random) y jumpsize (if any)
 					latestXMove: 0, //Stores the latest x move direction for the dot (to be used in reinsertOnOppositeEdge function below)
 					latestYMove: 0, //Stores the latest y move direction for the dot (to be used in reinsertOnOppositeEdge function below)
-					lifeCount: Math.floor(randomNumberBetween(0, dotLife)), //Counter for the dot's life. Updates every time it is shown in a frame
 					updateType: "" //String to determine how this dot is updated
 				};
 
@@ -783,62 +587,20 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			}
 		}
 
-		function drawDecisionArrow(){
-			// need to know if we are in the first decisionor second decisionor
-				// need to know what arrow we want to drawn
-
-				if (dectype == 1){
-						//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
-						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
-
-				} else if (dectype == 2){
-					//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
-						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
-
-				} else if (dectype == 3){
-					//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
-						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
-
-				} else if (dectype == 4){
-					//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
-						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
-				}
-
-		}
-
 
 
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
-
 			// Draw all the relevant dots on the canvas
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){
 
 				//Initialize the variables for each parameter
 				initializeCurrentApertureParameters(currentApertureNumber);
-
 				//Draw on the canvas
 				draw();
 			}
 
 			//drawDecisionArrow();
-
 			writeInstructions();
 		}
 
@@ -862,17 +624,11 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 
 
 
-
-
-
-
-
-
 		//Draw the dots on the canvas after they're updated
 		function draw() {
 
-    		//Load in the current set of dot array for easy handling
-    		var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
+    	//Load in the current set of dot array for easy handling
+    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
 			//Loop through the dots one by one and draw them
 			for (var i = 0; i < nDots; i++) {
@@ -884,41 +640,25 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			}
 
 
-	      	//Draw the border if we want it
-	      	if(border === true){
+	     //Draw the border if we want it
+			 if(border === true){
+				ctx.lineWidth = borderThickness;
+				ctx.strokeStyle = borderColor;
+				ctx.beginPath();
+				ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
+				ctx.stroke();
+				}//End of if border === true
 
-	        	//For circle and ellipse
-	        	if(apertureType === 1 || apertureType === 2){
-	          		ctx.lineWidth = borderThickness;
-	          		ctx.strokeStyle = borderColor;
-	          		ctx.beginPath();
-	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
-	          		ctx.stroke();
-	        	}//End of if circle or ellipse
-
-
-
-      		}//End of if border === true
-
-
-
-						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
-						ctx.textAlign = "center";
-						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
-
-
+				ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+				ctx.textAlign = "center";
+				ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 		}//End of draw
 
 
-
-
-
-
-		//Calculate a random x and y coordinate in the ellipse
+		//Calculate a random x and y coordinate in the circle
 		function resetLocation(dot) {
 
-			//For circle and ellipse
-			if (apertureType == 1 || apertureType == 2) {
+			//For circle
 				var phi = randomNumberBetween(-Math.PI, Math.PI);
 				var rho = Math.random();
 
@@ -930,12 +670,6 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 
 				dot.x = x;
 				dot.y = y;
-			}
-			//For square and rectangle
-			else if (apertureType == 3 || apertureType == 4) {
-				dot.x = randomNumberBetween((apertureCenterX) - horizontalAxis, (apertureCenterX) + horizontalAxis); //Between the left and right edges of the square / rectangle
-				dot.y = randomNumberBetween((apertureCenterY) - verticalAxis, (apertureCenterY) + verticalAxis); //Between the top and bottom edges of the square / rectangle
-			}
 
 			return dot;
 		}
@@ -975,14 +709,6 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 	    }
 
 
-
-		/*
-		if (trial.trial_duration !== null) {
-			jsPsych.pluginAPI.setTimeout(function() {
-				end_trial();
-			}, trial.trial_duration);
-		}
-		*/
 	}; // END OF TRIAL
 
 	//Return the plugin object which contains the trial

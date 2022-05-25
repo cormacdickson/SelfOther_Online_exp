@@ -41,24 +41,16 @@
   	<script>
 
     // hardcode important Variables //////////////
-    var subject_id            = jsPsych.randomization.randomID(15); // generat a 15 digit subejcet ID
+    var subject_id            = jsPsych.randomization.randomID(15); // generat a 15 digit subjet ID
     var colours               = ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
-
-    // generate a random index and use this value to access one of the porder schedules
-    var random_porder_index   = Math.floor(Math.random() * 1000);
+    var random_porder_index   = Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
     var this_subjects_porder  = "Porder_"+random_porder_index;
-    // until schedule is properly created
-    this_subjects_porder      = "Porder_1"
+    this_subjects_porder      = "Porder_1"     // until schedule is properly created just set it to porder 1
     var porder_sch            = eval(this_subjects_porder);
-    var rdm_complete = false;
-
-    var main_trial_count = 0; // counter used to access correct value from porder schedule
-
-    //var main_block = {};
+    var rdm_complete          = false; // dont think this does anything anymore
+    var main_trial_count      = 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
-    this_subs_schedule = eval("main_sch_1");
-    //console.log(this_subs_schedule)
-
+    this_subs_schedule        = eval("main_sch_1"); // until schedule is properly created just set it to sch1
     var aperture_x_coords     = [(window.innerWidth/2-window.innerWidth/5), //the cordinates of each of the 4 aperturesopleft
     						                 (window.innerWidth/2-window.innerWidth/5),
                         	       (window.innerWidth/2+window.innerWidth/5), //topright
@@ -67,7 +59,7 @@
                         	     (window.innerHeight/2+window.innerHeight/4),
                         	     (window.innerHeight/2-window.innerHeight/4),
                         	     (window.innerHeight/2+window.innerHeight/4)];
-    var RDM_pretrial_duration = 1500;
+    var RDM_pretrial_duration = 1500; // duration that the initials are displayed at the start of the exp
     var positions 			  	  = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
     var aperture_diam		  	  = 200; // diameter of the rdk apertures
     var bcgnd_color 		  	  = "black";
@@ -77,18 +69,18 @@
     var RDktype	  				    = 3; // type of rdk mechanism used
     var Aperturetype 	  		  = 1; // type of aperture used (1=circle)
     var Aperturenum       		= 4; // number of apertures
-  	var RDM_training_fb_duration = 500;
+  	var RDM_training_fb_duration = 500; // duration that fb is displayed for during rdm task
   	var Main_fb_sequence_dur 	= [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
   	var Main_decision_duration= 3000; //
-  	var Main_decision_choices = ["arrowleft","arrowright"];
+  	var Main_decision_choices = ["arrowleft","arrowright"]; //responses only registered if they are listed here
     var Main_decision_fb_dur  = 1000;
     var Main_training_decision_fb_dur    = 2000;
     var trial_count           = 0; // used to check if this trial is a break trial
     var borders               = false;
-    var RDM_performance  = 0;
+    var RDM_performance       = 0;
     var num_RDM_trials        = 3;
-    var closest_sch_value;
-    var closest_sch_index;
+    var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
+    var closest_sch_index; // global variable to store the closest sch index
 
 
 	// intialise variables for rdm training so wecan determine coherance direction and the corresponding correct answer
@@ -105,7 +97,7 @@
     type: "fullscreen",
     fullscreen_mode: true
   }
-  timeline.push(enter_fullscreen)
+  //timeline.push(enter_fullscreen)
 
   var instructions_1 = {
          type: 'instructions',
@@ -127,7 +119,7 @@
          button_label_next: ''
   }
 
-  timeline.push(instructions_1)
+//  timeline.push(instructions_1)
 
 
 
@@ -171,7 +163,7 @@ var Get_ID_loop = {
     }
 }
 
-timeline.push(Get_ID_loop);
+//timeline.push(Get_ID_loop);
 
 
 
@@ -193,6 +185,7 @@ var rdm_instructions_1 = {
     trial_duration: Main_decision_duration,
     response_ends_trial: true,
     choices: Main_decision_choices,
+    number_of_apertures: Aperturenum,
     player_colours: player_cols,
     RDK_type: RDktype, //Applied to all apertures if only one value
     player_position: positions,
@@ -203,8 +196,7 @@ var rdm_instructions_1 = {
     aperture_center_x: aperture_x_coords,
     aperture_center_y: aperture_y_coords
 };
-
-timeline.push(rdm_instructions_1)
+//timeline.push(rdm_instructions_1)
 
 var rdm_instructions_2 = {
            type: 'instructions',
@@ -574,14 +566,6 @@ timeline.push(RDM_block)
 //---------------------------------------------
 ///------------ interlude: pairing schedules ------------///
 //----------------------------------------------
-var Porder_schedule = 'Porder_'+subject_id;
-
-
-
-
-
-
-
 
 // tell participants we are pairing schedules
 var pair_schedules = {
@@ -1089,7 +1073,7 @@ function saveData(name, data){
   xhr.send(JSON.stringify({filename: name, filedata: data}));
 }
 
-saveData('C:\Users\cdickson\Documents\Phd_local\SelfOther_Online_exp', jsPsych.data.get().csv());
+
 
 
 
@@ -1114,6 +1098,7 @@ saveData('C:\Users\cdickson\Documents\Phd_local\SelfOther_Online_exp', jsPsych.d
 jsPsych.init({
       timeline: timeline,
       on_finish: function() {
+        saveData('localhost:8888', jsPsych.data.get().csv());
         jsPsych.data.displayData('csv');
     }
     });
