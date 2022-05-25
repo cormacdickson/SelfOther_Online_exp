@@ -479,7 +479,8 @@ jsPsych.plugins["RDM-trial"] = (function() {
 			rt: -1,
 			key: -1
 		}
-
+		var missed = true;
+		var rdm_trial_count = true;
 		//Declare a global timeout ID to be initialized below in animateDotMotion function and to be used in after_response function
 		var timeoutID;
 
@@ -548,6 +549,8 @@ jsPsych.plugins["RDM-trial"] = (function() {
 
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
+				no_response: missed,
+				rdm_trial_count: rdm_trial_count,
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
 				correct: correctOrNot(), //If the subject response was correct
@@ -608,6 +611,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
 			if (response.key == -1) {
 				response = info; //Replace the response object created above
 			}
+			missed = false;
 
 			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
 			if (trial.response_ends_trial) {

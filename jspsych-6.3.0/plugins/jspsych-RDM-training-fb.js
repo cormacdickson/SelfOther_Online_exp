@@ -171,7 +171,7 @@ jsPsych.plugins["RDM-training-fb"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var player_colours  = trial.player_colours;
-
+		
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -489,7 +489,7 @@ jsPsych.plugins["RDM-training-fb"] = (function() {
 		}//End of draw
 
 function drawfb(){
-	if (feedback>0){
+	if (feedback==1){ //correct feedback
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
@@ -497,16 +497,21 @@ function drawfb(){
 		ctx.fillStyle = 'yellow';
 		ctx.fill();
 		//ctx.stroke();
-	} else {
+	} else if (feedback==0){  //wrong answer
 		ctx.beginPath();
+    	ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
+    	ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
 
-    ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
-    ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
-
-    ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
-    ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
+    	ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
+    	ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
 		ctx.strokeStyle = 'red';
-    ctx.stroke();
+    	ctx.stroke();
+
+	} else if (feedback==2){  //miss
+		ctx.fillStyle = 'white';
+		ctx.textAlign = 'centre';
+		ctx.font = '25px Open Sans';
+		ctx.fillText('Miss', window.innerWidth/2, window.innerHeight/2);
 	}
 }
 
