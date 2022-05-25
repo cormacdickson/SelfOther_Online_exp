@@ -225,7 +225,7 @@ var rdm_instructions_2 = {
            button_label_next: ''
        }
 
- timeline.push(rdm_instructions_2)
+ //timeline.push(rdm_instructions_2)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -309,7 +309,7 @@ var RDM_trial = {
     aperture_center_x: aperture_x_coords,
     aperture_center_y: aperture_y_coords,
     on_finish: function(){
-      saveData(outfile, jsPsych.data.get().csv());
+      saveData('outfile', jsPsych.data.get().csv());
     }
 };
 
@@ -470,7 +470,7 @@ var RDM_training_block = {
   timeline_variables: RDM_training_schedule,
   randomize_order:false
 }
- timeline.push(RDM_training_block)
+ //timeline.push(RDM_training_block)
 
 ///////////////////////////////////
 // this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -480,7 +480,7 @@ var RDM_training_if_block = {
   randomize_order:false,
   repetitions:1
 }
-  timeline.push(RDM_training_if_block)
+  //timeline.push(RDM_training_if_block)
 //---------------------------------------------
 ///------------ Training Ends ------------///
 //----------------------------------------------
@@ -515,7 +515,7 @@ var instructions_3 = {
        button_label_next: ''
 }
 
- timeline.push(instructions_3)
+ //timeline.push(instructions_3)
 
 
  // useful node to insert if you want to check the data output from a given trial
