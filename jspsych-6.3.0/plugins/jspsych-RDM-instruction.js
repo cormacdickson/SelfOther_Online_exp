@@ -86,13 +86,13 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		    aperture_center_x: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Aperture center X",
-		      default: window.innerWidth/2,
+		      default: 'nan',
 		      description: "The x-coordinate of the center of the aperture"
 		    },
 		    aperture_center_y: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Aperture center Y",
-		      default: window.innerHeight/2,
+		      default: 'nan',
 		      description: "The y-coordinate of the center of the aperture"
 		    },
 		    border: {
@@ -171,8 +171,8 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
 		trial.background_color = assignParameterValue(trial.background_color, "black");
 		trial.aperture_type = assignParameterValue(trial.aperture_type, 1);
-		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
-		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
+		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, 'nan');
+		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, 'nan');
 		trial.fixation_cross = assignParameterValue(trial.fixation_cross, false);
 		trial.fixation_cross_width = assignParameterValue(trial.fixation_cross_width, 20);
 		trial.fixation_cross_height = assignParameterValue(trial.fixation_cross_height, 20);
@@ -202,6 +202,8 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		var screen_num      = trial.screen_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
+		
+
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
 		var num_instr = 2;
 		var apertureType = trial.aperture_type;
@@ -261,7 +263,9 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 
 		//Set the canvas background color
 		canvas.style.backgroundColor = backgroundColor;
-
+		console.log(canvas.width);
+		console.log(canvas.height);
+		console.log("innerheight " + window.innerHeight);
 		//--------Set up Canvas end-------
 
 
