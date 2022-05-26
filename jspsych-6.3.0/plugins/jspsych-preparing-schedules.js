@@ -198,8 +198,10 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 							ctx.textAlign = "center";
 							ctx.font = '30px sans-serif';
 							ctx.fillText('Pairing complete', window.innerWidth/2, 3*(window.innerHeight/4));
+							ctx.font = '20px sans-serif';
+							ctx.fillText('Please wait', window.innerWidth/2, 3.5*(window.innerHeight/4));
 
-							timerID = window.setTimeout(end_trial,1200);
+							timerID = window.setTimeout(end_trial,2000);
 						}
 		}
 

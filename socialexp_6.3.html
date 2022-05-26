@@ -646,17 +646,7 @@ var RDM_block = {
     //console.log(RDM_block.timeline_variables)
   },
   on_timeline_finish: function(){
-    RDM_performance = jsPsych.data.get().filter({trial_type:"RDM-trial", correct:true}).count();
-    RDM_performance = RDM_performance/num_RDM_trials;
-
-    // pair schedules
-    closest_sch_value = rdmperf.reduce((a, b) => {
-    return Math.abs(b - RDM_performance) < Math.abs(a - RDM_performance) ? b : a;
-    });
-    // now get the index of this schedule
-    closest_sch_index = rdmperf.indexOf(closest_sch_value);
-    this_subs_schedule = eval("main_sch_1");
-    rdm_complete = true; // pretty sure this isnt used need to double check before deleting
+    
   }
 }
 
@@ -731,7 +721,22 @@ timeline.push(still_missed_lots)
 var pair_schedules = {
   type: 'preparing-schedules',
   response_ends_trial: false,
-  background_color:bcgnd_color
+  background_color:bcgnd_color,
+  on_finish: function(){
+  	RDM_performance = jsPsych.data.get().filter({trial_type:"RDM-trial", correct:true}).count();
+  	var all_trials  = jsPsych.data.get().select('rdm_trial_count').sum();  // this includes the practice trials (these can be excluded with more effort...lol)
+    RDM_performance = RDM_performance/all_trials;
+
+    // pair schedules
+    closest_sch_value = rdmperf.reduce((a, b) => {
+    return Math.abs(b - RDM_performance) < Math.abs(a - RDM_performance) ? b : a;
+    });
+    // now get the index of this schedule
+    closest_sch_index = rdmperf.indexOf(closest_sch_value);
+    var schedule_id   = "main_sch_" + closest_sch_index;
+    this_subs_schedule = eval(schedule_id);
+    
+  }
 }
 
 timeline.push(pair_schedules)
