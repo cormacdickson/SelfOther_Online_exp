@@ -1,3 +1,18 @@
+// this is the empty schdule we pass to the timline block so it knows how many trials we want
+var main_sch = [
+  {}, //trial 1
+  {}, //trial 2
+  {}, //trial 3
+  {}, //trial 4
+  {} //trial 5
+  ];
+
+  // each element represents one trial, scale to the number of trials we want to have in the main block
+  // by adding momore rows.
+  // each element is empty because we now assign the trial variables within the trial node.
+  // (its a hack but works as a quick fix)
+
+// these are the actual schedules
 var main_sch_1 = [
   {
     "S_perf": [0,0,1,0,0,0],
@@ -41,25 +56,8 @@ var main_sch_1 = [
   }
   ];
 
+
   var main_sch_2 = [
-  {
-
-  },
-  {
-
-  },
- {
-
-  },
-  {
-
-  },
-  {
-
-  }
-  ];
-
-  var main_sch_3 = [
   {
     "S_perf": [0,0,1,0,0,0],
     "P_perf": [0,1,0,1,0,0],
@@ -101,3 +99,7 @@ var main_sch_1 = [
     "outcomeEngage": [2,-3],
   }
   ]
+
+
+
+//add aditional schedules here

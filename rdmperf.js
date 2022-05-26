@@ -1,3 +1,5 @@
+// Variable which stores the average performance of the schedules from marcos previous 
+// trials so that we can match them to current players performance and reuse the schedules
 var rdmperf = [ 0.6944,    0.6409,    0.5484,    0.7243,    0.5679,    0.5278,    0.7243,    0.6080,    0.7819,    0.7222,    0.6163,    0.6173,
       0.6564,    0.5504,    0.6060,   0.5669,    0.6317,    0.6060,    0.4671,    0.5401,    0.4650,    0.5442,    0.6883,    0.7027,    0.6512,
       0.5226,    0.5484,    0.6111,    0.5134,    0.4877,    0.5257,    0.5885,    0.7140,    0.6986,    0.5689,    0.5648,    0.4794,    0.5041,

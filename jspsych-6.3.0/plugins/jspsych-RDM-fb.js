@@ -3,7 +3,7 @@
 	RDK plugin for JsPsych
 	----------------------
 
-	This code was created in the Consciousness and Metacognition Lab at UCLA,
+	This code was created in the Consciousnestacognition Lab at UCLA,
 	under the supervision of Brian Odegaard and Hakwan Lau
 
 	We would appreciate it if you cited this paper when you use the RDK:
