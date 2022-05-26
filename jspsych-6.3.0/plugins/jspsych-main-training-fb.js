@@ -925,7 +925,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 			}
 			textfeedbackdelay = window.setTimeout(text_fb,300);
 		}
-S
+
 
 
 
