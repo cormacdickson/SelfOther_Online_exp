@@ -1262,12 +1262,44 @@
 		timeline_variables : main_sch, // Now give the block an empty set of arrays of length = number of trials we warrant
 		// the paramaters we want are assigned dynamically in the
 		on_timeline_start: function(){
-		main_trial_count = 0;
-	}
-	}
+			main_trial_count = 0;
+		},
+		on_timeline_finish: function(){
+			//////////////////////////
+			// save data from here////
+			//////////////////////////
+		}
 
+	}
 
 	timeline.push(main_block)
+
+	// this node is shown so that we can make sure we have enoguht time to save all of the participants data
+	var exp_end_screen_1 = {
+		on_start: function(){
+			//////////////////////////////
+			///// save data here //////////
+			///////////////////////////////
+		},
+		type: 'html-keyboard-response',
+		stimulus:  "<p style='font-size: 25px'>Thank you for participating in our experiment!</p>" +
+		      		"<p style='font-size: 25px'>Please wait while we save your data</p>",
+		trial_duration: 5000,
+		response_ends_trial: false
+	}
+
+	timeline.push(exp_end_screen_1)
+
+	// Final thing participant sees
+	var exp_end_screen_2 = {
+		type: 'html-keyboard-response',
+		stimulus:  "<p style='font-size: 25px'>Thank you!</p>" +
+		      		"<p style='font-size: 25px'>You may now exit the experiment</p>",
+		trial_duration: 2000,
+		response_ends_trial: false
+	}
+
+	timeline.push(exp_end_screen_2)
 
 
 
@@ -1284,7 +1316,11 @@
 jsPsych.init({
     timeline: timeline,
     on_finish: function() {
+    	//////////////////////////////////////////////
+    	/// Save data ////////////////////////////////
         saveData('outfile', jsPsych.data.get().csv());
+        //////////////////////////////////////////////
+        //////////////////////////////////////////////
         jsPsych.data.displayData('csv');
     },
     exclusions: {   // this will exclude brosers which do not meet these minimum 
