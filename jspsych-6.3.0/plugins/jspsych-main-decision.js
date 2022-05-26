@@ -1,29 +1,6 @@
 /*
 
-	RDK plugin for JsPsych
-	----------------------
-
-	This code was created in the Consciousness and Metacognition Lab at UCLA,
-	under the supervision of Brian Odegaard and Hakwan Lau
-
-	We would appreciate it if you cited this paper when you use the RDK:
-	Rajananda, S., Lau, H. & Odegaard, B., (2018). A Random-Dot Kinematog
-	----------------------
-
-	Copyright (C) 2017  Sivananda Rajananda
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+This plugin displays the question arrow for main decision and records the response
 
 */
 

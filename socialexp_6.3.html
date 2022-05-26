@@ -39,39 +39,40 @@
 
   	</body>
   	<script>
-
+  	//////////////////////////////////////////
     // hardcode important Variables //////////////
-    var subject_id            = jsPsych.randomization.randomID(15); // generat a 15 digit subjet ID
-    var colours               = ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
-    var random_porder_index   = Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
-    var this_subjects_porder  = "Porder_"+random_porder_index;
-    this_subjects_porder      = "Porder_1"     // until schedule is properly created just set it to porder 1
-    var porder_sch            = eval(this_subjects_porder);
-    var rdm_complete          = false; // dont think this does anything anymore
-    var main_trial_count      = 0; // counter used to access correct value from porder schedule
+    //////////////////////////////////////////
+
+    var subject_id            			= jsPsych.randomization.randomID(15); // generat a 15 digit subjet ID
+    var colours               			= ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
+    var random_porder_index   			= Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
+    var this_subjects_porder  			= "Porder_"+random_porder_index;
+    this_subjects_porder      			= "Porder_1"     // until schedule is properly created just set it to porder 1
+    var porder_sch            			= eval(this_subjects_porder);
+    var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
-    this_subs_schedule        = eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
-    var RDM_pretrial_duration = 1500; // duration that the initials are displayed at the start of the exp
-    var positions 			  	  = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
+    this_subs_schedule        			= eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
+    var RDM_pretrial_duration 			= 1500; // duration that the initials are displayed at the start of the exp
+    var positions 			  	 		= [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
     
-    var bcgnd_color 		  = "black";
-    var player_cols 		  = jsPsych.randomization.repeat(colours, 1); // assign colors randomly based on the four possible
-    var total_dots 			  = [50,50,50,50]; //number of dots in each RDK
-    var RDM_trial_duration 	  = 1000; // duration of the rdm
-    var RDktype	  			  = 3; // type of rdk mechanism used
-    var Aperturetype 	  	  = 1; // type of aperture used (1=circle)
-    var Aperturenum       	  = 4; // number of apertures
-  	var RDM_training_fb_duration = 500; // duration that fb is displayed for during rdm task
-  	var Main_fb_sequence_dur 	 = [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
-  	var Main_decision_duration   = 3000; //
-  	var Main_decision_choices    = ["arrowleft","arrowright"]; //responses only registered if they are listed here
-    var Main_decision_fb_dur     = 1000;
-    var Main_training_decision_fb_dur    = 2000;
-    var trial_count              = 0; // used to check if this trial is a break trial
-    var borders                  = false;
-    var RDM_performance          = 0;
-    var num_RDM_trials           = 3; // 
-    var num_RDM_repeat_trials    = 5;
+    var bcgnd_color 		  			= "black";
+    var player_cols 		  			= jsPsych.randomization.repeat(colours, 1); // assign colors randomly based on the four possible
+    var total_dots 			  			= [50,50,50,50]; //number of dots in each RDK
+    var RDM_trial_duration 	  			= 1000; // duration of the rdm
+    var RDktype	  			  			= 3; // type of rdk mechanism used
+    var Aperturetype 	  	  			= 1; // type of aperture used (1=circle)
+    var Aperturenum       	  			= 4; // number of apertures
+  	var RDM_training_fb_duration 		= 500; // duration that fb is displayed for during rdm task
+  	var Main_fb_sequence_dur 	 		= [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
+  	var Main_decision_duration   		= 3000; //
+  	var Main_decision_choices    		= ["arrowleft","arrowright"]; //responses only registered if they are listed here
+    var Main_decision_fb_dur     		= 1000;
+    var Main_training_decision_fb_dur   = 2000;
+    var trial_count              		= 0; // used to check if this trial is a break trial
+    var borders                  		= false;
+    var RDM_performance          		= 0;
+    var num_RDM_trials           		= 3; // 
+    var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
 
@@ -87,10 +88,18 @@
     var aperture_diam; // diameter of the rdk apertures
     var dot_size;
 
+
+
+    ////////////////////////////////////////////////////////
+    // Begin compiling experiment
+    ////////////////////////////////////////////////////////
+
+
     /* CREATE TIMELINE */
 	var timeline = [];
 
 
+	// node to enter fullscreen
 	var enter_fullscreen = {
 	    type: "fullscreen",
 	    fullscreen_mode: true,
@@ -113,9 +122,7 @@
 
   	timeline.push(enter_fullscreen)
 
-
-
-
+  	// first set of instructions
   	var instructions_1 = {
 		type: 'instructions',
 		pages: function() {return [
@@ -136,14 +143,13 @@
 		button_label_next: ''
   	}
 
-//  timeline.push(instructions_1)
+	//timeline.push(instructions_1)
 
 
 
-
-///////////////////////////////////////////////////////////
-//----------------Get players initials---------------------
-////////////////////////////////////////////////////////////
+	//----------------------------------------------------------------------
+	// next three blocks all used to get initials and check they are correct
+	//initials block 1
 	var get_initials = {
 		type: "survey-text",
 		questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
@@ -154,6 +160,7 @@
 		}
 	}
 
+	// intials block 2
 	var confirm_initials = {
 		type: "survey-multi-choice",
 		questions: [{
@@ -167,6 +174,7 @@
 		}],
 	};
 
+	//initials block 3
 	var Get_ID_loop = {
 	    timeline: [get_initials,confirm_initials],
 	    loop_function: function(){
@@ -180,12 +188,13 @@
 	}
 
 	timeline.push(Get_ID_loop);
+	// finished with initials
+	//------------------------------------------------------------------
 
 
 
-///////////////////////////////////////////////////////////
-//----------------Show instructions for RDM---------------------
-////////////////////////////////////////////////////////////
+	//-------------------------------------------------------------------
+	//----------------Show instructions for RDM---------------------
 	var rdm_instructions_1 = {
 		// get the subjects initials
 		on_start: function(trial){
@@ -252,15 +261,14 @@
 	}
 
  	timeline.push(rdm_instructions_2)
+	//----------------end of instructions for RDM------------------------
+	//-------------------------------------------------------------------
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//		RDM Training
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
+	//-------------------------------------------------------------------
+	//----------------Begin RDM training---------------------------------
 
-	// this node  shows 4 circular apertures with player ids
+	// this node  shows 4 circular apertures with player ids and is used in training and actual rdm experiment
 	var RDM_pretrial = {
 		// get the subjects initials
 		on_start: function(trial){
@@ -290,6 +298,7 @@
 		}
 	};
 
+	
 	// this node is the training rdk trial its different from main only in the sequence it uses
 	var RDM_training_trial = {
 		type:"RDM-trial",
@@ -327,7 +336,51 @@
 	};
 
 
+	// this node presents feedback on rdm choices in the training phase
+	var RDM_training_fb = {
+		on_start: function(trial){
+			var p1   = jsPsych.data.get().select('player').values[0];
+			trial.player1 = p1;
+		},
+		type:"RDM-training-fb",
+		number_of_apertures: Aperturenum, //This needs to be set if more than one aperture
+		trial_duration: RDM_training_fb_duration,
+		RDK_type: RDktype, //Applied to all apertures if only one value
+		player_position: positions,
+		player_colours: player_cols,
+		aperture_type: Aperturetype, // circle
+		border: borders,
+		feedback: function(){
+			var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+			var last_response      = jsPsych.data.get().last(1).values()[0].response;
+			if (last_response == -1){
+				return 2;
+			};
+			if(last_trial_correct){
+				return 1;
+			} else {
+				return 0;
+			}
+		},
+		background_color: bcgnd_color,
+		border_color: player_cols,
+		aperture_center_x: function(){
+			return aperture_x_coords
+		},
+		aperture_center_y: function(){
+			return aperture_y_coords
+		},
+		aperture_width: function(){
+			return aperture_diam
+		},
+		dot_radius: function(){
+			return dot_size
+		}
+	};
 
+	
+	//-------------------------------------------------------------------------
+	//----------Actual RDM nodes ----------------------------------------------
 	// this node is the main rdk trial which displays the moving dots
 	var RDM_trial = {
 	    type:"RDM-trial",
@@ -372,49 +425,6 @@
 	};
 
 
-
-	// this node presents feedback on rdm choices
-	var RDM_training_fb = {
-		on_start: function(trial){
-			var p1   = jsPsych.data.get().select('player').values[0];
-			trial.player1 = p1;
-		},
-		type:"RDM-training-fb",
-		number_of_apertures: Aperturenum, //This needs to be set if more than one aperture
-		trial_duration: RDM_training_fb_duration,
-		RDK_type: RDktype, //Applied to all apertures if only one value
-		player_position: positions,
-		player_colours: player_cols,
-		aperture_type: Aperturetype, // circle
-		border: borders,
-		feedback: function(){
-			var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-			var last_response      = jsPsych.data.get().last(1).values()[0].response;
-			if (last_response == -1){
-				return 2;
-			};
-			if(last_trial_correct){
-				return 1;
-			} else {
-				return 0;
-			}
-		},
-		background_color: bcgnd_color,
-		border_color: player_cols,
-		aperture_center_x: function(){
-			return aperture_x_coords
-		},
-		aperture_center_y: function(){
-			return aperture_y_coords
-		},
-		aperture_width: function(){
-			return aperture_diam
-		},
-		dot_radius: function(){
-			return dot_size
-		}
-	};
-
 	// this node gives feedbback on rdk choice only if no answer was given
 	var RDM_fb = {
 		on_start: function(trial){
@@ -452,6 +462,11 @@
 			return dot_size
 		}
 	};
+
+
+
+	//------------------------------------------------------------------------------------------
+	//-----------these next blocks are conditional blocks if certain performance criteria are met
 
 	// additional trial if none of the previous responses were corect. it gets fed into the node
 	var RDM_training_ifnoneright_trial = {
@@ -560,7 +575,7 @@
 	}
 
 
-	///////////////////////////////////
+	///////////////////////////////////////////////
 	// this is the rdm training block of 4 trials
 	//---------------------------------------------
 	var RDM_training_block = {
@@ -632,7 +647,7 @@
 
 	// this is the main block which shows the rdm trials
 	var RDM_block = {
-		timeline: [RDM_pretrial, RDM_trial,RDM_fb],S
+		timeline: [RDM_pretrial, RDM_trial,RDM_fb],
 		repetitions: num_RDM_trials,
 		on_timeline_start: function(){
 		},
@@ -707,7 +722,7 @@
 	}
 
 	timeline.push(pair_schedules)
-
+//--------------------------------------------------------------------
 
 
 //---------------------------------------------

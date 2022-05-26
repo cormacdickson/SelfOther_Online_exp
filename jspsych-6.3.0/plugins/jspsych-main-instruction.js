@@ -1,28 +1,6 @@
 /*
 
-	RDK plugin for JsPsych
-	----------------------
-
-	This code was created in the Consciousness and Metacognition Lab at UCLA,
-	under the supervision of Brian Odegaard and Hakwd this paper when you use the RDK:
-	Rajananda, S., Lau, H. & Odegaard, B., (2018). A Random-Dot Kinematogram for Web-Based Vision Research. Journal of Open Research Software. 6(1), p.6. DOI: [http://doi.org/10.5334/jors.194]
-
-	----------------------
-
-	Copyright (C) 2017  Sivananda Rajananda
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// this plugin displays instructions in the main part of the experiment. It relies on user input to tell which set of instructions to show
 
 */
 
@@ -318,40 +296,9 @@ jsPsych.plugins["main-instruction"] = (function() {
 		var centre_bottom_text_origin_y = (window.innerHeight/10)*9;
 
 		var line_offset 			 = 20;
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
 
 		var RDK = trial.RDK_type;
 
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
 		var apertureType = trial.aperture_type;
 
 		/*
@@ -846,90 +793,83 @@ jsPsych.plugins["main-instruction"] = (function() {
 			// first check if outcome engage is positive
 
 			if (instr_num==0 && response_num==0){  //
-					ctx.fillStyle = 'white';
-					ctx.textAlign = 'left';
-					ctx.font = '15px Open sans';
-					ctx.fillText('=> This was the performance phase.', left_text_origin_x, left_text_origin_y);
-					ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
-					ctx.fillText('   - compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*2));
-					ctx.fillText('   - players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*3));
-					ctx.fillText('   - Arrows indicate the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*4));
-					ctx.fillText('   - Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*5));
-					ctx.textAlign = 'center';
+				ctx.fillStyle = 'white';
+				ctx.textAlign = 'left';
+				ctx.font = '15px Open sans';
+				ctx.fillText('=> This was the performance phase.', left_text_origin_x, left_text_origin_y);
+				ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
+				ctx.fillText('   - compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*2));
+				ctx.fillText('   - players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*3));
+				ctx.fillText('   - Arrows indicate the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('   - Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*5));
+				ctx.textAlign = 'center';
+				ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
-					ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+			} else if (instr_num==0 && response_num==1){
+				ctx.textAlign = 'left';
+				ctx.fillText('=> Respond with <left arrow> to indicate that you thought your ', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   - performance was better than O2’s performance.', right_text_origin_x, right_text_origin_y+(line_offset));
+				ctx.fillText('   - Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*2));
 
-					} else if (instr_num==0 && response_num==1){
-						ctx.textAlign = 'left';
-						ctx.fillText('=> Respond with <left arrow> to indicate that you thought your ', right_text_origin_x, right_text_origin_y);
-						ctx.fillText('   - performance was better than O2’s performance.', right_text_origin_x, right_text_origin_y+(line_offset));
-						ctx.fillText('   - Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*2));
+				ctx.fillText('=> <left arrow> means you engage in competition with O2. You will ', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('   - get points if the performance you have just seen was better ', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText('   - than O2’s performance and lose points if you had been worse.', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillText('   - Points won/lost are equivalent to the true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
-						ctx.fillText('=> <left arrow> means you engage in competition with O2. You will ', right_text_origin_x, right_text_origin_y+(line_offset*4));
-						ctx.fillText('   - get points if the performance you have just seen was better ', right_text_origin_x, right_text_origin_y+(line_offset*5));
-						ctx.fillText('   - than O2’s performance and lose points if you had been worse.', right_text_origin_x, right_text_origin_y+(line_offset*6));
-						ctx.fillText('   - Points won/lost are equivalent to the true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('=> <right arrow> means you avoid competition and in this case you cannot ', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				ctx.fillText('   - win or lose points. Your point count stays constant.', right_text_origin_x, right_text_origin_y+(line_offset*10));
+				ctx.fillText('   - These rules mean that you should always press <left arrow>', right_text_origin_x, right_text_origin_y+(line_offset*11));
+				ctx.fillText('   - when you thought you were better.', right_text_origin_x, right_text_origin_y+(line_offset*12));
+				ctx.fillText('   - Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*13));
 
-						ctx.fillText('=> <right arrow> means you avoid competition and in this case you cannot ', right_text_origin_x, right_text_origin_y+(line_offset*9));
-						ctx.fillText('   - win or lose points. Your point count stays constant.', right_text_origin_x, right_text_origin_y+(line_offset*10));
-						ctx.fillText('   - These rules mean that you should always press <left arrow>', right_text_origin_x, right_text_origin_y+(line_offset*11));
-						ctx.fillText('   - when you thought you were better.', right_text_origin_x, right_text_origin_y+(line_offset*12));
-						ctx.fillText('   - Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*13));
-
-					} else if (instr_num==0 && response_num==2){
-						ctx.font = '20px Open sans';
-						ctx.textAlign = 'center';
-						ctx.fillText('=> Before making your choice, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
-
+			} else if (instr_num==0 && response_num==2){
+				ctx.font = '20px Open sans';
+				ctx.textAlign = 'center';
+				ctx.fillText('=> Before making your choice, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
 
 
-					} else if (instr_num==1 && response_num==0){
-						ctx.fillStyle = 'white';
-						ctx.textAlign = 'left';
-						ctx.font = '15px Open sans';
-						ctx.fillText('=> If you have paid attention, you know that your correct performance was 4 and ', right_text_origin_x, right_text_origin_y);
-						ctx.fillText('   - and the O2’s correct performance was 2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
-						ctx.fillText('=> Here you should engage in the competition (press <left arrow> button). You will ', right_text_origin_x, right_text_origin_y+(line_offset*3));
-						ctx.fillText('   - get 2 points for engaging since you performed 2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*4));
+			} else if (instr_num==1 && response_num==0){
+				ctx.fillStyle = 'white';
+				ctx.textAlign = 'left';
+				ctx.font = '15px Open sans';
+				ctx.fillText('=> If you have paid attention, you know that your correct performance was 4 and ', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   - and the O2’s correct performance was 2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
-						ctx.fillText('=> Avoiding always gives you 0 points, so you miss out on 2 points if you ', right_text_origin_x, right_text_origin_y+(line_offset*6));
-						ctx.fillText('   - avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('=> Here you should engage in the competition (press <left arrow> button). You will ', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('   - get 2 points for engaging since you performed 2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*4));
 
-						ctx.fillStyle = 'red';
-						ctx.textAlign = 'left';
-						ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				ctx.fillText('=> Avoiding always gives you 0 points, so you miss out on 2 points if you ', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillText('   - avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
-					} else if (instr_num==2 && response_num==0){
-					ctx.fillStyle = 'white';
-					ctx.textAlign = 'left';
-					ctx.font = '15px Open sans';
-					ctx.fillText('=> If you remembered their performances, you know that your ', right_text_origin_x, right_text_origin_y);
-					ctx.fillText('   - partner’s performance was 4 and the O1’s performance was 5', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.fillStyle = 'red';
+				ctx.textAlign = 'left';
+				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
 
-					ctx.fillText('=> You should avoid the competition (press <right arrow> ', right_text_origin_x, right_text_origin_y+(line_offset*3));
-					ctx.fillText('   - button) here. You don’t lose points, since avoiding gives you 0 point. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
+			} else if (instr_num==2 && response_num==0){
+				ctx.fillStyle = 'white';
+				ctx.textAlign = 'left';
+				ctx.font = '15px Open sans';
+				ctx.fillText('=> If you remembered their performances, you know that your ', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   - partner’s performance was 4 and the O1’s performance was 5', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
-					ctx.fillText('=> But if you engaged in the competition, since your partner ', right_text_origin_x, right_text_origin_y+(line_offset*6));
-					ctx.fillText('   - performed 1 point worse than O2, you lose 1 point.', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('=> You should avoid the competition (press <right arrow> ', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('   - button) here. You don’t lose points, since avoiding gives you 0 point. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
 
-					ctx.fillStyle = 'red';
-					ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				ctx.fillText('=> But if you engaged in the competition, since your partner ', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillText('   - performed 1 point worse than O2, you lose 1 point.', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
-					ctx.fillStyle = 'white';
-					ctx.fillText('=> We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y);
-					ctx.fillText('=> Note that you get the same points based on how well your partner did in the game.', left_text_origin_x, left_text_origin_y+line_offset);
+				ctx.fillStyle = 'red';
+				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
 
-					ctx.fillText('=> Here, indicated by the arrow, you are asked ', left_text_origin_x, left_text_origin_y+(line_offset*4));
-					ctx.fillText('   - to compare your partner and O1 ', left_text_origin_x, left_text_origin_y+(line_offset*5));
+				ctx.fillStyle = 'white';
+				ctx.fillText('=> We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y);
+				ctx.fillText('=> Note that you get the same points based on how well your partner did in the game.', left_text_origin_x, left_text_origin_y+line_offset);
+
+				ctx.fillText('=> Here, indicated by the arrow, you are asked ', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('   - to compare your partner and O1 ', left_text_origin_x, left_text_origin_y+(line_offset*5));
 			}
-			}
-
-
-
-
-
-
+		}
 
 
 
@@ -948,10 +888,8 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fill();
 			}
 
-
 	      	//Draw the border if we want it
 	      	if(border === true){
-
 	        	//For circle and ellipse
 	        	if(apertureType === 1 || apertureType === 2){
 	          		ctx.lineWidth = borderThickness;
@@ -960,23 +898,11 @@ jsPsych.plugins["main-instruction"] = (function() {
 	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
 	          		ctx.stroke();
 	        	}//End of if circle or ellipse
-
-
-
       		}//End of if border === true
-
-
-
-						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
-						ctx.textAlign = "center";
-						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
-
-
+			ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+			ctx.textAlign = "center";
+			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 		}//End of draw
-
-
-
-
 
 
 		//Calculate a random x and y coordinate in the ellipse

@@ -1,28 +1,6 @@
 /*
 
-	RDK plugin for JsPsych
-	----------------------
-
-	This code was created in the Consciousness and Metacognition Lab at UCLA,
-	under the supervision of Brian u use the RDK:
-	Rajananda, S., Lau, H. & Odegaard, B., (2018). A Random-Dot Kinematogram for Web-Based Vision Research. Journal of Open Research Software. 6(1), p.6. DOI: [http://doi.org/10.5334/jors.194]
-
-	----------------------
-
-	Copyright (C) 2017  Sivananda Rajananda
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+This plugin displays feeback for decisions made during the trianing phase of the main experiment
 
 */
 
@@ -314,47 +292,15 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-		var dectype					= trial.dectype;
-		var dec_num					= trial.dec_num;
+		var dectype	= trial.dectype;
+		var dec_num = trial.dec_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
 		var feedback = trial.feedback;
 		var engaged  = trial.engaged;
-		var outcomeEngage		= trial.outcomeEngage;
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
+		var outcomeEngage = trial.outcomeEngage;
 
 		var RDK = trial.RDK_type;
-
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
 		var apertureType = trial.aperture_type;
 
 		/*
@@ -825,41 +771,39 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
 		function drawDecisionArrow(){
 			// need to know if we are in the first decisionor second decisionor
-				// need to know what arrow we want to drawn
-
-				if (dectype[dec_num] == 1){
-						//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
-						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
-
-				} else if (dectype[dec_num] == 2){
+			// need to know what arrow we want to drawn
+			if (dectype[dec_num] == 1){
 					//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
-						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
+					ctx.beginPath();
+					ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
+					ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+					ctx.strokeStyle = 'red';
+			    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 3){
-					//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
-						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
+			} else if (dectype[dec_num] == 2){
+				//draw an arrow
+					ctx.beginPath();
+					ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
+					ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
+					ctx.strokeStyle = 'red';
+			    	ctx.stroke();
 
-				} else if (dectype[dec_num] == 4){
-					//draw an arrow
-						ctx.beginPath();
-						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
-						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
-						ctx.strokeStyle = 'red';
-				    	ctx.stroke();
-				}
+			} else if (dectype[dec_num] == 3){
+				//draw an arrow
+					ctx.beginPath();
+					ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
+					ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2);
+					ctx.strokeStyle = 'red';
+			    	ctx.stroke();
 
+			} else if (dectype[dec_num] == 4){
+				//draw an arrow
+					ctx.beginPath();
+					ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
+					ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
+					ctx.strokeStyle = 'red';
+			    	ctx.stroke();
+			}
 		}
 
 
@@ -908,17 +852,13 @@ jsPsych.plugins["main-training-fb"] = (function() {
 	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
 	          		ctx.stroke();
 	        	}//End of if circle or ellipse
-
-
-
       		}//End of if border === true
 
-						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
-						ctx.textAlign = "center";
-						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
-
-
+			ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+			ctx.textAlign = "center";
+			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 		}//End of draw
+
 
 		function text_fb(){
 
@@ -966,6 +906,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 			}
 		}
 
+
 		function drawfb(){
 
 			if (engaged==0){
@@ -981,13 +922,10 @@ jsPsych.plugins["main-training-fb"] = (function() {
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
 				ctx.stroke();
-
 			}
-
 			textfeedbackdelay = window.setTimeout(text_fb,300);
-
 		}
-
+S
 
 
 

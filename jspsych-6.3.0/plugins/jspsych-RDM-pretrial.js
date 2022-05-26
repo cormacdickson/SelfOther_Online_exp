@@ -1,26 +1,6 @@
 /*
 
-	RDK plugin for JsPsych
-	---------------------
-	We would appreciate it if you cited this paper when you use the RDK:
-	Rajananda, S., Lau, H. & Odegaard, B., (2018). A Random-Dot Kinematogram for Web-Based Vision Research. Journal of Open Research Software. 6(1), p.6. DOI: [http://doi.org/10.5334/jors.194]
-
-	----------------------
-
-	Copyright (C) 2017  Sivananda Rajananda
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// this plugin is used at the start of every RDK trial to show the 4 placeholders on screen for each aperture
 
 */
 
@@ -118,77 +98,38 @@ jsPsych.plugins["RDM-pretrial"] = (function() {
 
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
-		trial.player_position      = assignParameterValue(trial.player_position, "nana");
-		trial.player1           = assignParameterValue(trial.player1, "nan");
-		trial.trial_duration    = assignParameterValue(trial.trial_duration, 500);
-		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
-		trial.player_colours = assignParameterValue(trial.player_colours, 1);
-		trial.aperture_width    = assignParameterValue(trial.aperture_width, 600);
-		trial.aperture_height   = assignParameterValue(trial.aperture_height, 400);
-
-		trial.background_color  = assignParameterValue(trial.background_color, "gray");
-
-		trial.aperture_type     = assignParameterValue(trial.aperture_type, 2);
-
-		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
-		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
-
-		trial.border            = assignParameterValue(trial.border, false);
-		trial.border_thickness  = assignParameterValue(trial.border_thickness, 1);
-		trial.border_color      = assignParameterValue(trial.border_color, "black");
-
+		trial.player_position      	= assignParameterValue(trial.player_position, "nana");
+		trial.player1           	= assignParameterValue(trial.player1, "nan");
+		trial.trial_duration    	= assignParameterValue(trial.trial_duration, 500);
+		trial.number_of_apertures 	= assignParameterValue(trial.number_of_apertures, 1);
+		trial.player_colours 		= assignParameterValue(trial.player_colours, 1);
+		trial.aperture_width    	= assignParameterValue(trial.aperture_width, 600);
+		trial.aperture_height   	= assignParameterValue(trial.aperture_height, 400);
+		trial.background_color  	= assignParameterValue(trial.background_color, "gray");
+		trial.aperture_type     	= assignParameterValue(trial.aperture_type, 2);
+		trial.aperture_center_x 	= assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
+		trial.aperture_center_y 	= assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
+		trial.border            	= assignParameterValue(trial.border, false);
+		trial.border_thickness  	= assignParameterValue(trial.border_thickness, 1);
+		trial.border_color      	= assignParameterValue(trial.border_color, "black");
 
 		//For circler aperture, set the aperture height == aperture width
-		trial.aperture_height = trial.aperture_width;
+		trial.aperture_height 		= trial.aperture_width;
 
 
 		//Convert the parameter variables to those that the code below can use
-		var nApertures     = 4; //The number of apertures
-		var player_position   = trial.player_position; // array of each player_position initials in order
-		var player1        = trial.player1;
-		var apertureWidth  = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
-		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
-		var player_colours = trial.player_colours;
-		var backgroundColor = trial.player_colours; //Color of the background
-		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
-		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
+		var nApertures     			= 4; //The number of apertures
+		var player_position   		= trial.player_position; // array of each player_position initials in order
+		var player1        			= trial.player1;
+		var apertureWidth  			= trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
+		var apertureHeight 			= trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
+		var player_colours 			= trial.player_colours;
+		var backgroundColor 		= trial.player_colours; //Color of the background
+		var apertureCenterX 		= trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
+		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 
-
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
-
-		var RDK = trial.RDK_type;
-
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
-		var apertureType = trial.aperture_type;
+		var RDK 					= trial.RDK_type;
+		var apertureType 			= trial.aperture_type;
 
 		/*
 		Out of Bounds Decision
@@ -196,19 +137,18 @@ jsPsych.plugins["RDM-pretrial"] = (function() {
 		1 - Randomly appear anywhere in the aperture
 		2 - Appear on the opposite edge of the aperture (Random if square or rectangle, reflected about origin in circle and ellipse)
 		*/
-		var reinsertType = trial.reinsert_type;
+		var reinsertType 			= trial.reinsert_type;
 
 
 		//Border Parameters
-		var border = trial.border; //To display or not to display the border
-		var borderThickness = trial.border_thickness; //The width of the border in pixels
-		var borderColor = trial.border_color; //The color of the border
-
-
-
+		var border 					= trial.border; //To display or not to display the border
+		var borderThickness 		= trial.border_thickness; //The width of the border in pixels
+		var borderColor 			= trial.border_color; //The color of the border
 		//--------------------------------------
 		//----------SET PARAMETERS END----------
 		//--------------------------------------
+
+
 
 		//--------Set up Canvas begin-------
 
@@ -265,7 +205,6 @@ jsPsych.plugins["RDM-pretrial"] = (function() {
 		var player_ids = [player1,'Pa','Op1','Op2'];
 		var apertureWidthArray;
 		var apertureHeightArray;
-
 		var apertureCenterXArray;
 		var apertureCenterYArray;
 
@@ -347,8 +286,8 @@ jsPsych.plugins["RDM-pretrial"] = (function() {
 			apertureTypeArray     = setParameter(apertureType);
 			borderArray           = setParameter(border);
 			borderThicknessArray  = setParameter(borderThickness);
-			borderColorArray 			= setParameter(borderColor);
-			currentSetArray 			= setParameter(0); //Always starts at zero
+			borderColorArray	  = setParameter(borderColor);
+			currentSetArray 	  = setParameter(0); //Always starts at zero
 
 			//Loop through the number of apertures to make the dots
 			for(currentApertureNumber = 0; currentApertureNumber < nApertures; currentApertureNumber++){

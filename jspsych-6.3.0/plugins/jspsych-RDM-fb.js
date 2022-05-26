@@ -1,30 +1,6 @@
 /*
 
-	RDK plugin for JsPsych
-	----------------------
-
-	This code was created in the Consciousnestacognition Lab at UCLA,
-	under the supervision of Brian Odegaard and Hakwan Lau
-
-	We would appreciate it if you cited this paper when you use the RDK:
-	Rajananda, S., Lau, H. & Odegaard, B., (2018). A Random-Dot Kinematogram for Web-Based Vision Research. Journal of Open Research Software. 6(1), p.6. DOI: [http://doi.org/10.5334/jors.194]
-
-	----------------------
-
-	Copyright (C) 2017  Sivananda Rajananda
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/ This plugin displays feedback on the decision made in the previous rdm trial
 
 */
 
@@ -36,7 +12,6 @@ jsPsych.plugins["RDM-fb"] = (function() {
 	plugin.info = {
 	    name: "RDM-fb",
 	    parameters: {
-
 		    trial_duration: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Trial duration",
@@ -157,7 +132,7 @@ jsPsych.plugins["RDM-fb"] = (function() {
 
 
 		//For square and circle, set the aperture height == aperture width
-			trial.aperture_height = trial.aperture_width;
+		trial.aperture_height = trial.aperture_width;
 
 		//Convert the parameter variables to those that the code below can use
 
@@ -171,41 +146,7 @@ jsPsych.plugins["RDM-fb"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var player_colours  = trial.player_colours;
-
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
-
 		var RDK = trial.RDK_type;
-
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
 		var apertureType = trial.aperture_type;
 
 		/*
@@ -488,41 +429,25 @@ jsPsych.plugins["RDM-fb"] = (function() {
 
 		}//End of draw
 
-function drawfb(){
-	if (feedback == 2){
-		ctx.beginPath();	
-	    ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
-	    ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
 
-	    ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
-	    ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
-		ctx.strokeStyle = 'red';
-	    ctx.stroke();
-	}
-}
+		function drawfb(){
+			if (feedback == 2){
+				ctx.beginPath();	
+			    ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
+			    ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			    ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
+			    ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
+				ctx.strokeStyle = 'red';
+			    ctx.stroke();
+			}
+		}
 
 
 		//Generates a random number (with decimals) between 2 values
 		function randomNumberBetween(lowerBound, upperBound) {
 			return lowerBound + Math.random() * (upperBound - lowerBound);
 		}
-
-
 
 		//----RDK Functions End----
 
@@ -541,7 +466,7 @@ function drawfb(){
 		//-------------------------------------
 		// end trial if trial_duration is set
     if (trial.trial_duration !== null) {
-      jsPsych.pluginAPI.setTimeout(function() {
+      	jsPsych.pluginAPI.setTimeout(function() {
         end_trial();
       }, trial.trial_duration);
     }
