@@ -127,23 +127,24 @@
 		type: 'instructions',
 		pages: function() {return [
 		 '<h1>Welcome to the group competition game!</h1>'+
-
-		 '<p></br></br>This game is about working together with another person in a team. Your team is playing</p>'+
-		 '<p>- against another team of two people. To Identify you, we will ask you to enter your </p>'+
-		 '<p>- initials on the next screen.</p>'+
-		 '<p>The game will take about 30 minutes and has two parts:</p>'+
-
-		 '<p> &#8594 Part 1: Individual performance assessment(~5min) </br>&#8594 Part 2: The group competition task<p>'+
-
-		 '<p></br>Press the arrow to proceed to the next screen and enter you initials.</p>'
-
+         '<div style="text-align: left; font-size:22px"> '+
+		 '<p></br></br><li> This game is about working together with another person in a team. Your team is playing against another team of two people</p>'+
+		 '<p></br><li> To Identify you, we will ask you to enter your initials on the next screen.</p>'+
+		 
+		'<p></br><li>The game will take about 30 minutes and has two parts:</p>'+
+        '<ul><ul><ul>'+
+		 '<p> &#8594 Part 1: Individual performance assessment(~5min) </br>&#8594 Part 2: The group competition task (~25min)<p>'+
+	    '</ul></ul></ul>' +
+		 '<p></br><li>Press the arrow to proceed to the next screen and enter you initials.</p>'+
+		 '</br>'+
+         '</div>'
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
 		button_label_next: ''
   	}
 
-  //  timeline.push(instructions_1)
+    //timeline.push(instructions_1)
 
 
 
@@ -239,20 +240,21 @@
  
 			'<h1>Part 1 - Individual performance assessment: Random dot motion task!</h1>'+
              
-			'</br><div style="text-align: left; ">'+
-			'<li><p>We ask you to perform a “random dot motion” task, in which you will see </li><p>'+
-			'<p>dot motion clouds moving to the left or to the right at your position where your initials are.<p>'+
-			'</br><li><p>Please press the “left” or “right” arrow button to indicate the correct direction.<p></li>'+
-
-			'&#8594Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center">'+
-			'<p>&#8594Incorrect performance will be displayed as:<img src="images/fb_wrong.png" width="50px" class="center"><p>'+
-
-			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, <p></li>'+
-			'<p>otherwise will see a <strong>"Missed" </strong> on the screen and your performance will be counted as incorrect.<p>'+
+			'</br><div style="text-align: left; font-size:22px">'+
+			'<li><p>We ask you to perform a “random dot motion” task, in which you will see dot motion clouds moving to the left or to the right <p>'+
+			'<p>at your position where your initials are.<p>'+
+			'</br><li><p>Please press the “left” or “right” arrow button to indicate the correct direction.<p>'+
+			'<ul><ul><ul>'+
+			'<p>&#8594Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center"><p>'+
+			'<p>&#8594Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px"; "text-decoration:underline";>× </span><p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
+			'</ul></ul></ul>'+
+			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, otherwise will see a <div style="text-decoration:underline; font-weight:bold">"Missed" </div> on the screen<p>'+
+			'<p>and your performance will be counted as incorrect.<p>'+
 			'</br><li><p>We will collect your peformance information when you do so.<p></li>'+
 
-			'</br><li><p>Try it now! Press the right arrow to start.</p></li>'
-      
+			'</br><li><p>Try it now! Press the right arrow to start.</p></li>'+
+			'</br>'+
+            '</div>'
 	
 		]},
 		show_clickable_nav: true,
@@ -260,7 +262,7 @@
 		button_label_next: ''
 	}
 
- 	//timeline.push(rdm_instructions_2)
+ 	timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 

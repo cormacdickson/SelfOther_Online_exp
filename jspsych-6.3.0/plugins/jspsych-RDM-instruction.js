@@ -285,7 +285,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		//var player_on;
-		var player_ids = [player1,'Pa','O1','O2'];
+		var player_ids = [player1,'Partner(Pa)','Opponent(O1)','Opponent(O2)'];
 		var nDotsArray;
 		var nSetsArray;
 		var dotRadiusArray;
@@ -616,7 +616,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					ctx.fillStyle = 'white';
 					ctx.textAlign = 'centre';
 					ctx.font = '25px Open Sans';
-					ctx.fillText('First of all, this is how we will display the two teams on-screen.', centre_bottom_text_origin_x/2, left_text_origin_y*2);
+					ctx.fillText('First of all, this is how we will display the two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
 
 					ctx.fillText('   (Note: the abbreviations wil be shown on this task)', centre_bottom_text_origin_x, centre_bottom_text_origin_y-5*line_offset);
 
