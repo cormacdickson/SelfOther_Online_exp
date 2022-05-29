@@ -76,8 +76,8 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		var backgroundColor = trial.background_color; //Color of the background
 		var progress = 0;
 		var progress_step_dur = 300; //in milliseconds
-		var progress_bar_width = 200;
-		var progress_step_size = 5;
+		var progress_bar_width = 400;
+		var progress_step_size = 20;
 		var num_steps =  progress_bar_width/progress_step_size;
 		var intervalID;
 		var timerID;
@@ -176,7 +176,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		function drawprogressbar() {
         		ctx.fillStyle = 'white';
         		ctx.beginPath();
-        		ctx.rect((window.innerWidth/2)-101, (window.innerHeight/2)-10, 201,15);
+        		ctx.rect((window.innerWidth/2)-200, (window.innerHeight/2)-7, 380,30);
         		ctx.fill();
 
 
@@ -187,7 +187,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		function update_progress() {
         		ctx.fillStyle = 'red';
         		ctx.beginPath();
-        		ctx.rect((window.innerWidth/2)-(progress_bar_width/2), (window.innerHeight/2)-7,progress,7);
+        		ctx.rect((window.innerWidth/2)-(progress_bar_width/2), (window.innerHeight/2)-7,progress,30);
         		ctx.fill();
 
 						progress= progress+progress_step_size;
@@ -197,6 +197,8 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 							ctx.fillStyle = 'white';
 							ctx.textAlign = "center";
 							ctx.font = '30px sans-serif';
+							ctx.font = 'bold';
+							//ctx.fillStyle= 'red';
 							ctx.fillText('Pairing complete', window.innerWidth/2, 3*(window.innerHeight/4));
 							ctx.font = '20px sans-serif';
 							ctx.fillText('Please wait', window.innerWidth/2, 3.5*(window.innerHeight/4));
@@ -217,7 +219,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 						ctx.fillText('Part 2 – the group competition task – starts shortly.', window.innerWidth/2, window.innerHeight/4 +35);
 
 						ctx.font = '20px sans-serif';
-						ctx.fillText('You are being paired with three other players: your partner (Pa), and two opponents (O1, O2).', window.innerWidth/2, window.innerHeight/2+60);
+						ctx.fillText('You are being paired with three other players: your partner (Pa), and two opponents (O1, O2).', window.innerWidth/2, window.innerHeight/2+90);
 		}
 
 

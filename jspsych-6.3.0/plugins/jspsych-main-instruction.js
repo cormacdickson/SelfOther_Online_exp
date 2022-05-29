@@ -289,9 +289,9 @@ jsPsych.plugins["main-instruction"] = (function() {
 		var num_instr = 2;
 
 		var left_text_origin_x = (window.innerWidth/10)*0.5;
-		var left_text_origin_y = (window.innerHeight/10)*1;
-		var right_text_origin_x = (window.innerWidth/10)*7.5;
-		var right_text_origin_y = (window.innerHeight/10)*1;
+		var left_text_origin_y = (window.innerHeight/10)*4;
+		var right_text_origin_x = (window.innerWidth/10)*7;
+		var right_text_origin_y = (window.innerHeight/10)*4;
 		var centre_bottom_text_origin_x = (window.innerWidth/10)*5;
 		var centre_bottom_text_origin_y = (window.innerHeight/10)*9;
 
@@ -795,8 +795,9 @@ jsPsych.plugins["main-instruction"] = (function() {
 			if (instr_num==0 && response_num==0){  //
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '15px Open sans';
+				ctx.font = '20px Open sans';
 				ctx.fillText('=> This was the performance phase.', left_text_origin_x, left_text_origin_y);
+
 				ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
 				ctx.fillText('   - compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*2));
 				ctx.fillText('   - players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*3));
@@ -807,13 +808,13 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 			} else if (instr_num==0 && response_num==1){
 				ctx.textAlign = 'left';
-				ctx.fillText('=> Respond with <left arrow> to indicate that you thought your ', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('   - performance was better than O2’s performance.', right_text_origin_x, right_text_origin_y+(line_offset));
+				ctx.fillText('=> Respond with <left arrow> to indicate that you thought ', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   - your performance was better than O2’s performance.', right_text_origin_x, right_text_origin_y+(line_offset));
 				ctx.fillText('   - Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*2));
 
-				ctx.fillText('=> <left arrow> means you engage in competition with O2. You will ', right_text_origin_x, right_text_origin_y+(line_offset*4));
-				ctx.fillText('   - get points if the performance you have just seen was better ', right_text_origin_x, right_text_origin_y+(line_offset*5));
-				ctx.fillText('   - than O2’s performance and lose points if you had been worse.', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillText('=> <left arrow> means you engage in competition with O2. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('   - You will get points if the performance you have just seen', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText('   - was better than O2’s performance and lose points if you had been worse.', right_text_origin_x, right_text_origin_y+(line_offset*6));
 				ctx.fillText('   - Points won/lost are equivalent to the true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
 				ctx.fillText('=> <right arrow> means you avoid competition and in this case you cannot ', right_text_origin_x, right_text_origin_y+(line_offset*9));
@@ -824,6 +825,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 			} else if (instr_num==0 && response_num==2){
 				ctx.font = '20px Open sans';
+				ctx.font = 'bold';
 				ctx.textAlign = 'center';
 				ctx.fillText('=> Before making your choice, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
 
