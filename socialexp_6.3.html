@@ -9,6 +9,7 @@
     <script src="jspsych-6.3.0/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.3.0/plugins/jspsych-call-function.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-survey-multi-choice.js"></script>
     <script src="jspsych-6.3.0/plugins/jspsych-rdk.js"></script>
@@ -43,7 +44,7 @@
     // hardcode important Variables //////////////
     //////////////////////////////////////////
 
-    var subject_id            			= jsPsych.randomization.randomID(15); // generat a 15 digit subjet ID
+    var subject_id            			= jsPsych.randomization.randomID(7); // generat a 15 digit subjet ID
     var colours               			= ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
     var random_porder_index   			= Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
     var this_subjects_porder  			= "Porder_"+random_porder_index;
@@ -53,17 +54,17 @@
     var this_subs_schedule; // will assign to a specific schedule later
     this_subs_schedule        			= eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
     var RDM_pretrial_duration 			= 1500; // duration that the initials are displayed at the start of the exp
-    var positions 			  	 		= [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
-    
-    var bcgnd_color 		  			= "black";
-    var player_cols 		  			= jsPsych.randomization.repeat(colours, 1); // assign colors randomly based on the four possible
-    var total_dots 			  			= [50,50,50,50]; //number of dots in each RDK
+    var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
+
+    var bcgnd_color 		  			    = "black";
+    var player_cols 		  			    = jsPsych.randomization.repeat(colours, 1); // assign colors randomly based on the four possible
+    var total_dots 			  		    	= [50,50,50,50]; //number of dots in each RDK
     var RDM_trial_duration 	  			= 1000; // duration of the rdm
-    var RDktype	  			  			= 3; // type of rdk mechanism used
-    var Aperturetype 	  	  			= 1; // type of aperture used (1=circle)
+    var RDktype	  			  		    	= 3; // type of rdk mechanism used
+    var Aperturetype 	  	  		  	= 1; // type of aperture used (1=circle)
     var Aperturenum       	  			= 4; // number of apertures
   	var RDM_training_fb_duration 		= 500; // duration that fb is displayed for during rdm task
-  	var Main_fb_sequence_dur 	 		= [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
+  	var Main_fb_sequence_dur 	 	  	= [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
   	var Main_decision_duration   		= 3000; //
   	var Main_decision_choices    		= ["arrowleft","arrowright"]; //responses only registered if they are listed here
     var Main_decision_fb_dur     		= 1000;
@@ -71,11 +72,19 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_trials           		= 3; // 
+    var num_RDM_trials           		= 3; //
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
 
+    var initials_font               = '20px Sans-Serif';
+    var decision_arrow = {
+			arrowhead_length: -1,
+			arrow_body_thickness: -1,
+      arrow_head_thickness: -1,
+			arrow_head_angle: 30
+		};
+    var fb_box_thickness            =2; // thickness of feeback box
 
 	// intialise variables for rdm training so wecan determine coherance direction and the corresponding correct answer
 	var correct_ans_right = "arrowright";
@@ -84,7 +93,7 @@
 
 	// set glabal variables for all of our dimensions
 	var aperture_x_coords ;
-    var aperture_y_coords ; 
+    var aperture_y_coords ;
     var aperture_diam; // diameter of the rdk apertures
     var dot_size;
 
@@ -107,7 +116,7 @@
 	    	///////////////////////////////////
 	    	// now that we are in fullscreen we want to set all of the dimensions we will be using in the experiment
 	    	aperture_x_coords =  [(window.innerWidth/2-window.innerWidth/10), //the cordinates of each of the 4 aperturesopleft
-	    						   (window.innerWidth/2-window.innerWidth/10),
+	    						             (window.innerWidth/2-window.innerWidth/10),
 	                        	   (window.innerWidth/2+window.innerWidth/10), //topright
 	                        	   (window.innerWidth/2+window.innerWidth/10)];
 	    	aperture_y_coords =  [(window.innerHeight/2-window.innerHeight/8),
@@ -117,6 +126,11 @@
 	                        	          // add all of th eother dimensions to be updated here
 	        aperture_diam = window.innerHeight/5;
 	        dot_size = window.innerHeight/900;
+          //arrowhead_length            = // the length of the arrowhead lines
+          //arrow_body_thickness        = // thickness of the lines used to draw the arrorbody line
+          //arrow_head_thickness        = // thickness of the lines used to draw the arrorhead lines
+          //arrow_head_angle            = // angle that the lines are relative to the body
+          //fb_box_thickness            = // thickness of feeback box
     	}
    	}
 
@@ -130,7 +144,7 @@
          '<div style="text-align: left; font-size:22px"> '+
 		 '<p></br></br><li> This game is about working together with another person in a team. Your team is playing against another team of two people.</p>'+
 		 '<p>To Identify you, we will ask you to enter your initials on the next screen.</p>'+
-		 
+
 		'<p></br><li>The game will take about 30 minutes and has two parts:</p>'+
         '<ul><ul><ul>'+
 		 '<p> &#8594 Part 1: Individual performance assessment(~5min) </br>&#8594 Part 2: The group competition task (~25min)<p>'+
@@ -237,7 +251,7 @@
 	var rdm_instructions_2 = {
 		type: 'instructions',
 		pages: function() {return [
- 
+
 			'<h1>Part 1 - Individual performance assessment: Random dot motion task!</h1>'+
              //'<h2<u> Tag </h2>>'+
 			'</br><div style="text-align: left; font-size:22px">'+
@@ -255,7 +269,7 @@
 			'</br><li><p>Try it now! Press the right arrow to start.</p></li>'+
 			'</br>'+
             '</div>'
-	
+
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
@@ -300,7 +314,7 @@
 		}
 	};
 
-	
+
 	// this node is the training rdk trial its different from main only in the sequence it uses
 	var RDM_training_trial = {
 		type:"RDM-trial",
@@ -380,7 +394,7 @@
 		}
 	};
 
-	
+
 	//-------------------------------------------------------------------------
 	//----------Actual RDM nodes ----------------------------------------------
 	// this node is the main rdk trial which displays the moving dots
@@ -684,7 +698,7 @@
 	            return true;
 	        } else {
 	            return false;
-	        }   
+	        }
 	    },
 	}
 
@@ -732,13 +746,13 @@
        pages: function() {return [
 
           '<h1>Part 2 –Group competition task </h1>'+
-		  
+
 		  '</br><div style="text-align: left; font-size:22px">'+
           '<br><p><li>In the group competition task, you will see your performance from part 1 and also performance of the three other players <u>(performance phase).</u> We ask you to make <p>'+
            '<p>decisions about these performances <u>(decision phase)</u>. By making good decisions, you can collect points. The goal of part 2 is to collect as many points as possible.<p>'+
            //'<p> The goal of part 2 is to collect as many points as possible.<p>'+
           '<br><p><li>During the <u>performance phase</u>:<p>'+
-           '<ul><ul>'+        
+           '<ul><ul>'+
 			'<p>&#8594You will see performances of each player on every round. Correct performance will be displayed as: <img src="images/fb_correct.png" width="30px" class="center"> ; Incorrect performance will be displayed as:<span style="color:red; font-weight:bold;font-size:35px";> x </span><p>'+
 			'<p>&#8594The performance will go very quickly, and you will need to keep track of the number of correct performances per player.</p>'+
 			'</ul></ul>'+
@@ -770,7 +784,7 @@
 		coherent_direction: function(){
 			chosenValue = Math.random() < 0.5 ? 0 : 180;
 			return chosenValue;
-	    },  
+	    },
 		S_perf : [0,1,0,1,0,1],
 		P_perf : [0,1,0,1,0,1],
 		O1_perf : [0,1,0,1,0,1],
@@ -931,10 +945,10 @@
 		 '</br><li><p>We will ask you to compare the performance between one player (i.e., you or your partner) from your team and one player (i.e., O1 or O2) from the other team.</p>' +
 		 '</br><li><p> You can get just as many points from decisions based on your partner’s performance as your own! What matters is which team was better!</p>'+
 		 '<br><li><p> To collect as many points as possible, you should: <br>'+
-	     '<ul><ul>'+ 
+	     '<ul><ul>'+
 		 '&#8594 press <u>left arrow </u>key to engage in competition if the one from your team was better than the other one;'+
 		 '</br>&#8594 press <u>right arrow</u> key to avoid competition if the one from your team was worse than the other one.'+
-		 '</ul></ul>'+	
+		 '</ul></ul>'+
 		 '<p><br> - Let’s do a practice round, in which we will show whether your decision is correct or not <strong>(?)</strong>. Press below key to start when you are ready. </p>' +
 		'</br>'+
 		'</div>'
@@ -1285,24 +1299,30 @@
 
 	timeline.push(main_block)
 
+
 	// this node is shown so that we can make sure we have enoguht time to save all of the participants data
-	var exp_end_screen_1 = {
-		on_start: function(){
-			//////////////////////////////
-			///// save data here //////////
-			///////////////////////////////
-		},
-		type: 'html-keyboard-response',
-		stimulus:  "<p style='font-size: 25px'>Thank you for participating in our task!</p>" +
-		      		"<p style='font-size: 25px'>Please wait while we save your data</p>",
-		trial_duration: 5000,
-		response_ends_trial: false
+	var saving_data = {
+    type: 'call-function',
+    async: true,
+		func: function(){
+            // following code copies savedata function but  runs async so we know data is saved before exp ends
+            var xhr = new XMLHttpRequest();
+        		xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+        		xhr.setRequestHeader('Content-Type', 'application/json');
+        		xhr.send(JSON.stringify({filename: "socialexp_" + subject_id, filedata: jsPsych.data.get().csv()}));
+            xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        done(); // proceed to next trial
+                    }
+                };
+		}
 	}
 
-	timeline.push(exp_end_screen_1)
+  //uncomment for testing with klara
+	//timeline.push(saving_data)
 
 	// Final thing participant sees
-	var exp_end_screen_2 = {
+	var exp_end_screen = {
 		type: 'html-keyboard-response',
 		stimulus:  "<p style='font-size: 25px'>Thank you!</p>" +
 		      		"<p style='font-size: 25px'>You may now exit the task</p>",
@@ -1310,10 +1330,10 @@
 		response_ends_trial: false
 	}
 
-	timeline.push(exp_end_screen_2)
+	timeline.push(exp_end_screen)
 
 
-
+// use this function to save data async
 	function saveData(name, data){
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
@@ -1327,14 +1347,22 @@
 jsPsych.init({
     timeline: timeline,
     on_finish: function() {
-    	//////////////////////////////////////////////
-    	/// Save data ////////////////////////////////
-        saveData('outfile', jsPsych.data.get().csv());
-        //////////////////////////////////////////////
-        //////////////////////////////////////////////
-        jsPsych.data.displayData('csv');
+
+
+      jsPsych.data.addProperties({subject_id: subject_id});
+
+      var outfile = "socialexp_" + subject_id;
+
+      // to save to server
+      //saveData(outfile, jsPsych.data.get().csv());
+
+      // to save locally during testing
+      jsPsych.data.get().localSave('csv',outfile +'.csv'); // when prompted save sile as csv
+
+      // to display after trial
+      jsPsych.data.displayData('csv');
     },
-    exclusions: {   // this will exclude brosers which do not meet these minimum 
+    exclusions: {   // this will exclude brosers which do not meet these minimum
     	min_width: 800,
     	min_height: 600
     }
