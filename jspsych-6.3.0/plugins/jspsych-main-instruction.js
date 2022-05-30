@@ -295,7 +295,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		var centre_bottom_text_origin_x = (window.innerWidth/10)*5;
 		var centre_bottom_text_origin_y = (window.innerHeight/10)*9;
 
-		var line_offset 			 = 20;
+		var line_offset 			 = 30;
 
 		var RDK = trial.RDK_type;
 
@@ -795,14 +795,14 @@ jsPsych.plugins["main-instruction"] = (function() {
 			if (instr_num==0 && response_num==0){  //
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '20px Open sans';
-				ctx.fillText('=> This was the performance phase.', left_text_origin_x, left_text_origin_y);
+				ctx.font = '18px Open sans';
+				ctx.fillText('=>This was the performance phase:', left_text_origin_x, left_text_origin_y);
 
-				ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset);
-				ctx.fillText('   - compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*2));
-				ctx.fillText('   - players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*3));
-				ctx.fillText('   - Arrows indicate the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*4));
-				ctx.fillText('   - Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*5));
+				ctx.fillText('   - In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset*2);
+				ctx.fillText('   compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*3));
+				ctx.fillText('   players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('   - Arrows indicate the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*5)+line_offset);
+				ctx.fillText('   Here you need to compare yourself to Op2.', left_text_origin_x, left_text_origin_y+(line_offset*6+line_offset));
 				ctx.textAlign = 'center';
 				ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
@@ -824,8 +824,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('   - Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*13));
 
 			} else if (instr_num==0 && response_num==2){
-				ctx.font = '20px Open sans';
-				ctx.font = 'bold';
+				ctx.font = 'bold 18px Open sans';
 				ctx.textAlign = 'center';
 				ctx.fillText('=> Before making your choice, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
 
@@ -834,24 +833,25 @@ jsPsych.plugins["main-instruction"] = (function() {
 			} else if (instr_num==1 && response_num==0){
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '15px Open sans';
-				ctx.fillText('=> If you have paid attention, you know that your correct performance was 4 and ', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('   - and the O2’s correct performance was 2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.font = '18px Open sans';
+				ctx.fillText('=> If you have paid attention, you know that your correct', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   performance was 4 and the O2’s correct performance was 2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
-				ctx.fillText('=> Here you should engage in the competition (press <left arrow> button). You will ', right_text_origin_x, right_text_origin_y+(line_offset*3));
-				ctx.fillText('   - get 2 points for engaging since you performed 2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('=> Here you should engage in the competition (press <left arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('   button). You will get 2 points for engaging since', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('   you performed 2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*5));
 
-				ctx.fillText('=> Avoiding always gives you 0 points, so you miss out on 2 points if you ', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('   - avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('=> Avoiding always gives you 0 points, so you miss out on 2 points ', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('   if you avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*8));
 
 				ctx.fillStyle = 'red';
 				ctx.textAlign = 'left';
-				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*10));
 
 			} else if (instr_num==2 && response_num==0){
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '15px Open sans';
+				ctx.font = '18px Open sans';
 				ctx.fillText('=> If you remembered their performances, you know that your ', right_text_origin_x, right_text_origin_y);
 				ctx.fillText('   - partner’s performance was 4 and the O1’s performance was 5', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
@@ -865,11 +865,13 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
 
 				ctx.fillStyle = 'white';
-				ctx.fillText('=> We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y);
-				ctx.fillText('=> Note that you get the same points based on how well your partner did in the game.', left_text_origin_x, left_text_origin_y+line_offset);
-
+				ctx.font = '25px Open sans';
+				ctx.fillText('=> We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y-line_offset*9);
+				ctx.fillText('=> Note that you get the same points based on how well your partner did in the game.', left_text_origin_x, left_text_origin_y-line_offset*8);
+				
+				ctx.font = '18px Open sans';
 				ctx.fillText('=> Here, indicated by the arrow, you are asked ', left_text_origin_x, left_text_origin_y+(line_offset*4));
-				ctx.fillText('   - to compare your partner and O1 ', left_text_origin_x, left_text_origin_y+(line_offset*5));
+				ctx.fillText('   to compare your partner and O1 ', left_text_origin_x, left_text_origin_y+(line_offset*5));
 			}
 		}
 
