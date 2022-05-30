@@ -128,8 +128,8 @@
 		pages: function() {return [
 		 '<h1>Welcome to the group competition game!</h1>'+
          '<div style="text-align: left; font-size:22px"> '+
-		 '<p></br></br><li> This game is about working together with another person in a team. Your team is playing against another team of two people</p>'+
-		 '<p></br><li> To Identify you, we will ask you to enter your initials on the next screen.</p>'+
+		 '<p></br></br><li> This game is about working together with another person in a team. Your team is playing against another team of two people.</p>'+
+		 '<p>To Identify you, we will ask you to enter your initials on the next screen.</p>'+
 		 
 		'<p></br><li>The game will take about 30 minutes and has two parts:</p>'+
         '<ul><ul><ul>'+
@@ -144,7 +144,7 @@
 		button_label_next: ''
   	}
 
-    //timeline.push(instructions_1)
+    timeline.push(instructions_1)
 
 
 
@@ -188,7 +188,7 @@
 	    }
 	}
 
-	//timeline.push(Get_ID_loop);
+	timeline.push(Get_ID_loop);
 	// finished with initials
 	//------------------------------------------------------------------
 
@@ -232,7 +232,7 @@
 		}
 	};
 
-	//timeline.push(rdm_instructions_1)
+	timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -262,7 +262,7 @@
 		button_label_next: ''
 	}
 
- 	//timeline.push(rdm_instructions_2)
+ 	timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
@@ -586,7 +586,7 @@
 		randomize_order:false
 	}
 
-	//timeline.push(RDM_training_block)
+	timeline.push(RDM_training_block)
 
 	///////////////////////////////////
 	// this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -629,7 +629,7 @@
 		button_label_next: ''
 	}
 
-	//timeline.push(instructions_3)
+	timeline.push(instructions_3)
 
 
 	// useful node to insert if you want to check the data output from a given trial
@@ -654,7 +654,7 @@
 		}
 	}
 
-	//timeline.push(RDM_block)
+	timeline.push(RDM_block)
 
 
 	// if none right we want to show two of additional trial sequences
@@ -720,7 +720,7 @@
 		}
 	}
 
-	//timeline.push(pair_schedules)
+	timeline.push(pair_schedules)
 //--------------------------------------------------------------------
 
 
@@ -754,7 +754,7 @@
        button_label_next: ''
     }
 
- 	//timeline.push(instructions_4)
+ 	timeline.push(instructions_4)
 
 
 
@@ -916,8 +916,8 @@
 		}
 	};
 
-	//timeline.push(main_instructions_1)
-	//timeline.push(main_practice_sequence)
+	timeline.push(main_instructions_1)
+	timeline.push(main_practice_sequence)
 	timeline.push(main_instructions_2)
 	timeline.push(main_instructions_3)
 
@@ -925,14 +925,19 @@
 		type: 'instructions',
 		pages: function() {return [
 		 '<h1>Part 2 –The group competition task </h1>'+
-		 '<p>Notes:</p>'+
-		 '<p> - Try to remember the performance from everyone on every round</p>'+
-		 '<p> - We will ask you to compare the performance between one player (i.e., you or your partner) from your team and one player (i.e., O1 or O2) from the other team,</p>' +
-		 '<p> - You can get just as many points from decisions based on your partner’s performance as your own! What matters is which team was better!</p>'+
-		 '<p><br> - To collect as many points as possible, you should: <br>'+
-		 'press <left arrow> key to engage in competition if the one from your team was better than the other one;'+
-		 '<br>press <right arrow> key to avoid competition if the one from your team was worse than the other one.'+
-		 '<p><br> - Let’s do a practice round, in which we will show whether your decision is correct or not (?). Press <right arrow> key to start when you are ready. </p>'
+		 '</br><p><div style="text-align:left; font-weight:bold; font-size:30px"> Notes:</div></p>'+
+		 '</br><div style="text-align: left; font-size:22px">'+
+		 '<li><p> Try to remember the performance from everyone on every round.</p>'+
+		 '</br><li><p>We will ask you to compare the performance between one player (i.e., you or your partner) from your team and one player (i.e., O1 or O2) from the other team.</p>' +
+		 '</br><li><p> You can get just as many points from decisions based on your partner’s performance as your own! What matters is which team was better!</p>'+
+		 '<br><li><p> To collect as many points as possible, you should: <br>'+
+	     '<ul><ul>'+ 
+		 '&#8594 press <u>left arrow </u>key to engage in competition if the one from your team was better than the other one;'+
+		 '</br>&#8594 press <u>right arrow</u> key to avoid competition if the one from your team was worse than the other one.'+
+		 '</ul></ul>'+	
+		 '<p><br> - Let’s do a practice round, in which we will show whether your decision is correct or not <strong>(?)</strong>. Press below key to start when you are ready. </p>' +
+		'</br>'+
+		'</div>'
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
@@ -1217,14 +1222,16 @@
 		type: 'instructions',
 		pages: function() {return [
 			'<h1>Part 2 –The group competition task </h1>'+
-			'<p>Well done! We now ask you to do this task for approximately 16 minutes. </p>'+
-			'<p>Try to keep track of everyone’s performance as well as you can and make accurate decisions.</p>'+
-			'<p>After every performance phase, you only need to do two decisions (one after the other).</p>' +
-			'<p>The decisions always refer to the performances you have seen just before. These performances will </p>'+
-			'<p>- be NEW every time you see them. This will be different to the practical round just now and it will  </p>'+
-			'<p>- be a real challenge to keep track of the information!</p>'+
-			'<p>Your decision outcome will not be shown on every round, but you will know your cumulative points when you finish one session. </p>'+
-			'<p></br>If you are ready, press <right arrow> key to start.</p>'
+			'</br><div style="text-align:left;font-size:22px">'+
+			'</br><li><p>Well done! We now ask you to do this task for approximately 16 minutes. </p>'+
+			'</br><li><p>Try to keep track of everyone’s performance as well as you can and make accurate decisions.</p>'+
+			'</br><li><p>After every performance phase, you only need to do <u>two</u> decisions (one after the other).</p>' +
+			'</br><li><p>The decisions always refer to the performances you have seen just before. These performances will be <strong> NEW </strong> every time you see them. </p>'+
+			'<p>This will be different to the practical round just now and it will be a real challenge to keep track of the information! </p>'+
+			'</br><li><p>Your decision outcome will not be shown on every round, but you will know your cumulative points when you finish one session. </p>'+
+			'</br><li><p>If you are ready, press below key to start.</p>' +
+			'</br>'+
+			'</div>'
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
@@ -1286,7 +1293,7 @@
 			///////////////////////////////
 		},
 		type: 'html-keyboard-response',
-		stimulus:  "<p style='font-size: 25px'>Thank you for participating in our experiment!</p>" +
+		stimulus:  "<p style='font-size: 25px'>Thank you for participating in our task!</p>" +
 		      		"<p style='font-size: 25px'>Please wait while we save your data</p>",
 		trial_duration: 5000,
 		response_ends_trial: false
@@ -1298,7 +1305,7 @@
 	var exp_end_screen_2 = {
 		type: 'html-keyboard-response',
 		stimulus:  "<p style='font-size: 25px'>Thank you!</p>" +
-		      		"<p style='font-size: 25px'>You may now exit the experiment</p>",
+		      		"<p style='font-size: 25px'>You may now exit the task</p>",
 		trial_duration: 2000,
 		response_ends_trial: false
 	}

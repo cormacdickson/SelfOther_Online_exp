@@ -285,7 +285,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		//var player_on;
-		var player_ids = [player1,'Partner(Pa)','Opponent(O1)','Opponent(O2)'];
+		var player_ids = [player1,'Partner (Pa)','Opponent (O1)','Opponent (O2)'];
 		var nDotsArray;
 		var nSetsArray;
 		var dotRadiusArray;
