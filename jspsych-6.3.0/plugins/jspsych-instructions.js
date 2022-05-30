@@ -109,7 +109,7 @@ jsPsych.plugins.instructions = (function() {
 
       var pagenum_display = "";
       if(trial.show_page_number) {
-          pagenum_display = "<span style='margin: 0 1em;' class='"+
+          pagenum_display = "<span style='margin: 0 1em;' class=';"+
           "jspsych-instructions-pagenum'>"+ trial.page_label + ' ' +(current_page+1)+"/"+trial.pages.length+"</span>";
       }
      

@@ -256,7 +256,7 @@ jsPsych.plugins["RDM-training-fb"] = (function() {
 		var currentApertureNumber;
 
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
-		var player_ids = [player1,'Pa','Op1','Op2'];
+		var player_ids = [player1,'Pa','O1','O2'];
 		var apertureWidthArray;
 		var apertureHeightArray;
 		var apertureCenterXArray;

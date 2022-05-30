@@ -263,7 +263,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		trial.fixation_cross_color = assignParameterValue(trial.fixation_cross_color, "black");
 		trial.fixation_cross_thickness = assignParameterValue(trial.fixation_cross_thickness, 1);
 		trial.border = assignParameterValue(trial.border, false);
-		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
+		trial.border_thickness = assignParameterValue(trial.border_thickness, 4);
 		trial.border_color = assignParameterValue(trial.border_color, "black");
 
 
