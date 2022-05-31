@@ -101,6 +101,12 @@ jsPsych.plugins["RDM-fb"] = (function() {
 	        pretty_name: 'player_colours',
 	        default: "nan",
 	        description: 'The color of each player'
+	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
 	      }
 	    }
 	 }
@@ -148,6 +154,7 @@ jsPsych.plugins["RDM-fb"] = (function() {
 		var player_colours  = trial.player_colours;
 		var RDK = trial.RDK_type;
 		var apertureType = trial.aperture_type;
+		var player_fonts = trial.initials_font;
 
 		/*
 		Out of Bounds Decision
@@ -423,8 +430,9 @@ jsPsych.plugins["RDM-fb"] = (function() {
 	        	}//End of if square or
 
       		}//End of if border === true
-          ctx.textAlign = "center";
-          ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
+      		ctx.font = player_fonts;
+          	ctx.textAlign = "center";
+            ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
 
 		}//End of draw

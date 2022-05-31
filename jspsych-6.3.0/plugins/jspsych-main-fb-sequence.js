@@ -235,6 +235,12 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 	        default: undefined,
 	        description: 'The HTML string to be displayed for player1'
 	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      }
 	    }
 	 }
 
@@ -311,7 +317,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterX 		= trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var trial_duration 			= trial.trial_duration;
-
+		var player_fonts = trial.initials_font;	
 
 		var S_perf = trial.S_perf;
 		var P_perf = trial.P_perf;
@@ -1050,6 +1056,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			}//End of if border === true
 
 			// draw the intials of the players
+			ctx.font = player_fonts;
 			ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 			ctx.textAlign = "center";
 			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);

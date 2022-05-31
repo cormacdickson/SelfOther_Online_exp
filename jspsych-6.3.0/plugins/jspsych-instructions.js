@@ -23,7 +23,7 @@ jsPsych.plugins.instructions = (function() {
       pages: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
         pretty_name: 'Pages',
-        default: undefined,
+        default: 'nan',
         array: true,
         description: 'Each element of the array is the content for a single page.'
       },

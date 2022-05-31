@@ -203,15 +203,21 @@ jsPsych.plugins["RDM-trial"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The location for each player'
 	      },
 				player_colours: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_colours',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The color of each player'
-	      }
+	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
 	    }
 	 }
 
@@ -229,7 +235,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
 		trial.player_on = assignParameterValue(trial.player_on, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
 		trial.choices = assignParameterValue(trial.choices, []);
-		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
+		trial.correct_choice = assignParameterValue(trial.correct_choice, 'nan');
 		trial.trial_duration = assignParameterValue(trial.trial_duration, 500);
 		trial.response_ends_trial = assignParameterValue(trial.response_ends_trial, true);
 		trial.number_of_apertures = assignParameterValue(trial.number_of_apertures, 1);
@@ -284,7 +290,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-
+		var player_fonts = trial.initials_font;
 
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
@@ -1002,7 +1008,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
       		}//End of if border === true
 
 					if(currentApertureNumber !== player_on) {
-
+						ctx.font = player_fonts;
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);

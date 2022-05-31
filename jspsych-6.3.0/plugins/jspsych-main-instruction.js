@@ -152,11 +152,11 @@ jsPsych.plugins["main-instruction"] = (function() {
 		      default: false,
 		      description: "The presence of a border around the aperture"
 		    },
-		    border_thickness: {
+		    fb_line_thickness: {
 		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Border width",
+		      pretty_name: "Border thickness",
 		      default: 1,
-		      description: "The thickness of the border in pixels"
+		      description: "The thickness of the fb border in pixels"
 		    },
 		    border_color: {
 		      type: jsPsych.plugins.parameterType.STRING,
@@ -173,13 +173,13 @@ jsPsych.plugins["main-instruction"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The location for each player'
 	      },
 				player_colours: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_colours',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The color of each player'
 	      },
 				dectype: {
@@ -203,8 +203,26 @@ jsPsych.plugins["main-instruction"] = (function() {
 				player1: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player1',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The HTML string to be displayed for player1'
+	      },
+	      		initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
+	      		fb_box: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'feedback box',
+	        default: 'nan',
+	        description: 'settings for how fbbox is displayed'
+	      },
+	      dec_arrow: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'dec_arrow ',
+	        default: 'nan',
+	        description: 'settings for how dec_arrow is displayed'
 	      },
 	    }
 	 }
@@ -251,7 +269,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		trial.fixation_cross_color = assignParameterValue(trial.fixation_cross_color, "black");
 		trial.fixation_cross_thickness = assignParameterValue(trial.fixation_cross_thickness, 1);
 		trial.border = assignParameterValue(trial.border, false);
-		trial.border_thickness = assignParameterValue(trial.border_thickness, 1);
+		
 		trial.border_color = assignParameterValue(trial.border_color, "black");
 
 
@@ -264,6 +282,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		var player_position = trial.player_position; // array of each player_position initials in order
 		var player_on = trial.player_on;
 		var player1 = trial.player1;
+		var player_fonts = trial.initials_font;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
@@ -287,6 +306,8 @@ jsPsych.plugins["main-instruction"] = (function() {
 		var allApertureCentreY = trial.aperture_center_y;
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
 		var num_instr = 2;
+		var fb_box = trial.fb_box;
+		var dec_arrow = trial.dec_arrow;
 
 		var left_text_origin_x = (window.innerWidth/10)*0.5;
 		var left_text_origin_y = (window.innerHeight/10)*4;
@@ -312,7 +333,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 		//Border Parameters
 		var border = trial.border; //To display or not to display the border
-		var borderThickness = trial.border_thickness; //The width of the border in pixels
+		var Fb_line_th = trial.fb_line_thickness; //The width of the border in pixels
 		var borderColor = trial.player_colours; //trial.border_color; //The color of the border
 
 
@@ -501,7 +522,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				aperture_center_x:   trial.aperture_center_x,
 				aperture_center_y:   trial.aperture_center_y,
 				border:              trial.border,
-				border_thickness:    trial.border_thickness,
+				fb_line_thickness:    trial.fb_line_thickness,
 				border_color:        trial.border_color,
 				canvas_width:        canvasWidth,
 				canvas_height:       canvasHeight
@@ -571,7 +592,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 			RDKArray = setParameter(RDK);
 			apertureTypeArray = setParameter(apertureType);
 			borderArray = setParameter(border);
-			borderThicknessArray = setParameter(borderThickness);
+			Fb_line_thArray = setParameter(Fb_line_th);
 			borderColorArray = setParameter(borderColor);
 
 			currentSetArray = setParameter(0); //Always starts at zero
@@ -635,7 +656,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 			RDK = RDKArray[currentApertureNumber];
 			apertureType = apertureTypeArray[currentApertureNumber];
 			border = borderArray[currentApertureNumber];
-			borderThickness = borderThicknessArray[currentApertureNumber];
+			Fb_line_th = Fb_line_thArray[currentApertureNumber];
 			borderColor = borderColorArray[currentApertureNumber];
 
 			//Calculate the x and y jump sizes for coherent dots
@@ -710,7 +731,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 		function drawfb(){
 			if (feedback==0){
-				ctx.lineWidth = borderThickness;
+				ctx.lineWidth = fb_box.fb_line_thick;
 				ctx.strokeStyle = borderColor;
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
@@ -718,7 +739,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.stroke();
 
 			} else if (feedback==1){
-				ctx.lineWidth = borderThickness;
+				ctx.lineWidth = fb_box.fb_line_thick;
 				ctx.strokeStyle = borderColor;
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
@@ -731,6 +752,11 @@ jsPsych.plugins["main-instruction"] = (function() {
 		function drawDecisionArrow(){
 			// need to know if we are in the first decisionor second decisionor
 				// need to know what arrow we want to drawn
+
+				// to use a property of dec_arrow to draw an arrow:
+					//dec_arrow.PROPERTY
+					//for example to set the thickness of the arrow body say dec_arrow.arrow_body_thickness
+
 
 				if (dectype == 1){
 						//draw an arrow
@@ -896,13 +922,14 @@ jsPsych.plugins["main-instruction"] = (function() {
 	      	if(border === true){
 	        	//For circle and ellipse
 	        	if(apertureType === 1 || apertureType === 2){
-	          		ctx.lineWidth = borderThickness;
+	          		ctx.lineWidth = Fb_line_th;
 	          		ctx.strokeStyle = borderColor;
 	          		ctx.beginPath();
-	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
+	          		ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(Fb_line_th/2), verticalAxis+(Fb_line_th/2), 0, 0, Math.PI*2);
 	          		ctx.stroke();
 	        	}//End of if circle or ellipse
       		}//End of if border === true
+      		ctx.font = player_fonts;
 			ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 			ctx.textAlign = "center";
 			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);

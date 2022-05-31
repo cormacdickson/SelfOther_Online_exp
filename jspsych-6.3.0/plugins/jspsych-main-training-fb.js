@@ -185,13 +185,13 @@ jsPsych.plugins["main-training-fb"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The location for each player'
 	      },
 				player_colours: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_colours',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The color of each player'
 	      },
 				dectype: {
@@ -215,8 +215,21 @@ jsPsych.plugins["main-training-fb"] = (function() {
 				player1: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player1',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The HTML string to be displayed for player1'
+
+	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
+	      fb_box: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'feedback box',
+	        default: 'nan',
+	        description: 'settings for how fbbox is displayed'
 	      },
 	    }
 	 }
@@ -299,6 +312,8 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		var feedback = trial.feedback;
 		var engaged  = trial.engaged;
 		var outcomeEngage = trial.outcomeEngage;
+		var player_fonts = trial.initials_font;
+		var fb_box = trial.fb_box;
 
 		var RDK = trial.RDK_type;
 		var apertureType = trial.aperture_type;
@@ -853,7 +868,7 @@ jsPsych.plugins["main-training-fb"] = (function() {
 	          		ctx.stroke();
 	        	}//End of if circle or ellipse
       		}//End of if border === true
-
+      		ctx.font = player_fonts;
 			ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 			ctx.textAlign = "center";
 			ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
@@ -910,14 +925,14 @@ jsPsych.plugins["main-training-fb"] = (function() {
 		function drawfb(){
 
 			if (engaged==0){
-				ctx.lineWidth = borderThickness;
+				ctx.lineWidth = fb_box.fb_line_thick;
 				ctx.strokeStyle = 'red';
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
 				ctx.stroke();
 
 			} else if (engaged==1){
-				ctx.lineWidth = borderThickness;
+				ctx.lineWidth = fb_box.fb_line_thick;
 				ctx.strokeStyle = 'red';
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);

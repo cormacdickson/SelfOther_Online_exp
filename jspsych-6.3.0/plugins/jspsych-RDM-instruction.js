@@ -144,6 +144,12 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 	        default:  'nan',
 	        description: 'The HTML string to be displayed for player1'
 	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      }
 	    }
 	 }
 
@@ -202,6 +208,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		var screen_num      = trial.screen_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
+		var player_fonts = trial.initials_font;
 		
 
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
@@ -652,7 +659,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 				ctx.ellipse(apertureCenterX, apertureCenterY, horizontalAxis+(borderThickness/2), verticalAxis+(borderThickness/2), 0, 0, Math.PI*2);
 				ctx.stroke();
 				}//End of if border === true
-
+				ctx.font = player_fonts;
 				ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 				ctx.textAlign = "center";
 				ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);

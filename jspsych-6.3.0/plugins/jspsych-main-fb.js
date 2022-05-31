@@ -200,6 +200,18 @@ jsPsych.plugins["main-fb"] = (function() {
 	        default: "undefined",
 	        description: '1 if last trial correct,0 otherwise'
 	      },
+	      		initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
+	      fb_box: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'feedback box',
+	        default: 'nan',
+	        description: 'settings for how fbbox is displayed'
+	      },
 	    }
 	 }
 
@@ -277,6 +289,8 @@ jsPsych.plugins["main-fb"] = (function() {
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
 		var feedback = trial.feedback;
+		var player_fonts = trial.initials_font;
+		var fb_box = trial.fb_box;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -868,7 +882,7 @@ jsPsych.plugins["main-fb"] = (function() {
 
 
       		}//End of if border === true
-
+      					ctx.font = player_fonts;
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
@@ -878,7 +892,7 @@ jsPsych.plugins["main-fb"] = (function() {
 
 		function drawfb(){
 			if (feedback==0){
-				ctx.lineWidth = borderThickness;
+				ctx.lineWidth = fb_box.fb_line_thick;
 				ctx.strokeStyle = borderColor;
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);
@@ -886,7 +900,8 @@ jsPsych.plugins["main-fb"] = (function() {
 				ctx.stroke();
 
 			} else if (feedback==1){
-				ctx.lineWidth = borderThickness;
+				ctx.lineWidth = fb_box.fb_line_thick;
+				// you can specify the width and heigth of the box using fb_box.fb_box_wdt or  fb_box.fb_box_ht
 				ctx.strokeStyle = borderColor;
 				ctx.beginPath();
 				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*4);

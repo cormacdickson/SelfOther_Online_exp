@@ -194,6 +194,24 @@ jsPsych.plugins["main-decision-training"] = (function() {
 	        default: 0,
 	        description: 'first or second decicion'
 	      },
+	      	player1: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'player1',
+	        default:  'nan',
+	        description: 'The HTML string to be displayed for player1'
+	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
+	      dec_arrow: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'dec_arrow ',
+	        default: 'nan',
+	        description: 'settings for how dec_arrow is displayed'
+	      }
 	    }
 	 }
 
@@ -250,6 +268,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
 		//Convert the parameter variables to those that the code below can use
 		var player_position = trial.player_position; // array of each player_position initials in order
 		var player_on = trial.player_on;
+		var player1 = trial.player1;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
@@ -270,6 +289,8 @@ jsPsych.plugins["main-decision-training"] = (function() {
 		var dec_num					= trial.dec_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
+		var player_fonts = trial.initials_font;
+		var dec_arrow = trial.dec_arrow;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -383,8 +404,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
 
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
-		var player_on;
-		var player_ids = ['player1','Pa','O1','O2'];
+		var player_ids = [player1,'Pa','O1','O2'];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -744,6 +764,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
 				if (dectype == 1){
 						//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
 						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
 						ctx.strokeStyle = 'red';
@@ -752,6 +773,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
 				} else if (dectype == 2){
 					//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
 						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
 						ctx.strokeStyle = 'red';
@@ -760,6 +782,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
 				} else if (dectype == 3){
 					//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
 						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2);
 						ctx.strokeStyle = 'red';
@@ -768,6 +791,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
 				} else if (dectype == 4){
 					//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
 						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
 						ctx.strokeStyle = 'red';
@@ -828,7 +852,7 @@ jsPsych.plugins["main-decision-training"] = (function() {
       		}//End of if border === true
 
 
-
+      					ctx.font = player_fonts;
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);

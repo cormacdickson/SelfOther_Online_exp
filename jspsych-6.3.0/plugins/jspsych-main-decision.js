@@ -173,13 +173,13 @@ jsPsych.plugins["main-decision"] = (function() {
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The location for each player'
 	      },
 				player_colours: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_colours',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The color of each player'
 	      },
 				dectype: {
@@ -193,6 +193,18 @@ jsPsych.plugins["main-decision"] = (function() {
 	        pretty_name: 'dec_num',
 	        default: 0,
 	        description: 'first or second decicion'
+	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
+	      		dec_arrow: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'dec_arrow ',
+	        default: 'nan',
+	        description: 'settings for how dec_arrow is displayed'
 	      },
 	    }
 	 }
@@ -270,6 +282,8 @@ jsPsych.plugins["main-decision"] = (function() {
 		var dec_num					= trial.dec_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
+		var player_fonts = trial.initials_font;
+		var dec_arrow = trial.dec_arrow;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -744,6 +758,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				if (dectype[dec_num] == 1){
 						//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
 						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
 						ctx.strokeStyle = 'red';
@@ -752,6 +767,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				} else if (dectype[dec_num] == 2){
 					//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
 						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
 						ctx.strokeStyle = 'red';
@@ -760,6 +776,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				} else if (dectype[dec_num] == 3){
 					//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
 						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2);
 						ctx.strokeStyle = 'red';
@@ -768,6 +785,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				} else if (dectype[dec_num] == 4){
 					//draw an arrow
 						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
 						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
 						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
 						ctx.strokeStyle = 'red';
@@ -828,7 +846,7 @@ jsPsych.plugins["main-decision"] = (function() {
       		}//End of if border === true
 
 
-
+      					ctx.font = player_fonts;
 						ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 						ctx.textAlign = "center";
 						ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);

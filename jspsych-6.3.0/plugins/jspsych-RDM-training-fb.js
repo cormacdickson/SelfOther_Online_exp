@@ -102,7 +102,13 @@ jsPsych.plugins["RDM-training-fb"] = (function() {
 	        pretty_name: 'player_colours',
 	        default: "nan",
 	        description: 'The color of each player'
-	      }
+	      },
+	      initials_font: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'initials_font',
+	        default: 'nan',
+	        description: 'The initials_font to be displayed for players'
+	      },
 	    }
 	 }
 
@@ -147,7 +153,7 @@ jsPsych.plugins["RDM-training-fb"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var player_colours  = trial.player_colours;
-		
+		var player_fonts = trial.initials_font;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -458,6 +464,7 @@ jsPsych.plugins["RDM-training-fb"] = (function() {
 	        	}//End of if square or
 
       		}//End of if border === true
+      	  ctx.font = player_fonts;
           ctx.textAlign = "center";
           ctx.fillStyle = player_colours[player_position[currentApertureNumber]];
 					ctx.fillText(player_ids[player_position[currentApertureNumber]], apertureCenterX, apertureCenterY);
