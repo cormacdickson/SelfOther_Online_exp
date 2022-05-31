@@ -53,7 +53,7 @@
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
     this_subs_schedule        			= eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
-    var RDM_pretrial_duration 			= 1500; // duration that the initials are displayed at the start of the exp
+    var RDM_pretrial_duration 			= 4000; // duration that the initials are displayed at the start of the exp
     var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
 
     var bcgnd_color 		  			    = "black";
@@ -158,7 +158,7 @@
 		button_label_next: ''
   	}
 
-    timeline.push(instructions_1)
+    //timeline.push(instructions_1)
 
 
 
@@ -202,7 +202,7 @@
 	    }
 	}
 
-	timeline.push(Get_ID_loop);
+	//timeline.push(Get_ID_loop);
 	// finished with initials
 	//------------------------------------------------------------------
 
@@ -246,7 +246,7 @@
 		}
 	};
 
-	timeline.push(rdm_instructions_1)
+	//timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -262,7 +262,7 @@
 			'<p>&#8594Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center"><p>'+
 			'<p>&#8594Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px";>× </span><p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
 			'</ul></ul></ul>'+ //<span style="color: red; font-weight:bold; font-size:35px; text-decoration:underline";>× </span>
-			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, otherwise will see a <u><strong>"Missed" </u></strong> on the screen<p>'+
+			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, otherwise will see a <u><strong>"missed" </u></strong> on the screen<p>'+
 			'<p>and your performance will be counted as incorrect.<p>'+
 			'</br><li><p>We will collect your peformance information when you do so.<p></li>'+ //<div style="text-decoration:underline; font-weight:bold"> </div>
 
@@ -276,7 +276,7 @@
 		button_label_next: ''
 	}
 
- 	timeline.push(rdm_instructions_2)
+ 	//timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
