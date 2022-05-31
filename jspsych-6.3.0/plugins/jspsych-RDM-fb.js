@@ -440,14 +440,12 @@ jsPsych.plugins["RDM-fb"] = (function() {
 
 		function drawfb(){
 			if (feedback == 2){
-				ctx.beginPath();	
-			    ctx.moveTo(window.innerWidth/2 - 20, window.innerHeight/2 - 20);
-			    ctx.lineTo(window.innerWidth/2 + 20, window.innerHeight/2 + 20);
+				
+				ctx.fillStyle = 'white';
+				ctx.textAlign = 'centre';
+				ctx.font = '25px Open Sans';
+				ctx.fillText('missed', window.innerWidth/2, window.innerHeight/2);
 
-			    ctx.moveTo(window.innerWidth/2 + 20, window.innerHeight/2 - 20);
-			    ctx.lineTo(window.innerWidth/2 - 20, window.innerHeight/2 + 20);
-				ctx.strokeStyle = 'red';
-			    ctx.stroke();
 			}
 		}
 

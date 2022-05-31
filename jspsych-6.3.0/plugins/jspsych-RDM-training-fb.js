@@ -494,7 +494,7 @@ function drawfb(){
 		ctx.fillStyle = 'white';
 		ctx.textAlign = 'centre';
 		ctx.font = '25px Open Sans';
-		ctx.fillText('Miss', window.innerWidth/2, window.innerHeight/2);
+		ctx.fillText('missed', window.innerWidth/2, window.innerHeight/2);
 	}
 }
 
