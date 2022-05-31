@@ -560,7 +560,7 @@
 	// if none right we want to show two of additional trial sequences
 	var if_no_Right_node = {
 		repetitions: 1,
-	    timeline: [RDM_pretrial,  RDM_training_ifnoneright_trial,  RDM_training_fb,  RDM_pretrial, RDM_training_ifnoneright_trial,  RDM_training_fb],
+	    timeline: [ RDM_training_ifnoneright_trial,  RDM_training_fb,  RDM_training_ifnoneright_trial,  RDM_training_fb],
 	    conditional_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
@@ -576,7 +576,7 @@
 	// if none wrong we want to show two of additional trial sequences
 	var if_no_Wrong_node = {
 		repetitions:1,
-	    timeline: [RDM_pretrial,  RDM_training_ifnonewrong_trial,  RDM_training_fb,  RDM_pretrial, RDM_training_ifnonewrong_trial,  RDM_training_fb],
+	    timeline: [ RDM_training_ifnonewrong_trial,  RDM_training_fb,  RDM_training_ifnonewrong_trial,  RDM_training_fb],
 	    conditional_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
@@ -595,11 +595,12 @@
 	// this is the rdm training block of 4 trials
 	//---------------------------------------------
 	var RDM_training_block = {
-		timeline: [RDM_pretrial, RDM_training_trial,RDM_training_fb],
+		timeline: [RDM_training_trial,RDM_training_fb],
 		timeline_variables: RDM_training_schedule,
 		randomize_order:false
 	}
-
+	
+	timeline.push(RDM_pretrial)
 	timeline.push(RDM_training_block)
 
 	///////////////////////////////////
@@ -610,6 +611,8 @@
 		randomize_order:false,
 		repetitions:1
 	}
+	
+	
 	timeline.push(RDM_training_if_block)
 
 //---------------------------------------------
@@ -628,10 +631,10 @@
 			'</br></br><div style="text-align: left; font-size:22px">'+
 			'<li><p>Well done! We ask you to do this task for approximately 2 min now. Try to pay your full attention and be as quick as accurate as possible.</p>'+
 			'<br><li><p> Note that you <u><strong>will not</strong></u> see performance feedback anymore, but we will still record your performance.<p>'+
-			'<br><li><p>The better your performance, the better your starting conditions for part2, the group competition task, so it is important for you to perform well. <p>'+
+			'<br><li><p>The better your performance, the better your starting conditions for part 2, the group competition task, so it is important for you to perform well. <p>'+
 
-			'<br><li><p>All four players (your team and the other team) will do the performance assessment before part2. You will see the performance of each of the players <p>'+
-			 '<p>including your own performance in part 2.</p>'+
+			'<br><li><p>All four players (your team and the other team) will do the performance assessment before part 2. You will see the performance of each of the players <p>'+
+			 '<p>including your own performance in part 1.</p>'+
 
 			'</br><li><p> Please try as hard as you can to get as many correct performances as possible!<p>' +
 			'</br><li><p> Press right arrow key to start when you are ready.<p>' +
@@ -660,21 +663,22 @@
 
 	// this is the main block which shows the rdm trials
 	var RDM_block = {
-		timeline: [RDM_pretrial, RDM_trial,RDM_fb],
+		timeline: [RDM_trial,RDM_fb],
 		repetitions: num_RDM_trials,
 		on_timeline_start: function(){
 		},
 		on_timeline_finish: function(){
 		}
 	}
-
+	
+	timeline.push(RDM_pretrial)
 	timeline.push(RDM_block)
 
 
 	// if none right we want to show two of additional trial sequences
 	var if_missed_lots = {
 		repetitions: num_RDM_repeat_trials,
-	    timeline: [RDM_pretrial, RDM_trial,RDM_fb],
+	    timeline: [RDM_trial,RDM_fb],
 	    //timeline_variables: RDM_schedule,
 	    conditional_function: function(){
 	        // get the data from the previous trial,
