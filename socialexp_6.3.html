@@ -53,7 +53,7 @@
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
     this_subs_schedule        			= eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
-    var RDM_pretrial_duration 			= 1500; // duration that the initials are displayed at the start of the exp
+    var RDM_pretrial_duration 			= 4000; // duration that the initials are displayed at the start of the exp
     var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
 
     var bcgnd_color 		  			    = "black";
@@ -158,7 +158,7 @@
 		button_label_next: ''
   	}
 
-    timeline.push(instructions_1)
+    //timeline.push(instructions_1)
 
 
 
@@ -202,7 +202,7 @@
 	    }
 	}
 
-	timeline.push(Get_ID_loop);
+	//timeline.push(Get_ID_loop);
 	// finished with initials
 	//------------------------------------------------------------------
 
@@ -246,7 +246,7 @@
 		}
 	};
 
-	timeline.push(rdm_instructions_1)
+	//timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -262,7 +262,7 @@
 			'<p>&#8594Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center"><p>'+
 			'<p>&#8594Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px";>× </span><p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
 			'</ul></ul></ul>'+ //<span style="color: red; font-weight:bold; font-size:35px; text-decoration:underline";>× </span>
-			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, otherwise will see a <u><strong>"Missed" </u></strong> on the screen<p>'+
+			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, otherwise will see a <u><strong>"missed" </u></strong> on the screen<p>'+
 			'<p>and your performance will be counted as incorrect.<p>'+
 			'</br><li><p>We will collect your peformance information when you do so.<p></li>'+ //<div style="text-decoration:underline; font-weight:bold"> </div>
 
@@ -276,7 +276,7 @@
 		button_label_next: ''
 	}
 
- 	timeline.push(rdm_instructions_2)
+ 	//timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
@@ -560,7 +560,7 @@
 	// if none right we want to show two of additional trial sequences
 	var if_no_Right_node = {
 		repetitions: 1,
-	    timeline: [RDM_pretrial,  RDM_training_ifnoneright_trial,  RDM_training_fb,  RDM_pretrial, RDM_training_ifnoneright_trial,  RDM_training_fb],
+	    timeline: [ RDM_training_ifnoneright_trial,  RDM_training_fb,  RDM_training_ifnoneright_trial,  RDM_training_fb],
 	    conditional_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
@@ -576,7 +576,7 @@
 	// if none wrong we want to show two of additional trial sequences
 	var if_no_Wrong_node = {
 		repetitions:1,
-	    timeline: [RDM_pretrial,  RDM_training_ifnonewrong_trial,  RDM_training_fb,  RDM_pretrial, RDM_training_ifnonewrong_trial,  RDM_training_fb],
+	    timeline: [ RDM_training_ifnonewrong_trial,  RDM_training_fb,  RDM_training_ifnonewrong_trial,  RDM_training_fb],
 	    conditional_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
@@ -595,11 +595,12 @@
 	// this is the rdm training block of 4 trials
 	//---------------------------------------------
 	var RDM_training_block = {
-		timeline: [RDM_pretrial, RDM_training_trial,RDM_training_fb],
+		timeline: [RDM_training_trial,RDM_training_fb],
 		timeline_variables: RDM_training_schedule,
 		randomize_order:false
 	}
-
+	
+	timeline.push(RDM_pretrial)
 	timeline.push(RDM_training_block)
 
 	///////////////////////////////////
@@ -610,6 +611,8 @@
 		randomize_order:false,
 		repetitions:1
 	}
+	
+	
 	timeline.push(RDM_training_if_block)
 
 //---------------------------------------------
@@ -628,10 +631,10 @@
 			'</br></br><div style="text-align: left; font-size:22px">'+
 			'<li><p>Well done! We ask you to do this task for approximately 2 min now. Try to pay your full attention and be as quick as accurate as possible.</p>'+
 			'<br><li><p> Note that you <u><strong>will not</strong></u> see performance feedback anymore, but we will still record your performance.<p>'+
-			'<br><li><p>The better your performance, the better your starting conditions for part2, the group competition task, so it is important for you to perform well. <p>'+
+			'<br><li><p>The better your performance, the better your starting conditions for part 2, the group competition task, so it is important for you to perform well. <p>'+
 
-			'<br><li><p>All four players (your team and the other team) will do the performance assessment before part2. You will see the performance of each of the players <p>'+
-			 '<p>including your own performance in part 2.</p>'+
+			'<br><li><p>All four players (your team and the other team) will do the performance assessment before part 2. You will see the performance of each of the players <p>'+
+			 '<p>including your own performance in part 1.</p>'+
 
 			'</br><li><p> Please try as hard as you can to get as many correct performances as possible!<p>' +
 			'</br><li><p> Press right arrow key to start when you are ready.<p>' +
@@ -660,21 +663,22 @@
 
 	// this is the main block which shows the rdm trials
 	var RDM_block = {
-		timeline: [RDM_pretrial, RDM_trial,RDM_fb],
+		timeline: [RDM_trial,RDM_fb],
 		repetitions: num_RDM_trials,
 		on_timeline_start: function(){
 		},
 		on_timeline_finish: function(){
 		}
 	}
-
+	
+	timeline.push(RDM_pretrial)
 	timeline.push(RDM_block)
 
 
 	// if none right we want to show two of additional trial sequences
 	var if_missed_lots = {
 		repetitions: num_RDM_repeat_trials,
-	    timeline: [RDM_pretrial, RDM_trial,RDM_fb],
+	    timeline: [RDM_trial,RDM_fb],
 	    //timeline_variables: RDM_schedule,
 	    conditional_function: function(){
 	        // get the data from the previous trial,
