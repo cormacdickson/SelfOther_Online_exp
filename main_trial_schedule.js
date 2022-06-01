@@ -7,7 +7,7 @@ var main_sch = [
   {} //trial 5
   ];
 
-  // each element represents one trial, scale to the number of trials we want to have in the main block
+  // each element {} represents one trial, scale the number of elements to equal the number of trials we want to have in the main block
   // by adding momore rows.
   // each element is empty because we now assign the trial variables within the trial node.
   // (its a hack but works as a quick fix)
@@ -101,5 +101,5 @@ var main_sch_1 = [
   ]
 
 
-
-//add aditional schedules here
+//etc
+//add aditional schedules here to make up a total of 
