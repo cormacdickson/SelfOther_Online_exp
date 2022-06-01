@@ -102,4 +102,4 @@ var main_sch_1 = [
 
 
 //etc
-//add aditional schedules here to make up a total of 
+//add aditional schedules here to make up a total of 56 possible schedules hich we choose from depending on the participants performance
