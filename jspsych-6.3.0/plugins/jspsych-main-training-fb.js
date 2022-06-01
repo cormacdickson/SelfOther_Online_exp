@@ -786,39 +786,107 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
 		function drawDecisionArrow(){
 			// need to know if we are in the first decisionor second decisionor
-			// need to know what arrow we want to drawn
-			if (dectype[dec_num] == 1){
+				// need to know what arrow we want to drawn
+
+				if (dectype == 1){
+						//draw an arrow
+						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+						
+						ctx.lineWidth = dec_arw_display.arrow_head_thickness;
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
+						ctx.lineTo(allApertureCentreX[0] + apertureWidth/2 + apertureWidth/8, allApertureCentreY[0]+apertureWidth/8)
+						
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
+						ctx.lineTo(allApertureCentreX[0] + apertureWidth/2 + apertureWidth/8, allApertureCentreY[0]-apertureWidth/8)
+	
+						ctx.moveTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2 - apertureWidth/8, allApertureCentreY[2]+apertureWidth/8)
+						
+						ctx.moveTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2 - apertureWidth/8, allApertureCentreY[2]-apertureWidth/8)
+	
+						ctx.strokeStyle = 'dodgerblue';
+						ctx.stroke();
+	
+
+				} else if (dectype == 2){
 					//draw an arrow
-					ctx.beginPath();
-					ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0]);
-					ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2]);
-					ctx.strokeStyle = 'red';
-			    	ctx.stroke();
+						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2 - apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2 + apertureWidth/4);
+						
+						ctx.lineWidth = dec_arw_display.arrow_head_thickness;
+						
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2 - apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2)
+						
+						ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2 - apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[0] + apertureWidth/2 + apertureWidth/4, allApertureCentreY[0] + apertureWidth/2 - apertureWidth/4)
 
-			} else if (dectype[dec_num] == 2){
-				//draw an arrow
-					ctx.beginPath();
-					ctx.moveTo(allApertureCentreX[0] + apertureWidth/2, allApertureCentreY[0] + apertureWidth/2);
-					ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2);
-					ctx.strokeStyle = 'red';
-			    	ctx.stroke();
+						ctx.moveTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2 + apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2)
+						
+						ctx.moveTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3] - apertureWidth/2 + apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2 - apertureWidth/4, allApertureCentreY[3] - apertureWidth/2 + apertureWidth/4)
 
-			} else if (dectype[dec_num] == 3){
-				//draw an arrow
-					ctx.beginPath();
-					ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2);
-					ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2);
-					ctx.strokeStyle = 'red';
-			    	ctx.stroke();
+						ctx.strokeStyle = 'dodgerblue';
+				    	ctx.stroke();
 
-			} else if (dectype[dec_num] == 4){
-				//draw an arrow
-					ctx.beginPath();
-					ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
-					ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
-					ctx.strokeStyle = 'red';
-			    	ctx.stroke();
-			}
+
+
+				} else if (dectype == 3){
+					//draw an arrow
+						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
+						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2 + apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2 - apertureWidth/4);
+						
+						ctx.lineWidth = dec_arw_display.arrow_head_thickness;
+						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2 + apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[1] + apertureWidth/2 + apertureWidth/4, allApertureCentreY[1] - apertureWidth/2 + apertureWidth/4)
+						
+						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2 + apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1] - apertureWidth/2)
+
+						ctx.moveTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2 - apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2-apertureWidth/4, allApertureCentreY[2] + apertureWidth/2 - apertureWidth/4)
+						
+						ctx.moveTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2 - apertureWidth/4);
+						ctx.lineTo(allApertureCentreX[2] - apertureWidth/2, allApertureCentreY[2] + apertureWidth/2)
+						
+
+						ctx.strokeStyle = 'dodgerblue';
+				    	ctx.stroke();
+
+				} else if (dectype == 4){
+					//draw an arrow
+						ctx.beginPath();
+						ctx.lineWidth = dec_arrow.arrow_body_thickness;
+		
+						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
+						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
+						
+						ctx.lineWidth = dec_arw_display.arrow_head_thickness;
+						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
+						ctx.lineTo(allApertureCentreX[1] + apertureWidth/2 + apertureWidth/8, allApertureCentreY[1]+apertureWidth/8)
+						
+						ctx.moveTo(allApertureCentreX[1] + apertureWidth/2, allApertureCentreY[1]);
+						ctx.lineTo(allApertureCentreX[1] + apertureWidth/2 + apertureWidth/8, allApertureCentreY[1]-apertureWidth/8)
+	
+						ctx.moveTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
+						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2 - apertureWidth/8, allApertureCentreY[3]+apertureWidth/8)
+						
+						ctx.moveTo(allApertureCentreX[3] - apertureWidth/2, allApertureCentreY[3]);
+						ctx.lineTo(allApertureCentreX[3] - apertureWidth/2 - apertureWidth/8, allApertureCentreY[3]-apertureWidth/8)
+	
+						ctx.strokeStyle = 'dodgerblue';						
+				    	ctx.stroke();
+				}
+
 		}
 
 
@@ -926,16 +994,16 @@ jsPsych.plugins["main-training-fb"] = (function() {
 
 			if (engaged==0){
 				ctx.lineWidth = fb_box.fb_line_thick;
-				ctx.strokeStyle = 'red';
+				ctx.strokeStyle = 'dodgerblue';
 				ctx.beginPath();
-				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
+				ctx.rect(allApertureCentreX[0] - apertureWidth/1.5, allApertureCentreY[0] -apertureWidth/1.5, fb_box_display.fb__box_wdt, fb_box_display.fb__box_ht);
 				ctx.stroke();
 
 			} else if (engaged==1){
 				ctx.lineWidth = fb_box.fb_line_thick;
-				ctx.strokeStyle = 'red';
+				ctx.strokeStyle = 'dodgerblue';
 				ctx.beginPath();
-				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, apertureWidth*1.5, apertureWidth*3);
+				ctx.rect(allApertureCentreX[2] - apertureWidth/1.5, allApertureCentreY[2] -apertureWidth/1.5, fb_box_display.fb__box_wdt, fb_box_display.fb__box_ht);
 				ctx.stroke();
 			}
 			textfeedbackdelay = window.setTimeout(text_fb,300);
