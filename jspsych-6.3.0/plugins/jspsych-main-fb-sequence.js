@@ -625,7 +625,12 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				border_thickness: trial.border_thickness,
 				border_color: trial.border_color,
 				canvas_width: canvasWidth,
-				canvas_height: canvasHeight
+				canvas_height: canvasHeight,
+				S_perf: trial.S_perf,
+				P_perf: trial.P_perf,
+				O1_perf: trial.O1_perf,
+				O2_perf: trial.O2_perf
+
 			}
 
 			//Remove the canvas as the child of the display_element element

@@ -169,7 +169,7 @@
 		button_label_next: ''
   	}
 
-    //timeline.push(instructions_1)
+    timeline.push(instructions_1)
 
 
 
@@ -256,7 +256,7 @@
 		}
 	};
 
-	//timeline.push(rdm_instructions_1)
+	timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -286,7 +286,7 @@
 		button_label_next: ''
 	}
 
- 	//timeline.push(rdm_instructions_2)
+ 	timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
@@ -617,8 +617,8 @@
 		randomize_order:false
 	}
 	
-	//timeline.push(RDM_pretrial)
-	//timeline.push(RDM_training_block)
+	timeline.push(RDM_pretrial)
+	timeline.push(RDM_training_block)
 
 	///////////////////////////////////
 	// this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -630,7 +630,7 @@
 	}
 	
 	
-	//timeline.push(RDM_training_if_block)
+	timeline.push(RDM_training_if_block)
 
 //---------------------------------------------
 ///------------ Training Ends ------------///
@@ -663,7 +663,7 @@
 		button_label_next: ''
 	}
 
-	//timeline.push(instructions_3)
+	timeline.push(instructions_3)
 
 
 	// useful node to insert if you want to check the data output from a given triafl
@@ -688,8 +688,8 @@
 		}
 	}
 	
-	//timeline.push(RDM_pretrial)
-	//timeline.push(RDM_block)
+	timeline.push(RDM_pretrial)
+	timeline.push(RDM_block)
 
 
 	//  if they didnt respond to a lot of trials then we want to add more
@@ -709,21 +709,21 @@
 	            return false;
 	        }
 	    },
-	    loop_function: function(){
+	    //loop_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
-	        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	        var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
-	        var percent_no_resp = sum_no_response/total_trial_num;
-	        if(percent_no_resp > .2){
-	            return true;
-	        } else {
-	            return false;
-	        }
-	    },
+	    //    var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
+	    //    var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
+	    //    var percent_no_resp = sum_no_response/total_trial_num;
+	    //    if(percent_no_resp > .2){
+	    //        return true;
+	    //    } else {
+	    //        return false;
+	    //    }
+	  //  },
 	}
 
-	//timeline.push(if_missed_lots)
+	timeline.push(if_missed_lots)
 
 
 //---------------------------------------------
@@ -751,6 +751,7 @@
 			// now get the index of this schedule
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
 			var schedule_id   = "main_sch_" + closest_sch_index;
+			//trial.schedule_id = schedule_id;
 			// this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
 		}
 	}
@@ -789,7 +790,7 @@
        button_label_next: ''
     }
 
- 	//timeline.push(instructions_4)
+ 	timeline.push(instructions_4)
 
 
 
@@ -971,8 +972,8 @@
 		}
 	};
 
-	//timeline.push(main_instructions_1)
-	//timeline.push(main_practice_sequence)
+	timeline.push(main_instructions_1)
+	timeline.push(main_practice_sequence)
 	timeline.push(main_instructions_2)
 	timeline.push(main_instructions_3)
 
@@ -1290,8 +1291,8 @@
 	  }
 	}
 
-	timeline.push(main_practice_sequence) // only show the sequence once
-	timeline.push(main_training_block)    // then ask 4 questions
+	//timeline.push(main_practice_sequence) // only show the sequence once
+	//timeline.push(main_training_block)    // then ask 4 questions
 
 	var main_instructions_5 = {
 		type: 'instructions',
@@ -1313,7 +1314,7 @@
 		button_label_next: ''
 	}
 
-	timeline.push(main_instructions_5)
+	//timeline.push(main_instructions_5)
 
 
 
@@ -1391,7 +1392,7 @@
 		response_ends_trial: false
 	}
 
-	timeline.push(exp_end_screen)
+	//timeline.push(exp_end_screen)
 
 
 // use this function to save data async
