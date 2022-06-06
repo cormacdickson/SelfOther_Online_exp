@@ -778,9 +778,6 @@
 			'<p>&#8594You will see performances of each player on every round. Correct performance will be displayed as: <img src="images/fb_correct.png" width="30px" class="center"> ; Incorrect performance will be displayed as:<span style="color:red; font-weight:bold;font-size:35px";> x </span><p>'+
 			'<p>&#8594The performance will go very quickly, and you will need to keep track of the number of correct performances per player.</p>'+
 			'</ul></ul>'+
-
-          //'<p> Correct performance will be displayed as:<img src="images/fb_correct.png" width="30px" class="center"><p>'+
-          //'<p>  Incorrect performance will be displayed as:<img src="images/fb_wrong.png" width="60px" class="center"><p>'+
 		  '<p><br><li>We will now show you how the performance phase looks like. Press <right arrow> button to start.<p>'+
            '</br>'+
 		   '</div>'
@@ -807,13 +804,21 @@
 			chosenValue = Math.random() < 0.5 ? 0 : 180;
 			return chosenValue;
 	    },
-		S_perf : [0,1,0,1,0,1],
-		P_perf : [0,1,0,1,0,1],
-		O1_perf : [0,1,0,1,0,1],
-		O2_perf : [0,1,0,1,0,1],
-		coherence: 0.5,
+		//S_perf : [1,1,0,1,0,1], //This is the sequence we need
+		//P_perf : [1,0,1,1,1,0],
+		//O1_perf : [1,1,1,1,0,1],
+		//O2_perf : [1,0,0,1,0,0],
+
+		S_perf : [1,0,1,0,1,0],
+		P_perf : [1,0,1,0,1,0],
+		O1_perf : [1,0,1,0,1,0],
+		O2_perf : [1,0,1,0,1,0],
+
+		coherence: 0.75,
 		player_position: positions,
-		p_order: [0,1,2,3], // index of the player to show rdk for [self,partner,op1,op2]
+		//p_order: [0,2,3,1], // index of the player to show rdk for [self,O1,O2,Pa], this is the order we need 
+		//p_order: [1,2,3,0], // checked: [Pa, O1, O2, S]: yes
+		p_order: [0,1,2,3], // just for test;
 		border: false,
 		player_colours: player_cols,
 		number_of_dots: total_dots, //Different parameter for each aperture. Array length must equal number_of_apertures
@@ -1245,6 +1250,7 @@
 			trial.player1 = p1;
 			var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
 			trial.previous_dot_positions = dotArray3d;
+		    trial.outcomeEngage = Object.values (this_subs_schedule[main_trial_count].outcomeEngage)
 		},
 		type:"main-fb",
 		number_of_apertures: Aperturenum, //This needs to be set if more than one aperture
@@ -1291,8 +1297,8 @@
 	  }
 	}
 
-	//timeline.push(main_practice_sequence) // only show the sequence once
-	//timeline.push(main_training_block)    // then ask 4 questions
+	timeline.push(main_practice_sequence) // only show the sequence once
+	timeline.push(main_training_block)    // then ask 4 questions
 
 	var main_instructions_5 = {
 		type: 'instructions',
@@ -1317,12 +1323,11 @@
 	//timeline.push(main_instructions_5)
 
 
-
-
 	var break_trial = {
 		type: 'html-keyboard-response',
 		stimulus:  "<p style='font-size: 25px'>Time to take a break!</p>" +
-		      		"<p style='font-size: 25px'>Take a rest for about a minute. Then, Continue by pressing 'C'</p>",
+		           "<p style = 'font-size: 25px'> x session of y finished, you made n points so far in the task </p>" +
+				   "<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>",
 		choices: "c"
 	};
 

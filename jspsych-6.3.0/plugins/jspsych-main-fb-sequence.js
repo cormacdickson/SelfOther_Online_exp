@@ -292,7 +292,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//Convert the parameter variables to those that the code below can use
 		var player_position 		= trial.player_position; //trial.player_position; // array of each player_position initials in order
 
-		var porder
+		var porder = trial.porder;
 
 		if (trial.p_order.length>1){
 			porder = trial.p_order;//[0,3,2,1];//
@@ -629,7 +629,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				S_perf: trial.S_perf,
 				P_perf: trial.P_perf,
 				O1_perf: trial.O1_perf,
-				O2_perf: trial.O2_perf
+				O2_perf: trial.O2_perf,
+				porder:trial.p_order
 
 			}
 

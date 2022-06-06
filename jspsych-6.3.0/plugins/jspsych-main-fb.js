@@ -189,6 +189,12 @@ jsPsych.plugins["main-fb"] = (function() {
 	        default: undefined,
 	        description: 'The color of each player'
 	      },
+		  outcomeEngage: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'outcomeEngage',
+	        default: "nan",
+	        description: 'outcome of engaging'
+	      },
 				dectype: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'dectype',
@@ -300,6 +306,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		var feedback = trial.feedback;
 		var player_fonts = trial.initials_font;
 		var fb_box = trial.fb_box;
+		var outcomeEngage = trial.outcomeEngage;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -576,7 +583,9 @@ jsPsych.plugins["main-fb"] = (function() {
 				border_thickness: trial.border_thickness,
 				border_color: trial.border_color,
 				canvas_width: canvasWidth,
-				canvas_height: canvasHeight
+				canvas_height: canvasHeight,
+				outcomeEngage: trial.outcomeEngage
+
 			}
 
 			//Remove the canvas as the child of the display_element element
@@ -981,6 +990,17 @@ jsPsych.plugins["main-fb"] = (function() {
 
 			}
 		}
+
+		//test from Yongling : 
+		 function CalculPoint(){
+	       n=0 		
+	      if (feedback==0){		
+ 				n=n+outcomeEngage;
+		} 		
+	      else if (feedback==1){
+	            n=n;
+ 		}
+	}
 
 
 
