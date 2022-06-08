@@ -903,7 +903,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('=> <left arrow> means you engage in competition with O2. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
 				ctx.fillText('   - You will get points if the performance you have just seen', right_text_origin_x, right_text_origin_y+(line_offset*5));
 				ctx.fillText('   - was better than O2’s performance and lose points if you had', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('   - been worse. Points won/lost are equivalent to the,', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('   - been worse. Points won/lost are equivalent to the', right_text_origin_x, right_text_origin_y+(line_offset*7));
 				ctx.fillText('   - true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*8));
 				
 				ctx.fillText('=> <right arrow> means you avoid competition and in this case', right_text_origin_x, right_text_origin_y+(line_offset*10));
@@ -939,6 +939,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 			} else if (instr_num==2 && response_num==0){
 				
+				ctx.textAlign = 'left';
 				ctx.fillStyle = 'white';
 				ctx.font = '25px Open sans';
 				ctx.fillText('=> We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y-line_offset*9);
