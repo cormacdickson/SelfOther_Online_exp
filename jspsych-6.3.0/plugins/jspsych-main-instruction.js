@@ -959,7 +959,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('   -here. You don’t lose points, since avoiding gives you 0 point.', right_text_origin_x, right_text_origin_y+(line_offset*4));
 
 				ctx.fillText('=> But if you engaged in the competition, since your partner ', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('   - performed 1 point worse than O2, you lose 1 point.', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('   - performed 1 point worse than O1, you lose 1 point.', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
 				ctx.fillStyle = 'red';
 				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));

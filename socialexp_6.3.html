@@ -158,7 +158,7 @@
 
 		'<p></br><li>The game will take about 30 minutes and has two parts:</p>'+
         '<ul><ul><ul>'+
-		 '<p> &#8594 Part 1: Individual performance assessment(~5min) </br>&#8594 Part 2: The group competition task (~25min)<p>'+
+		 '<p> &#8594 Part 1: Individual performance assessment (~5min) </br>&#8594 Part 2: The group competition task (~25min)<p>'+
 	    '</ul></ul></ul>' +
 		 '<p></br><li>Press the arrow to proceed to the next screen and enter you initials.</p>'+
 		 '</br>'+
@@ -770,7 +770,7 @@
           '<h1>Part 2 –Group competition task </h1>'+
 
 		  '</br><div style="text-align: left; font-size:22px">'+
-          '<br><p><li>In the group competition task, you will see your performance from part 1 and also performance of the three other players <u>(performance phase).</u> We ask you to make <p>'+
+          '<br><p><li>In the group competition task, you will see your performance from part 1 and also the performances from the three other players <u>(performance phase).</u> We ask you to make <p>'+
            '<p>decisions about these performances <u>(decision phase)</u>. By making good decisions, you can collect points. The goal of part 2 is to collect as many points as possible.<p>'+
            //'<p> The goal of part 2 is to collect as many points as possible.<p>'+
           '<br><p><li>During the <u>performance phase</u>:<p>'+
@@ -986,7 +986,7 @@
 		 '<h1>Part 2 –The group competition task </h1>'+
 		 '</br><p><div style="text-align:left; font-weight:bold; font-size:30px"> Notes:</div></p>'+
 		 '</br><div style="text-align: left; font-size:22px">'+
-		 '<li><p> Try to remember the performance from everyone on every round.</p>'+
+		 '<li><p> Try to remember the performances from everyone on every round.</p>'+
 		 '</br><li><p>We will ask you to compare the performance between one player (i.e., you or your partner) from your team and one player (i.e., O1 or O2) from the other team.</p>' +
 		 '</br><li><p> You can get just as many points from decisions based on your partner’s performance as your own! What matters is which team was better!</p>'+
 		 '<br><li><p> To collect as many points as possible, you should: <br>'+
@@ -1248,7 +1248,7 @@
 			trial.player1 = p1;
 			var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
 			trial.previous_dot_positions = dotArray3d;
-		    trial.outcomeEngage = Object.values (this_subs_schedule[main_trial_count].outcomeEngage)
+		    //trial.outcomeEngage = Object.values (this_subs_schedule[main_trial_count].outcomeEngage) -adding this command will interrupt data saving, but I don't know why -YL;
 		},
 		type:"main-fb",
 		number_of_apertures: Aperturenum, //This needs to be set if more than one aperture
@@ -1308,7 +1308,7 @@
 			'</br><li><p>After every performance phase, you only need to do <u>two</u> decisions (one after the other).</p>' +
 			'</br><li><p>The decisions always refer to the performances you have seen just before. These performances will be <strong> NEW </strong> every time you see them. </p>'+
 			'<p>This will be different to the practical round just now and it will be a real challenge to keep track of the information! </p>'+
-			'</br><li><p>You will know your cumulative points when you finish one session. </p>'+ //Your decision outcome will not be shown on every round, but 
+			//'</br><li><p>You will know your cumulative points when you finish one session. </p>'+ //Your decision outcome will not be shown on every round, but 
 			'</br><li><p>If you are ready, press below key to start.</p>' +
 			'</br>'+
 			'</div>'
@@ -1342,9 +1342,9 @@
 	    // },
 		type: 'html-keyboard-response',
 		stimulus:  "<p style='font-size: 25px'>Time to take a break!</p>" +
-		           "<p style = 'font-size: 25px'> x session of y finished, you made n points so far in the task </p>" +
+		           //"<p style = 'font-size: 25px'> x session of y finished, you made n points so far in the task </p>" +
 				   "<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>",
-		choices: "c"
+		choices: ["c"],
 	};
 
 	var break_conditional = {
