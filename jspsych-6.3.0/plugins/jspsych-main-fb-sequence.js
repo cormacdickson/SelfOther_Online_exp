@@ -554,9 +554,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			fb_index = 0;   // reset the feedback index to zero
 
 			if(loop_number >3){
-				display_element.innerHTML='';
-				//ctx.clearRect(0, 0, canvas.width, canvas.height);
-				stepTimeoutID = window.setTimeout(end_trial,500); //This timeoutID is then used to cancel the timeout should the subject press a valid key
+				window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
+				stepTimeoutID = window.setTimeout(end_trial,200); //
 			}
 		}
 
