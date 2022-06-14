@@ -35,7 +35,7 @@
     <script src="DUMMY_Porder_schedule.js"></script>
     <script src="rdmperf.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    
   	</head>
 
   	<body>
@@ -65,7 +65,7 @@
     var Aperturetype 	  	  		  	= 1; // type of aperture used (1=circle)
     var Aperturenum       	  			= 4; // number of apertures
   	var RDM_training_fb_duration 		= 500; // duration that fb is displayed for during rdm task
-  	var Main_fb_sequence_dur 	 	  	= [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
+  	var Main_fb_sequence_dur 	 	  	= [300,100,200,100,200,100,200,100,200,100,200,100,200]; // each timing corresponds to a portion of the feedback delay
   	var Main_decision_duration   		= 3000; //
   	var Main_decision_choices    		= ["arrowleft","arrowright"]; //responses only registered if they are listed here
     var Main_decision_fb_dur     		= 1000;
@@ -73,7 +73,7 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_trials           		= 100; //
+    var num_RDM_trials           		= 5; //
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
@@ -174,7 +174,7 @@
 		button_label_next: ''
   	}
 
-    //timeline.push(instructions_1)
+    timeline.push(instructions_1)
 
 
 
@@ -238,7 +238,7 @@
 		screen_num: 0, //number of sscreens that participant has to flicjk through
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		number_of_apertures: Aperturenum,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
@@ -261,7 +261,7 @@
 		}
 	};
 
-	//timeline.push(rdm_instructions_1)
+	timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -818,12 +818,7 @@
 		P_perf : [1,0,1,1,1,0],
 		O1_perf : [1,1,1,1,0,1],
 		O2_perf : [1,0,0,1,0,0],
-
-		// S_perf : [1,0,1,0,1,0],
-		// P_perf : [1,0,1,0,1,0],
-		// O1_perf : [1,0,1,0,1,0],
-		// O2_perf : [1,0,1,0,1,0],
-
+		RDK_type: RDktype, //Applied to all apertures if only one value
 		coherence: 0.75,
 		player_position: positions,
 		p_order: [0,1,2,3], // just for test;
@@ -867,7 +862,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -913,7 +908,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -958,7 +953,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -1124,7 +1119,6 @@
 		type:"main-decision-training",
 		dectype: jsPsych.timelineVariable('dectype'),
 		outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
-		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
 		choices: Main_decision_choices,
 		player_colours: player_cols,
@@ -1172,7 +1166,6 @@
 		},
 		type:"main-decision",
 		dec_num: 0, // first or second decison
-		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
 		choices: Main_decision_choices,
 		player_colours: player_cols,
@@ -1223,7 +1216,6 @@
 		},
 		type:"main-decision",
 		dec_num: 1, // first or second decison
-		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
 		choices: Main_decision_choices,
 		player_colours: player_cols,

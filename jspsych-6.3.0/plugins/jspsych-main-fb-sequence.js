@@ -349,7 +349,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		 5 - different && random walk
 		 6 - different && random direction         */
 
-		var RDK = 3; //trial.RDK_type;
+		var RDK = trial.RDK_type;
 
 
 		/*
@@ -554,7 +554,9 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			fb_index = 0;   // reset the feedback index to zero
 
 			if(loop_number >3){
-				end_trial(); 	// if we have already shown 4 players end the trial
+				display_element.innerHTML='';
+				//ctx.clearRect(0, 0, canvas.width, canvas.height);
+				stepTimeoutID = window.setTimeout(end_trial,500); //This timeoutID is then used to cancel the timeout should the subject press a valid key
 			}
 		}
 
@@ -565,7 +567,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			step++; 		// increment current step
 			stepTimerHasStarted = false; // reset the step timer
 
-			if (step > 13){
+			if (step > 12){
 				increment_player(); // if we have finished all steps go to next player
 			} else if (fb_steps.includes(step)){
 					draw_fb();				// if this is a feedback step draw the correspoding fb
