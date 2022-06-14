@@ -55,7 +55,14 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		      pretty_name: "Background color",
 		      default: "black",
 		      description: "The background of the stimulus"
-		    }
+		    },
+			
+		 //   schedule_id: {
+	     //      type: jsPsych.plugins.parameterType.HTML_STRING,
+		//		pretty_name: 'schedule_id',
+		//		default: 'nan',
+		//		description: 'The paired schedule_id'
+		//	  },
 	    }
 	 }
 
@@ -81,6 +88,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		var num_steps =  progress_bar_width/progress_step_size;
 		var intervalID;
 		var timerID;
+		//var schedule_id = trial.schedule_id;
 		//--------------------------------------
 		//----------SET PARAMETERS END----------
 		//--------------------------------------
@@ -149,7 +157,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		function end_trial() {
 		window.clearTimeout(timerID)
 		 var trial_data = {
-
+		 //schedule_id: trial.schedule_id 
 		 }
 					//Remove the canvas as the child of the display_element element
 			display_element.innerHTML='';

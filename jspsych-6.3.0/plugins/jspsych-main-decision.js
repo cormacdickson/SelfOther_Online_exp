@@ -170,6 +170,12 @@ jsPsych.plugins["main-decision"] = (function() {
 		      default: 1,
 		      description: "index of rdk to turn on"
 		    },
+			     player1: {
+			   type: jsPsych.plugins.parameterType.HTML_STRING,
+				pretty_name: 'player1',
+				default: 'nan',
+				description: 'The HTML string to be displayed for player1'
+			  },
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
@@ -221,6 +227,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.player_on = assignParameterValue(trial.player_on, "nan");
+		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
 		trial.choices = assignParameterValue(trial.choices, []);
 		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
@@ -262,6 +269,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		//Convert the parameter variables to those that the code below can use
 		var player_position = trial.player_position; // array of each player_position initials in order
 		var player_on = trial.player_on;
+		var player1 = trial.player1;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
@@ -398,7 +406,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		var player_on;
-		var player_ids = ['player1','Pa','O1','O2'];
+		var player_ids = [player1,'Pa','O1','O2'];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -523,7 +531,11 @@ jsPsych.plugins["main-decision"] = (function() {
 				border_thickness:    trial.border_thickness,
 				border_color:        trial.border_color,
 				canvas_width:        canvasWidth,
-				canvas_height:       canvasHeight
+				canvas_height:       canvasHeight,
+				dectype:             trial.dectype,
+				dec_num:             trial.dec_num
+
+
 			}
 
 			//Remove the canvas as the child of the display_element element

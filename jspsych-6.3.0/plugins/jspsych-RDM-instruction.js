@@ -623,7 +623,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					ctx.fillStyle = 'white';
 					ctx.textAlign = 'centre';
 					ctx.font = '25px Open Sans';
-					ctx.fillText('First of all, this is how we will display the two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
+					ctx.fillText('First of all, this is how we will display two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
 
 					ctx.fillText('   (Note: only the abbreviations wil be shown on this task)', centre_bottom_text_origin_x, centre_bottom_text_origin_y-5*line_offset);
 

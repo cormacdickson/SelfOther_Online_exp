@@ -53,7 +53,7 @@
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
     this_subs_schedule        			= eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
-    var RDM_pretrial_duration 			= 4000; // duration that the initials are displayed at the start of the exp
+    var RDM_pretrial_duration 			= 1000; // duration that the initials are displayed at the start of the exp
     var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
 
     var bcgnd_color 		  			    = "black";
@@ -72,7 +72,7 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_trials           		= 3; //
+    var num_RDM_trials           		= 100; //
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
@@ -158,7 +158,7 @@
 
 		'<p></br><li>The game will take about 30 minutes and has two parts:</p>'+
         '<ul><ul><ul>'+
-		 '<p> &#8594 Part 1: Individual performance assessment(~5min) </br>&#8594 Part 2: The group competition task (~25min)<p>'+
+		 '<p> &#8594 Part 1: Individual performance assessment (~5min) </br>&#8594 Part 2: The group competition task (~25min)<p>'+
 	    '</ul></ul></ul>' +
 		 '<p></br><li>Press the arrow to proceed to the next screen and enter you initials.</p>'+
 		 '</br>'+
@@ -169,7 +169,7 @@
 		button_label_next: ''
   	}
 
-    //timeline.push(instructions_1)
+    timeline.push(instructions_1)
 
 
 
@@ -256,7 +256,7 @@
 		}
 	};
 
-	//timeline.push(rdm_instructions_1)
+	timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -271,7 +271,7 @@
 			'<ul><ul><ul>'+
 			'<p>&#8594Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center"><p>'+
 			'<p>&#8594Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px";>× </span><p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
-			'</ul></ul></ul>'+ //<span style="color: red; font-weight:bold; font-size:35px; text-decoration:underline";>× </span>
+			'</ul></ul></ul>'+ 
 			'</br><li><p>Note that you will have to respond very quickly after the dots have appeared, otherwise will see a <u><strong>"missed" </u></strong> on the screen<p>'+
 			'<p>and your performance will be counted as incorrect.<p>'+
 			'</br><li><p>We will collect your peformance information when you do so.<p></li>'+ 
@@ -286,7 +286,7 @@
 		button_label_next: ''
 	}
 
- 	//timeline.push(rdm_instructions_2)
+ 	timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
@@ -617,8 +617,8 @@
 		randomize_order:false
 	}
 	
-	//timeline.push(RDM_pretrial)
-	//timeline.push(RDM_training_block)
+	timeline.push(RDM_pretrial)
+	timeline.push(RDM_training_block)
 
 	///////////////////////////////////
 	// this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -630,7 +630,7 @@
 	}
 	
 	
-	//timeline.push(RDM_training_if_block)
+	timeline.push(RDM_training_if_block)
 
 //---------------------------------------------
 ///------------ Training Ends ------------///
@@ -663,7 +663,7 @@
 		button_label_next: ''
 	}
 
-	//timeline.push(instructions_3)
+	timeline.push(instructions_3)
 
 
 	// useful node to insert if you want to check the data output from a given triafl
@@ -688,8 +688,8 @@
 		}
 	}
 	
-	//timeline.push(RDM_pretrial)
-	//timeline.push(RDM_block)
+	timeline.push(RDM_pretrial)
+	timeline.push(RDM_block)
 
 
 	//  if they didnt respond to a lot of trials then we want to add more
@@ -709,21 +709,21 @@
 	            return false;
 	        }
 	    },
-	    loop_function: function(){
+	    //loop_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
-	        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	        var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
-	        var percent_no_resp = sum_no_response/total_trial_num;
-	        if(percent_no_resp > .2){
-	            return true;
-	        } else {
-	            return false;
-	        }
-	    },
+	    //    var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
+	    //    var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
+	    //    var percent_no_resp = sum_no_response/total_trial_num;
+	    //    if(percent_no_resp > .2){
+	    //        return true;
+	    //    } else {
+	    //        return false;
+	    //    }
+	  //  },
 	}
 
-	//timeline.push(if_missed_lots)
+	timeline.push(if_missed_lots)
 
 
 //---------------------------------------------
@@ -751,6 +751,7 @@
 			// now get the index of this schedule
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
 			var schedule_id   = "main_sch_" + closest_sch_index;
+			//trial.schedule_id = schedule_id;
 			// this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
 		}
 	}
@@ -769,7 +770,7 @@
           '<h1>Part 2 –Group competition task </h1>'+
 
 		  '</br><div style="text-align: left; font-size:22px">'+
-          '<br><p><li>In the group competition task, you will see your performance from part 1 and also performance of the three other players <u>(performance phase).</u> We ask you to make <p>'+
+          '<br><p><li>In the group competition task, you will see your performance from part 1 and also the performances from the three other players <u>(performance phase).</u> We ask you to make <p>'+
            '<p>decisions about these performances <u>(decision phase)</u>. By making good decisions, you can collect points. The goal of part 2 is to collect as many points as possible.<p>'+
            //'<p> The goal of part 2 is to collect as many points as possible.<p>'+
           '<br><p><li>During the <u>performance phase</u>:<p>'+
@@ -777,9 +778,6 @@
 			'<p>&#8594You will see performances of each player on every round. Correct performance will be displayed as: <img src="images/fb_correct.png" width="30px" class="center"> ; Incorrect performance will be displayed as:<span style="color:red; font-weight:bold;font-size:35px";> x </span><p>'+
 			'<p>&#8594The performance will go very quickly, and you will need to keep track of the number of correct performances per player.</p>'+
 			'</ul></ul>'+
-
-          //'<p> Correct performance will be displayed as:<img src="images/fb_correct.png" width="30px" class="center"><p>'+
-          //'<p>  Incorrect performance will be displayed as:<img src="images/fb_wrong.png" width="60px" class="center"><p>'+
 		  '<p><br><li>We will now show you how the performance phase looks like. Press <right arrow> button to start.<p>'+
            '</br>'+
 		   '</div>'
@@ -789,7 +787,7 @@
        button_label_next: ''
     }
 
- 	//timeline.push(instructions_4)
+ 	timeline.push(instructions_4)
 
 
 
@@ -806,13 +804,19 @@
 			chosenValue = Math.random() < 0.5 ? 0 : 180;
 			return chosenValue;
 	    },
-		S_perf : [0,1,0,1,0,1],
-		P_perf : [0,1,0,1,0,1],
-		O1_perf : [0,1,0,1,0,1],
-		O2_perf : [0,1,0,1,0,1],
-		coherence: 0.5,
+		S_perf : [1,1,0,1,0,1], //This is the sequence we need
+		P_perf : [1,0,1,1,1,0],
+		O1_perf : [1,1,1,1,0,1],
+		O2_perf : [1,0,0,1,0,0],
+
+		// S_perf : [1,0,1,0,1,0],
+		// P_perf : [1,0,1,0,1,0],
+		// O1_perf : [1,0,1,0,1,0],
+		// O2_perf : [1,0,1,0,1,0],
+
+		coherence: 0.75,
 		player_position: positions,
-		p_order: [0,1,2,3], // index of the player to show rdk for [self,partner,op1,op2]
+		p_order: [0,1,2,3], // just for test;
 		border: false,
 		player_colours: player_cols,
 		number_of_dots: total_dots, //Different parameter for each aperture. Array length must equal number_of_apertures
@@ -971,8 +975,8 @@
 		}
 	};
 
-	//timeline.push(main_instructions_1)
-	//timeline.push(main_practice_sequence)
+	timeline.push(main_instructions_1)
+	timeline.push(main_practice_sequence)
 	timeline.push(main_instructions_2)
 	timeline.push(main_instructions_3)
 
@@ -982,7 +986,7 @@
 		 '<h1>Part 2 –The group competition task </h1>'+
 		 '</br><p><div style="text-align:left; font-weight:bold; font-size:30px"> Notes:</div></p>'+
 		 '</br><div style="text-align: left; font-size:22px">'+
-		 '<li><p> Try to remember the performance from everyone on every round.</p>'+
+		 '<li><p> Try to remember the performances from everyone on every round.</p>'+
 		 '</br><li><p>We will ask you to compare the performance between one player (i.e., you or your partner) from your team and one player (i.e., O1 or O2) from the other team.</p>' +
 		 '</br><li><p> You can get just as many points from decisions based on your partner’s performance as your own! What matters is which team was better!</p>'+
 		 '<br><li><p> To collect as many points as possible, you should: <br>'+
@@ -990,7 +994,7 @@
 		 '&#8594 press <u>left arrow </u>key to engage in competition if the one from your team was better than the other one;'+
 		 '</br>&#8594 press <u>right arrow</u> key to avoid competition if the one from your team was worse than the other one.'+
 		 '</ul></ul>'+
-		 '<p><br> - Let’s do a practice round, in which we will show whether your decision is correct or not <strong>(?)</strong>. Press below key to start when you are ready. </p>' +
+		 '<p>Press below key to start when you are ready. </p>' + //<br> - Let’s do a practice round, in which we will show whether your decision is correct or not <strong>(?)</strong>. 
 		'</br>'+
 		'</div>'
 		]},
@@ -1244,6 +1248,7 @@
 			trial.player1 = p1;
 			var dotArray3d = jsPsych.data.get().select('trial_3d_dot_array');
 			trial.previous_dot_positions = dotArray3d;
+		    //trial.outcomeEngage = Object.values (this_subs_schedule[main_trial_count].outcomeEngage) -adding this command will interrupt data saving, but I don't know why -YL;
 		},
 		type:"main-fb",
 		number_of_apertures: Aperturenum, //This needs to be set if more than one aperture
@@ -1290,20 +1295,20 @@
 	  }
 	}
 
-	timeline.push(main_practice_sequence) // only show the sequence once
-	timeline.push(main_training_block)    // then ask 4 questions
+	//timeline.push(main_practice_sequence) // only show the sequence once
+	//timeline.push(main_training_block)    // then ask 4 questions
 
 	var main_instructions_5 = {
 		type: 'instructions',
 		pages: function() {return [
 			'<h1>Part 2 –The group competition task </h1>'+
 			'</br><div style="text-align:left;font-size:22px">'+
-			'</br><li><p>Well done! We now ask you to do this task for approximately 16 minutes. </p>'+
+			'</br><li><p>We now ask you to do this task for approximately 16 minutes. </p>'+ //Well done! 
 			'</br><li><p>Try to keep track of everyone’s performance as well as you can and make accurate decisions.</p>'+
 			'</br><li><p>After every performance phase, you only need to do <u>two</u> decisions (one after the other).</p>' +
 			'</br><li><p>The decisions always refer to the performances you have seen just before. These performances will be <strong> NEW </strong> every time you see them. </p>'+
 			'<p>This will be different to the practical round just now and it will be a real challenge to keep track of the information! </p>'+
-			'</br><li><p>Your decision outcome will not be shown on every round, but you will know your cumulative points when you finish one session. </p>'+
+			//'</br><li><p>You will know your cumulative points when you finish one session. </p>'+ //Your decision outcome will not be shown on every round, but 
 			'</br><li><p>If you are ready, press below key to start.</p>' +
 			'</br>'+
 			'</div>'
@@ -1316,13 +1321,30 @@
 	timeline.push(main_instructions_5)
 
 
-
-
 	var break_trial = {
+		// on_start: function(trial){
+		// 	var p1   = jsPsych.data.get().select('player').values[0];
+		// 	trial.player1 = p1;
+		//     trial.outcomeEngage = Object.values (this_subs_schedule[main_trial_count].outcomeEngage)
+		// },
+
+		// conditional_function: function(){
+	    //     // get the data from the previous trial,
+	    //     // and check which key was pressed
+	    //     var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
+	    //     var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
+	    //     var percent_no_resp = sum_no_response/total_trial_num;
+	    //     if(percent_no_resp > .2){
+	    //         return true;
+	    //     } else {
+	    //         return false;
+	    //     }
+	    // },
 		type: 'html-keyboard-response',
 		stimulus:  "<p style='font-size: 25px'>Time to take a break!</p>" +
-		      		"<p style='font-size: 25px'>Take a rest for about a minute. Then, Continue by pressing 'C'</p>",
-		choices: "c"
+		           //"<p style = 'font-size: 25px'> x session of y finished, you made n points so far in the task </p>" +
+				   "<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>",
+		choices: ["c"],
 	};
 
 	var break_conditional = {
@@ -1341,6 +1363,11 @@
 	};
 
 
+    // var ITI = {
+	// 	type: 'html-button-response',
+	// 	stimulus: 'test',
+	// 	post_trial_gap:1000
+	// };
 
 	// create timeline for the main block
 	var main_block = {

@@ -170,6 +170,13 @@ jsPsych.plugins["main-fb"] = (function() {
 		      default: 1,
 		      description: "index of rdk to turn on"
 		    },
+			    player1: {
+			  type: jsPsych.plugins.parameterType.HTML_STRING,
+			  pretty_name: 'player1',
+			  default: 'nan',
+			  description: 'The HTML string to be displayed for player1'
+			  },
+			  
 				player_position: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player_position',
@@ -181,6 +188,12 @@ jsPsych.plugins["main-fb"] = (function() {
 	        pretty_name: 'player_colours',
 	        default: undefined,
 	        description: 'The color of each player'
+	      },
+		  outcomeEngage: {
+	        type: jsPsych.plugins.parameterType.HTML_STRING,
+	        pretty_name: 'outcomeEngage',
+	        default: "nan",
+	        description: 'outcome of engaging'
 	      },
 				dectype: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
@@ -227,6 +240,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
 		trial.player_position = assignParameterValue(trial.player_position, "nana");
 		trial.player_on = assignParameterValue(trial.player_on, "nan");
+		trial.player1 = assignParameterValue(trial.player1, "nan");
 		trial.player_colours = assignParameterValue(trial.player_colours, "nan");
 		trial.choices = assignParameterValue(trial.choices, []);
 		trial.correct_choice = assignParameterValue(trial.correct_choice, undefined);
@@ -268,6 +282,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		//Convert the parameter variables to those that the code below can use
 		var player_position = trial.player_position; // array of each player_position initials in order
 		var player_on = trial.player_on;
+		var player1 = trial.player1;
 		var player_colours = trial.player_colours;
 		var nApertures = 4; //The number of apertures
 		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
@@ -291,6 +306,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		var feedback = trial.feedback;
 		var player_fonts = trial.initials_font;
 		var fb_box = trial.fb_box;
+		var outcomeEngage = trial.outcomeEngage;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -408,7 +424,7 @@ jsPsych.plugins["main-fb"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		var player_on;
-		var player_ids = ['player1','Pa','O1','O2'];
+		var player_ids = [player1,'Pa','O1','O2'];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -567,7 +583,9 @@ jsPsych.plugins["main-fb"] = (function() {
 				border_thickness: trial.border_thickness,
 				border_color: trial.border_color,
 				canvas_width: canvasWidth,
-				canvas_height: canvasHeight
+				canvas_height: canvasHeight,
+				outcomeEngage: trial.outcomeEngage
+
 			}
 
 			//Remove the canvas as the child of the display_element element
@@ -972,6 +990,17 @@ jsPsych.plugins["main-fb"] = (function() {
 
 			}
 		}
+
+		//test from Yongling : 
+		 function CalculPoint(){
+	       n=0 		
+	      if (feedback==0){		
+ 				n=n+outcomeEngage;
+		} 		
+	      else if (feedback==1){
+	            n=n;
+ 		}
+	}
 
 
 
