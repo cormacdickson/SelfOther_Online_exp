@@ -29,11 +29,13 @@
     <script src="RDM_schedule.js"></script>
     <script src="RDM_pair_schedule_loading.js"></script>
     <script src="main_trial_schedule.js"></script>
+    <script src="DUMMY_main_trial_schedule.js"></script>
     <script src="main_trial_training_schedule.js"></script>
     <script src="Porder_schedule.js"></script>
+    <script src="DUMMY_Porder_schedule.js"></script>
     <script src="rdmperf.js"></script>
     <link href="jspsych-6.3.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    
   	</head>
 
   	<body>
@@ -47,12 +49,11 @@
     var subject_id            			= jsPsych.randomization.randomID(7); // generat a 15 digit subjet ID
     var colours               			= ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
     var random_porder_index   			= Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
-    var this_subjects_porder  			= "Porder_"+random_porder_index;
-    this_subjects_porder      			= "Porder_1"     // until schedule is properly created just set it to porder 1
+    var this_subjects_porder  			= "DUMMY_Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
     var porder_sch            			= eval(this_subjects_porder);
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
-    this_subs_schedule        			= eval("main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
+    this_subs_schedule        			= eval("DUMMY_main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
     var RDM_pretrial_duration 			= 1000; // duration that the initials are displayed at the start of the exp
     var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
 
@@ -60,11 +61,12 @@
     var player_cols 		  			    = jsPsych.randomization.repeat(colours, 1); // assign colors randomly based on the four possible
     var total_dots 			  		    	= [50,50,50,50]; //number of dots in each RDK
     var RDM_trial_duration 	  			= 1000; // duration of the rdm
-    var RDktype	  			  		    	= 3; // type of rdk mechanism used
+    var RDktype	  			  		    = 4; // type of rdk mechanism used
     var Aperturetype 	  	  		  	= 1; // type of aperture used (1=circle)
     var Aperturenum       	  			= 4; // number of apertures
   	var RDM_training_fb_duration 		= 500; // duration that fb is displayed for during rdm task
-  	var Main_fb_sequence_dur 	 	  	= [300,100,200,100,200,100,200,100,200,100,200,100,200,500]; // each timing corresponds to a portion of the feedback delay
+  	var Main_fb_sequence_dur 	 	  	= [300,100,200,100,200,100,200,100,200,100,200,100,200]; // each timing corresponds to a portion of the feedback delay
+  	var main_ITI  						= 500;
   	var Main_decision_duration   		= 3000; //
   	var Main_decision_choices    		= ["arrowleft","arrowright"]; //responses only registered if they are listed here
     var Main_decision_fb_dur     		= 1000;
@@ -72,7 +74,7 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_trials           		= 3; //
+    var num_RDM_trials           		= 5; //
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
@@ -105,6 +107,8 @@
     var dot_size;
 
 
+    // add properties we want to know to the data
+    jsPsych.data.addProperties({porder_schedule: random_porder_index});
 
     ////////////////////////////////////////////////////////
     // Begin compiling experiment
@@ -141,6 +145,8 @@
 			fb_box_display.fb_line_thick= 3;
 			fb_box_display.fb__box_wdt= aperture_diam*1.3;
       		fb_box_display.fb__box_ht= aperture_diam*2.5;
+
+      		
           
     	}
    	}
@@ -213,7 +219,7 @@
 	    }
 	}
 
-	timeline.push(Get_ID_loop);
+	//timeline.push(Get_ID_loop);
 	// finished with initials
 	//------------------------------------------------------------------
 
@@ -233,7 +239,7 @@
 		screen_num: 0, //number of sscreens that participant has to flicjk through
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		number_of_apertures: Aperturenum,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
@@ -286,7 +292,7 @@
 		button_label_next: ''
 	}
 
- 	timeline.push(rdm_instructions_2)
+ 	//timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
@@ -598,8 +604,9 @@
 	        // get the data from the previous trial,
 	        // and check which key was pressed
 	        //var sum_incorrect = jsPsych.data.get().select({correct: false}).sum();
-	        var sum_correct = jsPsych.data.get().select('correct').sum();
-	        if(sum_correct == 4){
+	        var sum_correct 	= jsPsych.data.get().select('correct').sum();
+	        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
+	        if(sum_correct+sum_no_response == 4){
 	            return true;
 	        } else {
 	            return false;
@@ -748,9 +755,13 @@
 			});
 			// now get the index of this schedule
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
-			var schedule_id   = "main_sch_" + closest_sch_index;
+			//var schedule_id   = "main_sch_" + closest_sch_index;
+			var schedule_id   = "DUMMY_main_sch_" + closest_sch_index;
 			//trial.schedule_id = schedule_id;
 			// this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
+    		jsPsych.data.addProperties({main_schedule: closest_sch_index});
+
+
 		}
 	}
 
@@ -785,7 +796,7 @@
        button_label_next: ''
     }
 
- 	timeline.push(instructions_4)
+ 	//timeline.push(instructions_4)
 
 
 
@@ -806,13 +817,8 @@
 		P_perf : [1,0,1,1,1,0],
 		O1_perf : [1,1,1,1,0,1],
 		O2_perf : [1,0,0,1,0,0],
-
-		// S_perf : [1,0,1,0,1,0],
-		// P_perf : [1,0,1,0,1,0],
-		// O1_perf : [1,0,1,0,1,0],
-		// O2_perf : [1,0,1,0,1,0],
-
-		coherence: 0.9,
+		RDK_type: RDktype, //Applied to all apertures if only one value
+		coherence: 0.75,
 		player_position: positions,
 		p_order: [0,1,2,3], // just for test;
 		border: false,
@@ -833,7 +839,7 @@
 		}
 	};
 
-	timeline.push(main_practice_sequence)
+	//timeline.push(main_practice_sequence)
 
 
 
@@ -855,7 +861,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -901,7 +907,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -946,7 +952,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -973,10 +979,10 @@
 		}
 	};
 
-	timeline.push(main_instructions_1)
-	timeline.push(main_practice_sequence)
-	timeline.push(main_instructions_2)
-	timeline.push(main_instructions_3)
+	//timeline.push(main_instructions_1)
+	//timeline.push(main_practice_sequence)
+	//timeline.push(main_instructions_2)
+	//timeline.push(main_instructions_3)
 
 	var main_instructions_4 = {
 		type: 'instructions',
@@ -1001,7 +1007,7 @@
 		button_label_next: ''
 	}
 
-	timeline.push(main_instructions_4)
+	//timeline.push(main_instructions_4)
 
 
 	// draw feedback boxes with text feedback overlayed
@@ -1076,7 +1082,8 @@
 			chosenValue = Math.random() < 0.5 ? 0 : 180;
 			return chosenValue;
 	    },
-		coherence: 0.9,
+		coherence: 0.75,
+		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
 		border: false,
 		player_colours: player_cols,
@@ -1111,7 +1118,6 @@
 		type:"main-decision-training",
 		dectype: jsPsych.timelineVariable('dectype'),
 		outcomeEngage: jsPsych.timelineVariable('outcomeEngage'),
-		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
 		choices: Main_decision_choices,
 		player_colours: player_cols,
@@ -1159,7 +1165,6 @@
 		},
 		type:"main-decision",
 		dec_num: 0, // first or second decison
-		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
 		choices: Main_decision_choices,
 		player_colours: player_cols,
@@ -1210,7 +1215,6 @@
 		},
 		type:"main-decision",
 		dec_num: 1, // first or second decison
-		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
 		choices: Main_decision_choices,
 		player_colours: player_cols,
@@ -1316,7 +1320,7 @@
 		button_label_next: ''
 	}
 
-	timeline.push(main_instructions_5)
+	//timeline.push(main_instructions_5)
 
 
 	var break_trial = {
@@ -1370,7 +1374,7 @@
 	// create timeline for the main block
 	var main_block = {
 		timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
-		timeline_variables : main_sch, // Now give the block an empty set of arrays of length = number of trials we warrant
+		timeline_variables : DUMMY_main_sch, // Now give the block an empty set of arrays of length = number of trials we warrant
 		// the paramaters we want are assigned dynamically in the
 		on_timeline_start: function(){
 			main_trial_count = 0;
