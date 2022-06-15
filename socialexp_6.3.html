@@ -861,7 +861,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: ["arrowright"],
+		choices: Main_decision_choices,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -907,7 +907,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: ["arrowright"],
+		choices: Main_decision_choices,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -952,7 +952,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: ["arrowright"],
+		choices: Main_decision_choices,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -1074,6 +1074,7 @@
 			trial.P_perf = Object.values(this_subs_schedule[main_trial_count].P_perf);
 			trial.O1_perf = Object.values(this_subs_schedule[main_trial_count].O1_perf);
 			trial.O2_perf = Object.values(this_subs_schedule[main_trial_count].O2_perf);
+			trial.outcomeEngage = Object.values(this_subs_schedule[main_trial_count].outcomeEngage);
 			return ;
 		},
 		type:"main-fb-sequence",
@@ -1286,11 +1287,19 @@
 		}
 	};
 
+	// node added to the end of our 'trial' timelines to create an intertrial interval
+	var ITI = {
+		type: 'html-keyboard-response',
+		stimulus: '',
+		trial_duration:1000,
+		response_ends_trial: false
+	};
+
 
 
 	// create timeline for the main block
 	var main_training_block = {
-		timeline: [ main_decision_practice, main_training_fb],
+		timeline: [ main_decision_practice, main_training_fb,ITI],
 		timeline_variables: main_trial_training_schedule,
 		randomize_order:false,
 		on_timeline_start: function(){
@@ -1365,15 +1374,11 @@
 	};
 
 
-    // var ITI = {
-	// 	type: 'html-button-response',
-	// 	stimulus: 'test',
-	// 	post_trial_gap:1000
-	// };
+   
 
 	// create timeline for the main block
 	var main_block = {
-		timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb],
+		timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb,ITI],
 		timeline_variables : DUMMY_main_sch, // Now give the block an empty set of arrays of length = number of trials we warrant
 		// the paramaters we want are assigned dynamically in the
 		on_timeline_start: function(){

@@ -200,7 +200,7 @@ jsPsych.plugins["main-decision"] = (function() {
 	        default: 0,
 	        description: 'first or second decicion'
 	      },
-	      initials_font: {
+	      		initials_font: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'initials_font',
 	        default: 'nan',
@@ -212,6 +212,7 @@ jsPsych.plugins["main-decision"] = (function() {
 	        default: 'nan',
 	        description: 'settings for how dec_arrow is displayed'
 	      },
+	      		
 	    }
 	 }
 
@@ -292,6 +293,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		var allApertureCentreY = trial.aperture_center_y;
 		var player_fonts = trial.initials_font;
 		var dec_arrow = trial.dec_arrow;
+		var outcomeEngage = trial.outcomeEngage;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -533,7 +535,8 @@ jsPsych.plugins["main-decision"] = (function() {
 				canvas_width:        canvasWidth,
 				canvas_height:       canvasHeight,
 				dectype:             trial.dectype,
-				dec_num:             trial.dec_num
+				dec_num:             trial.dec_num,
+				
 
 
 			}

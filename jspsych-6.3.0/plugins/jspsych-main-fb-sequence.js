@@ -240,7 +240,13 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 	        pretty_name: 'initials_font',
 	        default: 'nan',
 	        description: 'The initials_font to be displayed for players'
-	      }
+	      },
+	      outcomeEngage: {
+	        type: jsPsych.plugins.parameterType.INT,
+	        pretty_name: 'outcome of engaging ',
+	        default: 'nan',
+	        description: 'outcome for both decisions '
+	      },
 	    }
 	 }
 
@@ -632,6 +638,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				O1_perf: trial.O1_perf,
 				O2_perf: trial.O2_perf,
 				porder:trial.p_order
+				outcome_engage: trial.outcomeEngage
 
 			}
 
