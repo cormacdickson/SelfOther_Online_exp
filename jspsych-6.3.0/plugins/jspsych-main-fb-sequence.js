@@ -349,7 +349,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		 5 - different && random walk
 		 6 - different && random direction         */
 
-		var RDK = 3; //trial.RDK_type;
+		var RDK = trial.RDK_type;
 
 
 		/*
@@ -554,7 +554,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			fb_index = 0;   // reset the feedback index to zero
 
 			if(loop_number >3){
-				end_trial(); 	// if we have already shown 4 players end the trial
+				window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
+				stepTimeoutID = window.setTimeout(end_trial,200); //
 			}
 		}
 
@@ -565,7 +566,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			step++; 		// increment current step
 			stepTimerHasStarted = false; // reset the step timer
 
-			if (step > 13){
+			if (step > 12){
 				increment_player(); // if we have finished all steps go to next player
 			} else if (fb_steps.includes(step)){
 					draw_fb();				// if this is a feedback step draw the correspoding fb
@@ -924,17 +925,20 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		// function to index performance to the player we are currently showing
 		function assignPerfToCurrentPlayer(){
+
+			var who = porder.indexOf(loop_number);
+
 			//console.log(porder[loop_number]);
-			if (porder[loop_number]== 0){
+			if (who== 0){
 				current_perf = S_perf;
 			}
-			else if (porder[loop_number]== 1) {
+			else if (who== 1) {
 				current_perf = P_perf;
 			}
-			else if (porder[loop_number]== 2) {
+			else if (who== 2) {
 				current_perf = O1_perf;
 			}
-			else if (porder[loop_number]== 3) {
+			else if (who== 3) {
 				current_perf = O2_perf;
 			}
 		}
