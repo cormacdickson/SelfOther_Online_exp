@@ -78,7 +78,7 @@
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
-
+    var initials;
     var display_initials               = '40px Open sans';
     var dec_arw_display = {
     	//// variable called dec_arrow which is accesible to all arrow using plugins from socialexp_6.3
@@ -99,9 +99,8 @@
 	var correct_ans_right = "arrowright";
 	var correct_ans_left  = "arrowleft";
 	var chosenValue;
-	var num_dm_trials = 4;
 	var block_size = 2; // number of trials we want to have in each session
-	var num_blocks = num_dm_trials/block_size;
+	var total_num_blocks = 3;
 
 
 	// set glabal variables for all of our dimensions
@@ -191,7 +190,7 @@
 		questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
 		on_finish: function(data) {
 		    initials = data.response.Q0.toUpperCase();
-		    return initials;
+		    
 		}
 	}
 
@@ -200,7 +199,7 @@
 		type: "survey-multi-choice",
 		questions: [{
 			prompt: function() {
-			var playerid   = jsPsych.data.get().select('player').values[0];
+			var playerid   = initials; //jsPsych.data.get().select('player').values[0];
 			return 'Please confirm your initials are: ' +playerid+ '';
 			},
 		  name: 'confirmInitials',
@@ -209,12 +208,35 @@
 		}],
 	};
 
+
+	var shorten_initials = {
+		type: "survey-text",
+		questions: [ {prompt: 'Please make sure your initials have 3 letters or less. Enter your initials in the box below:', required: true}],
+		on_finish: function(data) {
+		    initials = data.response.Q0.toUpperCase();
+		}
+	}
+
+	var if_too_long = {
+	    timeline: [shorten_initials],
+	    loop_function: function(){
+	        var playerid   = initials;
+
+	        if(playerid.length >2){
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+	}
+
 	//initials block 3
 	var Get_ID_loop = {
-	    timeline: [get_initials,confirm_initials],
+	    timeline: [get_initials,if_too_long,confirm_initials],
 	    loop_function: function(){
 	        var data = jsPsych.data.get().last(1).values()[0];
 	        if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials, 'Confirm')){
+	            data.player = initials;
 	            return false;
 	        } else {
 	            return true;
@@ -222,7 +244,7 @@
 	    }
 	}
 
-	//timeline.push(Get_ID_loop);
+	timeline.push(Get_ID_loop);
 	// finished with initials
 	//------------------------------------------------------------------
 
@@ -1357,7 +1379,7 @@
 			var sum_points = jsPsych.data.get().select('points').sum();
 			var numbreaks  = 1+ jsPsych.data.get().select('break').sum();
 			return [ 	"<p style='font-size: 25px'>Time to take a break!</p>" +
-		           		"<p style = 'font-size: 25px'> " + numbreaks + " sessions of " + num_blocks + " finished, you made " + sum_points + " points so far in the task </p>" +
+		           		"<p style = 'font-size: 25px'> " + numbreaks + " sessions of " + total_num_blocks + " finished, you made " + sum_points + " points so far in the task </p>" +
 				   		"<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>"
 		 				
 				   ]
@@ -1451,21 +1473,23 @@
 
 jsPsych.init({
     timeline: timeline,
+    on_interaction_data_update: function(data) {   // this funciton will log every time the participant does anything in their browser
+		jsPsych.data.addProperties(data);
+		console.log(JSON.stringify(data))
+	},
     on_finish: function() {
+	    jsPsych.data.addProperties({subject_id: subject_id});
 
+	    var outfile = "socialexp_" + subject_id;
 
-      jsPsych.data.addProperties({subject_id: subject_id});
+	    // to save to server
+	    //saveData(outfile, jsPsych.data.get().csv());
 
-      var outfile = "socialexp_" + subject_id;
+	    // to save locally during testing
+	    jsPsych.data.get().localSave('json',outfile +'.json'); // when prompted save sile as csv
 
-      // to save to server
-      //saveData(outfile, jsPsych.data.get().csv());
-
-      // to save locally during testing
-      jsPsych.data.get().localSave('csv',outfile +'.csv'); // when prompted save sile as csv
-
-      // to display after trial
-      jsPsych.data.displayData('csv');
+	    // to display after trial
+	    jsPsych.data.displayData('csv');
     },
     exclusions: {   // this will exclude brosers which do not meet these minimum
     	min_width: 800,
