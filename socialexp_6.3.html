@@ -99,6 +99,10 @@
 	var correct_ans_right = "arrowright";
 	var correct_ans_left  = "arrowleft";
 	var chosenValue;
+	var num_dm_trials = 4;
+	var block_size = 2; // number of trials we want to have in each session
+	var num_blocks = num_dm_trials/block_size;
+
 
 	// set glabal variables for all of our dimensions
 	var aperture_x_coords ;
@@ -175,7 +179,7 @@
 		button_label_next: ''
   	}
 
-    timeline.push(instructions_1)
+    //timeline.push(instructions_1)
 
 
 
@@ -218,7 +222,7 @@
 	    }
 	}
 
-	timeline.push(Get_ID_loop);
+	//timeline.push(Get_ID_loop);
 	// finished with initials
 	//------------------------------------------------------------------
 
@@ -263,7 +267,7 @@
 		}
 	};
 
-	timeline.push(rdm_instructions_1)
+	//timeline.push(rdm_instructions_1)
 
 	var rdm_instructions_2 = {
 		type: 'instructions',
@@ -293,7 +297,7 @@
 		button_label_next: ''
 	}
 
- 	timeline.push(rdm_instructions_2)
+ 	//timeline.push(rdm_instructions_2)
 	//----------------end of instructions for RDM------------------------
 	//-------------------------------------------------------------------
 
@@ -625,8 +629,8 @@
 		randomize_order:false
 	}
 	
-	timeline.push(RDM_pretrial)
-	timeline.push(RDM_training_block)
+	//timeline.push(RDM_pretrial)
+	//timeline.push(RDM_training_block)
 
 	///////////////////////////////////
 	// this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -638,7 +642,7 @@
 	}
 	
 	
-	timeline.push(RDM_training_if_block)
+	//timeline.push(RDM_training_if_block)
 
 //---------------------------------------------
 ///------------ Training Ends ------------///
@@ -669,7 +673,7 @@
 		button_label_next: ''
 	}
 
-	timeline.push(instructions_3)
+	//timeline.push(instructions_3)
 
 
 	// useful node to insert if you want to check the data output from a given triafl
@@ -694,8 +698,8 @@
 		}
 	}
 	
-	timeline.push(RDM_pretrial)
-	timeline.push(RDM_block)
+	//timeline.push(RDM_pretrial)
+	//timeline.push(RDM_block)
 
 
 	//  if they didnt respond to a lot of trials then we want to add more
@@ -766,7 +770,7 @@
 		}
 	}
 
-	timeline.push(pair_schedules)
+	//timeline.push(pair_schedules)
 //--------------------------------------------------------------------
 
 
@@ -840,7 +844,7 @@
 		}
 	};
 
-	timeline.push(main_practice_sequence)
+	//timeline.push(main_practice_sequence)
 
 
 
@@ -980,10 +984,10 @@
 		}
 	};
 
-	timeline.push(main_instructions_1)
-	timeline.push(main_practice_sequence)
-	timeline.push(main_instructions_2)
-	timeline.push(main_instructions_3)
+	//timeline.push(main_instructions_1)
+	//timeline.push(main_practice_sequence)
+	//timeline.push(main_instructions_2)
+	//timeline.push(main_instructions_3)
 
 	var main_instructions_4 = {
 		type: 'instructions',
@@ -1191,6 +1195,13 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var engaged   = jsPsych.data.getLastTrialData().select('response').values[0];
+			var engagepoints = jsPsych.data.getLastTrialData().select('outcome_engage').values[0];
+			if (engaged == 'arrowright'){
+				data.points = engagepoints;
+			}
 		}
 	};
 
@@ -1241,6 +1252,13 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var engaged   = jsPsych.data.getLastTrialData().select('response').values[0];
+			var engagepoints = jsPsych.data.getLastTrialData().select('outcome_engage').values[0];
+			if (engaged == 'arrowright'){
+				data.points = engagepoints;
+			}
 		}
 	};
 
@@ -1334,29 +1352,20 @@
 
 
 	var break_trial = {
-		// on_start: function(trial){
-		// 	var p1   = jsPsych.data.get().select('player').values[0];
-		// 	trial.player1 = p1;
-		//     trial.outcomeEngage = Object.values (this_subs_schedule[main_trial_count].outcomeEngage)
-		// },
-
-		// conditional_function: function(){
-	    //     // get the data from the previous trial,
-	    //     // and check which key was pressed
-	    //     var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	    //     var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
-	    //     var percent_no_resp = sum_no_response/total_trial_num;
-	    //     if(percent_no_resp > .2){
-	    //         return true;
-	    //     } else {
-	    //         return false;
-	    //     }
-	    // },
 		type: 'html-keyboard-response',
-		stimulus:  "<p style='font-size: 25px'>Time to take a break!</p>" +
-		           //"<p style = 'font-size: 25px'> x session of y finished, you made n points so far in the task </p>" +
-				   "<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>",
+		stimulus: function (){
+			var sum_points = jsPsych.data.get().select('points').sum();
+			var numbreaks  = 1+ jsPsych.data.get().select('break').sum();
+			return [ 	"<p style='font-size: 25px'>Time to take a break!</p>" +
+		           		"<p style = 'font-size: 25px'> " + numbreaks + " sessions of " + num_blocks + " finished, you made " + sum_points + " points so far in the task </p>" +
+				   		"<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>"
+		 				
+				   ]
+		},
 		choices: ["c"],
+		on_finish: function(data){
+			data.break = 1;
+		}
 	};
 
 	var break_conditional = {
@@ -1364,8 +1373,8 @@
 		conditional_function: function() {
 		// increment trial count - in first run through the timeline variables procedure, trial_count will be equal to 1
 		trial_count++;
-		if (trial_count % 16 == 0) {
-			// if the trial count is divisible by 96, then run the break trial
+		if (trial_count % block_size == 0) {
+			// if the trial count is divisible by blocksize, then run the break trial
 			return true;
 		} else {
 			// otherwise skip the break trial

@@ -212,7 +212,12 @@ jsPsych.plugins["main-decision"] = (function() {
 	        default: 'nan',
 	        description: 'settings for how dec_arrow is displayed'
 	      },
-	      		
+	      	 outcomeEngage: {
+	        type: jsPsych.plugins.parameterType.INT,
+	        pretty_name: 'outcome of engaging ',
+	        default: 'nan',
+	        description: 'outcome for both decisions '
+	      }	
 	    }
 	 }
 
@@ -287,13 +292,14 @@ jsPsych.plugins["main-decision"] = (function() {
 		var backgroundColor = trial.background_color; //Color of the background
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-		var dectype					= trial.dectype;
-		var dec_num					= trial.dec_num;
+		var dectype	= trial.dectype;
+		var dec_num	= trial.dec_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
 		var player_fonts = trial.initials_font;
 		var dec_arrow = trial.dec_arrow;
 		var outcomeEngage = trial.outcomeEngage;
+		var trial_points = 0;
 		/* RDK type parameter
 		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
 
@@ -510,15 +516,17 @@ jsPsych.plugins["main-decision"] = (function() {
 
 			//Kill the keyboard listener if keyboardListener has been defined
 			//if (typeof keyboardListener !== 'undefined') {
-				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
+			jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
 			//}
-			console.log(response.key);
+			if (response.key == 'arrowright'){
+				trial_points = outcomeEngage[dec_num]
+			}
+
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
 				trial_3d_dot_array: dotArray3d,
-				// correct: correctOrNot(), //If the subject response was correct
 				choices: trial.choices, //The set of valid keys
 				correct_choice: trial.correct_choice, //The correct choice
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
@@ -536,6 +544,7 @@ jsPsych.plugins["main-decision"] = (function() {
 				canvas_height:       canvasHeight,
 				dectype:             trial.dectype,
 				dec_num:             trial.dec_num,
+				outcome_engage:      trial.outcomeEngage[dec_num]
 				
 
 
@@ -572,39 +581,7 @@ jsPsych.plugins["main-decision"] = (function() {
 
 		} //End of after_response
 
-		//Function that determines if the response is correct
-		function correctOrNot(){
-
-			//Check that the correct_choice has been defined
-			if(typeof trial.correct_choice !== 'undefined'){
-				//If the correct_choice variable holds an array
-				if(trial.correct_choice.constructor === Array){ //If it is an array
-					//If the elements are characters
-					if(typeof trial.correct_choice[0] === 'string' || trial.correct_choice[0] instanceof String){
-						var key_in_choices = trial.correct_choice.every(function(x) {
-							return jsPsych.pluginAPI.compareKeys(x,response.key);
-						});
-						return key_in_choices; //If the response is included in the correct_choice array, return true. Else, return false.
-					}
-					//Else if the elements are numbers (javascript character codes)
-					else if (typeof trial.correct_choice[0] === 'number'){
-						console.error('Error in RDK plugin: correct_choice value must be a string.');
-					}
-				}
-				//Else compare the char with the response key
-				else{
-					//If the element is a character
-					if(typeof trial.correct_choice === 'string' || trial.correct_choice instanceof String){
-						//Return true if the user's response matches the correct answer. Return false otherwise.
-						return jsPsych.pluginAPI.compareKeys(response.key, trial.correct_choice);
-					}
-					//Else if the element is a number (javascript character codes)
-					else if (typeof trial.correct_choice === 'number'){
-						console.error('Error in RDK plugin: correct_choice value must be a string.');
-					}
-				}
-			}
-		}
+		
 
 		//----JsPsych Functions End----
 

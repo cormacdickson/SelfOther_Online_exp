@@ -305,25 +305,26 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		} else {
 			porder = trial.p_order[0];
 		}
-		var player_colours 			= trial.player_colours;
-		var player1  						= trial.player1;
-		var nApertures 					= 4; //The number of apertures
-		var nDots 							= trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
-		var nSets 							= trial.number_of_sets; //Number of sets to cycle through per frame
-		var coherentDirection 	= trial.coherent_direction; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
-		var coherence 					= trial.coherence; //Proportion of dots to move together, range from 0 to 1
-		var oppositeCoherence 	= trial.opposite_coherence; // The coherence for the dots going the opposite direction as the coherent dots
-		var dotRadius 					= trial.dot_radius; //Radius of each dot in pixels
-		var dotLife 						= trial.dot_life; //How many frames a dot will keep following its trajectory before it is redrawn at a random location. -1 denotes infinite life (the dot will only be redrawn if it reaches the end of the aperture).
-		var moveDistance 				= trial.move_distance; //How many pixels the dots move per frame
-		var apertureWidth 			= trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
-		var apertureHeight 			= trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
-		var dotColor 				= player_colours; //trial.dot_color; //Color of the dots
-		var backgroundColor 		= trial.background_color; //Color of the background
-		var apertureCenterX 		= trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
-		var apertureCenterY 		= trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
-		var trial_duration 			= trial.trial_duration;
+		var player_colours = trial.player_colours;
+		var player1 = trial.player1;
+		var nApertures = 4; //The number of apertures
+		var nDots = trial.number_of_dots; //Number of dots per set (equivalent to number of dots per frame)
+		var nSets = trial.number_of_sets; //Number of sets to cycle through per frame
+		var coherentDirection = trial.coherent_direction; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
+		var coherence = trial.coherence; //Proportion of dots to move together, range from 0 to 1
+		var oppositeCoherence = trial.opposite_coherence; // The coherence for the dots going the opposite direction as the coherent dots
+		var dotRadius = trial.dot_radius; //Radius of each dot in pixels
+		var dotLife = trial.dot_life; //How many frames a dot will keep following its trajectory before it is redrawn at a random location. -1 denotes infinite life (the dot will only be redrawn if it reaches the end of the aperture).
+		var moveDistance = trial.move_distance; //How many pixels the dots move per frame
+		var apertureWidth = trial.aperture_width; // How many pixels wide the aperture is. For square aperture this will be the both height and width. For circle, this will be the diameter.
+		var apertureHeight = trial.aperture_height; //How many pixels high the aperture is. Only relevant for ellipse and rectangle apertures. For circle and square, this is ignored.
+		var dotColor = player_colours; //trial.dot_color; //Color of the dots
+		var backgroundColor = trial.background_color; //Color of the background
+		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
+		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
+		var trial_duration 	= trial.trial_duration;
 		var player_fonts = trial.initials_font;	
+		var outcomeEngage = trial.outcomeEngage;
 
 		var S_perf = trial.S_perf;
 		var P_perf = trial.P_perf;
@@ -331,48 +332,10 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var O2_perf = trial.O2_perf;
 		var fb_steps = [2,4,6,8,10,12]; // this is a hardcoded indexo f which steps we want to dispaly feedback on
 
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
+		
 
 		var RDK = trial.RDK_type;
-
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
 		var apertureType = 1; //trial.aperture_type;
-
-		/*
-		Out of Bounds Decision
-		How we reinsert a dot that has moved outside the edges of the aperture:
-		1 - Randomly appear anywhere in the aperture
-		2 - Appear on the opposite edge of the aperture (Random if square or rectangle, reflected about origin in circle and ellipse)
-		*/
 		var reinsertType = trial.reinsert_type;
 
 		//Fixation Cross Parameters
