@@ -606,7 +606,7 @@
 	        //var sum_incorrect = jsPsych.data.get().select({correct: false}).sum();
 	        var sum_correct 	= jsPsych.data.get().select('correct').sum();
 	        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	        if(sum_correct+sum_no_response == 4){
+	        if(sum_correct+sum_no_response == 4 || sum_no_response == 4){
 	            return true;
 	        } else {
 	            return false;
