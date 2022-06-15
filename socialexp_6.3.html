@@ -187,7 +187,6 @@
 		questions: [ {prompt: 'Please enter your initials in the box below:', required: true}],
 		on_finish: function(data) {
 		    initials = data.response.Q0.toUpperCase();
-		    jsPsych.data.addProperties({ player: initials });
 		    return initials;
 		}
 	}
@@ -232,6 +231,8 @@
 		on_start: function(trial){
 			var p1   = jsPsych.data.get().select('player').values[0];
 			trial.player1 = p1;
+			// add the initials to the logfile
+			jsPsych.data.addProperties({initals: p1});
 			return ;
 			},
 		type:"RDM-instruction",

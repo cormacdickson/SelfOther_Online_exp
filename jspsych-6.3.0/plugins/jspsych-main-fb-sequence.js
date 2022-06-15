@@ -246,7 +246,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 	        pretty_name: 'outcome of engaging ',
 	        default: 'nan',
 	        description: 'outcome for both decisions '
-	      },
+	      }
 	    }
 	 }
 
@@ -560,7 +560,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			fb_index = 0;   // reset the feedback index to zero
 
 			if(loop_number >3){
-				window.cancelAnimationFrame(frameRequestID); //Cancels the frame request
+				stopDotMotion = true;								//Stop the dot motion animation
 				stepTimeoutID = window.setTimeout(end_trial,200); //
 			}
 		}
@@ -637,7 +637,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				P_perf: trial.P_perf,
 				O1_perf: trial.O1_perf,
 				O2_perf: trial.O2_perf,
-				porder:trial.p_order
+				porder:trial.p_order,
 				outcome_engage: trial.outcomeEngage
 
 			}
