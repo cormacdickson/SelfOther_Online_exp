@@ -88,6 +88,14 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		var num_steps =  progress_bar_width/progress_step_size;
 		var intervalID;
 		var timerID;
+		var choices = ["arrowright"]
+		//Initialize object to store the response data. Default values of -1 are used if the trial times out and the subject has not pressed a valid key
+		var response = {
+			rt: -1,
+			key: -1
+		}
+		//Declare global variable to be defined in startKeyboardListener function and to be used in end_trial function
+		var keyboardListener;
 		//var schedule_id = trial.schedule_id;
 		//--------------------------------------
 		//----------SET PARAMETERS END----------
@@ -151,24 +159,57 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		//-------------------------------------
 
 		//----JsPsych Functions Begin----
+		//Function to start the keyboard listener
+		
+		function startKeyboardListener(){
+			//Start the response listener if there are choices for keys
+			if (choices != jsPsych.NO_KEYS) {
+				//Create the keyboard listener to listen for subjects' key response
+				keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
+					callback_function: after_response, //Function to call once the subject presses a valid key
+					valid_responses: choices, //The keys that will be considered a valid response and cause the callback function to be called
+					rt_method: 'performance', //The type of method to record timing information.
+					persist: false, //If set to false, keyboard listener will only trigger the first time a valid key is pressed. If set to true, it has to be explicitly cancelled by the cancelKeyboardResponse plugin API.
+					allow_held_key: false //Only register the key once, after this getKeyboardResponse function is called. (Check JsPsych docs for better info under 'jsPsych.pluginAPI.getKeyboardResponse').
+				});
+			}
+		}
 
+		//Function to record the first response by the subject
+		function after_response(info) {
+
+			//If the response has not been recorded, record it
+			if (response.key == -1) {
+				response = info; //Replace the response object created above
+			}
+
+			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
+			if (trial.response_ends_trial) {
+				
+				end_trial();
+			}
+
+		} //End of after_response
 
 		//Function to end the trial proper
 		function end_trial() {
-		window.clearTimeout(timerID)
-		 var trial_data = {
-		 //schedule_id: trial.schedule_id 
-		 }
-					//Remove the canvas as the child of the display_element element
-			display_element.innerHTML='';
+		
+			//if (typeof keyboardListener !== 'undefined') {
+			jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
 
-			//Restore the settings to JsPsych defaults
-			body.style.margin = originalMargin;
-			body.style.padding = originalPadding;
-			body.style.backgroundColor = originalBackgroundColor
+			var trial_data = {
+			//schedule_id: trial.schedule_id 
+			}
+						//Remove the canvas as the child of the display_element element
+				display_element.innerHTML='';
 
-			//End this trial and move on to the next trial
-			jsPsych.finishTrial(trial_data);
+				//Restore the settings to JsPsych defaults
+				body.style.margin = originalMargin;
+				body.style.padding = originalPadding;
+				body.style.backgroundColor = originalBackgroundColor
+
+				//End this trial and move on to the next trial
+				jsPsych.finishTrial(trial_data);
 
 		} //End of end_trial
 
@@ -211,7 +252,8 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 							ctx.font = '20px sans-serif';
 							ctx.fillText('Please press the right arrow key on your keyboard to continue', window.innerWidth/2, 3.5*(window.innerHeight/4));
 
-							timerID = window.setTimeout(end_trial,2000);
+							//timerID = window.setTimeout(end_trial,2000);
+							startKeyboardListener()
 						}
 		}
 
@@ -229,6 +271,19 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 						ctx.font = '20px sans-serif';
 						ctx.fillText('You are being paired with three other players: your partner (Pa), and two opponents (O1, O2).', window.innerWidth/2, window.innerHeight/2+90);
 		}
+
+
+
+		// start the response listener
+	    if (choices != jsPsych.NO_KEYS) {
+	      var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
+	        callback_function: after_response,
+	        valid_responses: choices,
+	        rt_method: 'performance',
+	        persist: false,
+	        allow_held_key: false
+	      });
+	    }
 
 
 }; // END OF TRIAL

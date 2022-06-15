@@ -230,9 +230,22 @@
 	    }
 	}
 
+	var check_if_too_long = {
+	    timeline: [if_too_long],
+	    conditional_function: function(){
+	        var playerid   = initials;
+
+	        if(playerid.length >2){
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+	}
+
 	//initials block 3
 	var Get_ID_loop = {
-	    timeline: [get_initials,if_too_long,confirm_initials],
+	    timeline: [get_initials,check_if_too_long,confirm_initials],
 	    loop_function: function(){
 	        var data = jsPsych.data.get().last(1).values()[0];
 	        if(jsPsych.pluginAPI.compareKeys(data.response.confirmInitials, 'Confirm')){
@@ -770,7 +783,7 @@
 	// tell participants we are pairing schedules
 	var pair_schedules = {
 		type: 'preparing-schedules',
-		response_ends_trial: false,
+		response_ends_trial: true,
 		background_color:bcgnd_color,
 		on_finish: function(){
 			RDM_performance = jsPsych.data.get().filter({trial_type:"RDM-trial", correct:true}).count();
@@ -792,7 +805,7 @@
 		}
 	}
 
-	//timeline.push(pair_schedules)
+	timeline.push(pair_schedules)
 //--------------------------------------------------------------------
 
 
