@@ -892,7 +892,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('   Arrows indicate the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*5)+line_offset);
 				ctx.fillText('   Here you need to compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*6+line_offset));
 				ctx.textAlign = 'center';
-				ctx.fillText('   press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 			} else if (instr_num==0 && response_num==1){
 				ctx.textAlign = 'left';
@@ -962,7 +962,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('    performed 1 point worse than O1, you lose 1 point.', right_text_origin_x, right_text_origin_y+(line_offset*7));
 
 				ctx.fillStyle = 'red';
-				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				ctx.fillText('=> Make a decision now! use left or right arrow on your keyboard!', right_text_origin_x, right_text_origin_y+(line_offset*9));
 
 			}
 		}

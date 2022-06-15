@@ -628,7 +628,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					ctx.fillText('   (Note: only the abbreviations wil be shown on this task)', centre_bottom_text_origin_x, centre_bottom_text_origin_y-5*line_offset);
 
 					ctx.font = '18px Open Sans';
-					ctx.fillText('   - press the right arow key to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+					ctx.fillText('   - press the right arow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 					}
 
 			}
