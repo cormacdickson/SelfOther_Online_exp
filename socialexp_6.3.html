@@ -53,7 +53,7 @@
     var porder_sch            			= eval(this_subjects_porder);
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
-    this_subs_schedule        			= eval("DUMMY_main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
+    //this_subs_schedule        			= eval("DUMMY_main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
     var RDM_pretrial_duration 			= 1000; // duration that the initials are displayed at the start of the exp
     var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
 
@@ -788,7 +788,7 @@
 			//var schedule_id   = "main_sch_" + closest_sch_index;
 			
 			var schedule_id   = "DUMMY_main_sch_" + closest_sch_index;
-			// this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
+			this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
     		jsPsych.data.addProperties({main_schedule: closest_sch_index});
 
 
@@ -937,7 +937,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: ["arrowright"],
+		choices: Main_decision_choices,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -982,7 +982,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: ["arrowright"],
+		choices: Main_decision_choices,
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
