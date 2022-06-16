@@ -23,7 +23,8 @@ jsPsych.plugins.fullscreen = (function() {
       message: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Message',
-        default: '<p>The task will switch to full screen mode when you press the button below</p>',
+        default: '<p>The task will switch to full screen mode when you press the button below.</p>'+
+        '<p> Please keep the full screen mode until you finish the task.</p>',
         array: false,
         description: 'HTML content to display above the button to enter fullscreen mode.'
       },
