@@ -393,7 +393,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 		//3D Array to hold the dots (1st D is Apertures, 2nd D is Sets, 3rd D is Dots)
 		var dotArray3d = trial.previous_dot_positions.values[0];
-		console.log(dotArray3d)
+		//console.log(dotArray3d)
 
 
 
@@ -504,7 +504,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 			//if (typeof keyboardListener !== 'undefined') {
 				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
 			//}
-			console.log(response.key);
+			//console.log(response.key);
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				rt: response.rt, //The response time

@@ -270,9 +270,10 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 
 		//Set the canvas background color
 		canvas.style.backgroundColor = backgroundColor;
-		console.log(canvas.width);
-		console.log(canvas.height);
-		console.log("innerheight " + window.innerHeight);
+		//console.log(canvas.width);
+		//console.log(canvas.height);
+		//console.log("innerheight " + window.innerHeight);
+
 		//--------Set up Canvas end-------
 
 
@@ -385,7 +386,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			//if (typeof keyboardListener !== 'undefined') {
 				jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
 			//}
-			console.log(response.key);
+			//console.log(response.key);
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				rt: response.rt, //The response time

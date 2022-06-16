@@ -1482,7 +1482,7 @@ jsPsych.init({
     timeline: timeline,
     on_interaction_data_update: function(data) {   // this funciton will log every time the participant does anything in their browser
 		jsPsych.data.addProperties(data);
-		console.log(JSON.stringify(data))
+		//console.log(JSON.stringify(data))
 	},
     on_finish: function() {
 	    jsPsych.data.addProperties({subject_id: subject_id});

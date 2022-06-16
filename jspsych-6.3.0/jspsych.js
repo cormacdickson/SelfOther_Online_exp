@@ -50,7 +50,7 @@ window.jsPsych = (function() {
 
   core.init = function(options) {
     function init() {
-      console.log(options);
+      
       if(typeof options.timeline === 'undefined'){
         console.error('No timeline declared in jsPsych.init. Cannot start experiment.')
       }
