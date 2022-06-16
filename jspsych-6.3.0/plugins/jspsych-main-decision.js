@@ -22,7 +22,7 @@ jsPsych.plugins["main-decision"] = (function() {
 		    correct_choice: {
 		      type: jsPsych.plugins.parameterType.KEY,
 		      pretty_name: "Correct choice",
-		      default: undefined,
+		      default: 'nan',
 		      array: true,
 		      description: "The correct keys for that trial"
 		    },
@@ -407,7 +407,7 @@ jsPsych.plugins["main-decision"] = (function() {
 
 		//3D Array to hold the dots (1st D is Apertures, 2nd D is Sets, 3rd D is Dots)
 		var dotArray3d = trial.previous_dot_positions.values[0];
-		console.log(dotArray3d)
+		//console.log(dotArray3d)
 
 
 
