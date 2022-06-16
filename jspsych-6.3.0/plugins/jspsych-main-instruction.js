@@ -22,7 +22,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		    correct_choice: {
 		      type: jsPsych.plugins.parameterType.KEY,
 		      pretty_name: "Correct choice",
-		      default: undefined,
+		      default: 'nan',
 		      array: true,
 		      description: "The correct keys for that trial"
 		    },

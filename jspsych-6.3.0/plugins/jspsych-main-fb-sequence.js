@@ -232,7 +232,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 	      player1: {
 	        type: jsPsych.plugins.parameterType.HTML_STRING,
 	        pretty_name: 'player1',
-	        default: undefined,
+	        default: 'nan',
 	        description: 'The HTML string to be displayed for player1'
 	      },
 	      initials_font: {
