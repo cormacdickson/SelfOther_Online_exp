@@ -97,8 +97,9 @@
 	var correct_ans_right = "arrowright";
 	var correct_ans_left  = "arrowleft";
 	var chosenValue;
-	var block_size = 2; // number of trials we want to have in each session
-	var total_num_blocks = 3;
+	var total_num_dm_trials = 4;
+	var total_num_blocks = 2;
+	var block_size = total_num_dm_trials/total_num_blocks; // number of trials we want to have in each session
 
 
 	// set glabal variables for all of our dimensions
@@ -1394,15 +1395,17 @@
 	var break_conditional = {
 		timeline: [break_trial],
 		conditional_function: function() {
-		// increment trial count - in first run through the timeline variables procedure, trial_count will be equal to 1
-		trial_count++;
-		if (trial_count % block_size == 0) {
-			// if the trial count is divisible by blocksize, then run the break trial
-			return true;
-		} else {
-			// otherwise skip the break trial
-			return false;
-		}
+			// increment trial count - in first run through the timeline variables procedure, trial_count will be equal to 1
+			
+			if (trial_count>0 & trial_count % block_size == 0) {
+				// if the trial count is divisible by blocksize, then run the break trial
+				trial_count++;
+				return true;
+			} else {
+				// otherwise skip the break trial
+				trial_count++;
+				return false;
+			}
 		}
 	};
 
