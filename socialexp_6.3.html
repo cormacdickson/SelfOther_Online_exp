@@ -222,7 +222,7 @@
 	    loop_function: function(){
 	        var playerid   = initials;
 
-	        if(playerid.length >2){
+	        if(playerid.length >3){
 	            return true;
 	        } else {
 	            return false;
@@ -235,7 +235,7 @@
 	    conditional_function: function(){
 	        var playerid   = initials;
 
-	        if(playerid.length >2){
+	        if(playerid.length >3){
 	            return true;
 	        } else {
 	            return false;
@@ -646,7 +646,7 @@
 	        //var sum_incorrect = jsPsych.data.get().select({correct: false}).sum();
 	        var sum_correct 	= jsPsych.data.get().select('correct').sum();
 	        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	        if(sum_correct+sum_no_response == 4 || sum_no_response == 4){
+	        if(sum_correct+sum_no_response == 8 || sum_no_response == 8){
 	            return true;
 	        } else {
 	            return false;
@@ -656,7 +656,7 @@
 
 
 	///////////////////////////////////////////////
-	// this is the rdm training block of 4 trials
+	// this is the rdm training block of 8 trials
 	//---------------------------------------------
 	var RDM_training_block = {
 		timeline: [RDM_training_trial,RDM_training_fb],
@@ -796,8 +796,8 @@
 			// now get the index of this schedule
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
 			//var schedule_id   = "main_sch_" + closest_sch_index;
+			
 			var schedule_id   = "DUMMY_main_sch_" + closest_sch_index;
-			//trial.schedule_id = schedule_id;
 			// this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
     		jsPsych.data.addProperties({main_schedule: closest_sch_index});
 
@@ -860,7 +860,7 @@
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		coherence: 0.75,
 		player_position: positions,
-		p_order: [0,1,2,3], // just for test;
+		p_order: [1,0,2,3], 
 		border: false,
 		player_colours: player_cols,
 		number_of_dots: total_dots, //Different parameter for each aperture. Array length must equal number_of_apertures
@@ -901,7 +901,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -947,7 +947,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -992,7 +992,7 @@
 		outcomeEngage: 0,
 		trial_duration: Main_decision_duration,
 		response_ends_trial: true,
-		choices: Main_decision_choices,
+		choices: ["arrowright"],
 		player_colours: player_cols,
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		player_position: positions,
@@ -1345,7 +1345,7 @@
 	var ITI = {
 		type: 'html-keyboard-response',
 		stimulus: '',
-		trial_duration:1000,
+		trial_duration:500,
 		response_ends_trial: false
 	};
 
@@ -1360,8 +1360,8 @@
 	  }
 	}
 
-	timeline.push(main_practice_sequence) // only show the sequence once
-	timeline.push(main_training_block)    // then ask 4 questions
+	//timeline.push(main_practice_sequence) // only show the sequence once
+	//timeline.push(main_training_block)    // then ask 4 questions
 
 	var main_instructions_5 = {
 		type: 'instructions',
@@ -1374,7 +1374,7 @@
 			'<br><p><li>The decisions always refer to the performances you have seen just before. These performances will be <strong> NEW </strong> every time you see them. </p>'+
 			'<p>This will be different to the practical round just now and it will be a real challenge to keep track of the information! </p>'+
 			//'<br><p><li>You will know your cumulative points when you finish one session. </p>'+ //Your decision outcome will not be shown on every round, but 
-			'<br><p><li>If you are ready, press below key to start.</p>' +
+			'<br><p><li>If you are ready, press the right arrow as button to start.</p>' +
 			'<br>'+
 			'</div>'
 		]},
@@ -1391,7 +1391,7 @@
 		stimulus: function (){
 			var sum_points = jsPsych.data.get().select('points').sum();
 			var numbreaks  = 1+ jsPsych.data.get().select('break').sum();
-			return [ 	"<p style='font-size: 25px'>Time to take a break!</p>" +
+			return [ 	//"<p style='font-size: 25px'>Time to take a break!</p>" +
 		           		"<p style = 'font-size: 25px'> " + numbreaks + " sessions of " + total_num_blocks + " finished, you made " + sum_points + " points so far in the task </p>" +
 				   		"<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing 'C'</p>"
 		 				
@@ -1464,8 +1464,12 @@
 	// Final thing participant sees
 	var exp_end_screen = {
 		type: 'html-keyboard-response',
-		stimulus:  "<p style='font-size: 25px'>Thank you!</p>" +
-		      		"<p style='font-size: 25px'>You may now exit the task</p>",
+		stimulus: function (){
+		var sum_points = jsPsych.data.get().select('points').sum();	
+		return [    "<p style='font-size: 25px'>Thank you!</p>" +
+		      		"<p style='font-size: 25px'>You made " + sum_points + " points in the whole task </p>"
+		]
+		},
 		trial_duration: 2000,
 		response_ends_trial: false
 	}
@@ -1499,8 +1503,8 @@ jsPsych.init({
 	    //saveData(outfile, jsPsych.data.get().csv());
 
 	    // to save locally during testing
-	    jsPsych.data.get().localSave('json',outfile +'.json'); // when prompted save sile as csv
-
+	    //jsPsych.data.get().localSave('json',outfile +'.json'); // when prompted save sile as csv
+		jsPsych.data.get().localSave('csv',outfile +'.csv'); 
 	    // to display after trial
 	    jsPsych.data.displayData('csv');
     },
