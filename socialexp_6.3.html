@@ -388,6 +388,7 @@
 			}
 		},
 		coherence: jsPsych.timelineVariable('coh'),
+		training_trial: true, // using this because training and main rdm trial reliy on same plugin and i cant deliniate responses for later calculatinos without
 		RDK_type: RDktype, //Applied to all apertures if only one value
 		aperture_type: Aperturetype, // circle
 		player_position: positions,
@@ -475,6 +476,7 @@
 				return correct_ans_left
 			}
 		},
+		training_trial: false,
 	    RDK_type: RDktype, //Applied to all apertures if only one value
 	    aperture_type: Aperturetype, // circle
 	    player_on:0, // index of the player to show rdk for [self,partner,op1,op2]
@@ -742,30 +744,18 @@
 		repetitions: num_RDM_repeat_trials,
 	    timeline: [RDM_trial,RDM_fb],
 	    //timeline_variables: RDM_schedule,
-	    conditional_function: function(){
+	    loop_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
-	        var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	        var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
+	        var sum_no_response = jsPsych.data.get().filter({training:false, no_response:true}).count();
+	        var total_trial_num = jsPsych.data.get().filter({training:false, rdm_trial_count:true}).count();
 	        var percent_no_resp = sum_no_response/total_trial_num;
 	        if(percent_no_resp > .2){
 	            return true;
 	        } else {
 	            return false;
 	        }
-	    },
-	    //loop_function: function(){
-	        // get the data from the previous trial,
-	        // and check which key was pressed
-	    //    var sum_no_response = jsPsych.data.getLastTimelineData().select('no_response').sum();
-	    //    var total_trial_num = jsPsych.data.getLastTimelineData().select('rdm_trial_count').sum();
-	    //    var percent_no_resp = sum_no_response/total_trial_num;
-	    //    if(percent_no_resp > .2){
-	    //        return true;
-	    //    } else {
-	    //        return false;
-	    //    }
-	  //  },
+	    }
 	}
 
 	timeline.push(if_missed_lots)

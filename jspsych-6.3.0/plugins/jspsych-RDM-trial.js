@@ -218,6 +218,12 @@ jsPsych.plugins["RDM-trial"] = (function() {
 	        default: 'nan',
 	        description: 'The initials_font to be displayed for players'
 	      },
+	      training_trial: {
+	        type: jsPsych.plugins.parameterType.BOOL,
+	        pretty_name: 'training trial',
+	        default: 'nan',
+	        description: 'Is this a trining trial'
+	      },
 	    }
 	 }
 
@@ -291,49 +297,11 @@ jsPsych.plugins["RDM-trial"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var player_fonts = trial.initials_font;
+		var train_trial = trial.training_trial;
 
-		/* RDK type parameter
-		** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
-
-		-------------------
-		SUMMARY:
-
-		Signal Selection rule:
-		-Same: Each dot is designated to be either a coherent dot (signal) or incoherent dot (noise) and will remain so throughout all frames in the display. Coherent dots will always move in the direction of coherent motion in all frames.
-		-Different: Each dot can be either a coherent dot (signal) or incoherent dot (noise) and will be designated randomly (weighted based on the coherence level) at each frame. Only the dots that are designated to be coherent dots will move in the direction of coherent motion, but only in that frame. In the next frame, each dot will be designated randomly again on whether it is a coherent or incoherent dot.
-
-		Noise Type:
-		-Random position: The incoherent dots appear in a random location in the aperture in each frame
-		-Random walk: The incoherent dots will move in a random direction (designated randomly in each frame) in each frame.
-		-Random direction: Each incoherent dot has its own alternative direction of motion (designated randomly at the beginning of the trial), and moves in that direction in each frame.
-
-		-------------------
-
-		 1 - same && random position
-		 2 - same && random walk
-		 3 - same && random direction
-		 4 - different && random position
-		 5 - different && random walk
-		 6 - different && random direction         */
 
 		var RDK = trial.RDK_type;
-
-
-		/*
-		Shape of aperture
-		 1 - Circle
-		 2 - Ellipse
-		 3 - Square
-		 4 - Rectangle
-		*/
 		var apertureType = trial.aperture_type;
-
-		/*
-		Out of Bounds Decision
-		How we reinsert a dot that has moved outside the edges of the aperture:
-		1 - Randomly appear anywhere in the aperture
-		2 - Appear on the opposite edge of the aperture (Random if square or rectangle, reflected about origin in circle and ellipse)
-		*/
 		var reinsertType = trial.reinsert_type;
 
 		//Fixation Cross Parameters
@@ -532,6 +500,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
 				no_response: missed,
+				training: train_trial,
 				rdm_trial_count: rdm_trial_count,
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
@@ -593,6 +562,7 @@ jsPsych.plugins["RDM-trial"] = (function() {
 			if (response.key == -1) {
 				response = info; //Replace the response object created above
 			}
+
 			missed = false;
 
 			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
