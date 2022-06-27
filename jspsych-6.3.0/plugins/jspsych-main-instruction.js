@@ -551,7 +551,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 			response = info; //Replace the response object created above
 
 			// if they already flicked through the screens then this is thier answer to the question so give them feedbak
-			if (instr_num>0 && response_num>screen_num){ // instr_num=0 doesnt get feedback other 2 do
+			if (instr_num>2 && response_num==screen_num){ // instr_num=0 doesnt get feedback other 2 do
 				if (jsPsych.pluginAPI.compareKeys(response.key, 'arrowleft')){
 					feedback = 0;
 				} else {
@@ -880,91 +880,120 @@ jsPsych.plugins["main-instruction"] = (function() {
 		function writeInstructions(){
 			// first check if outcome engage is positive
 
-			if (instr_num==0 && response_num==0){  //
+			if (instr_num==3 && response_num==0){  //
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '18px Open sans';
-				ctx.fillText('=>This was the performance phase:', left_text_origin_x, left_text_origin_y);
+				ctx.font = '20px Open sans';
+				//ctx.fillText('=>This was the performance phase:', left_text_origin_x, left_text_origin_y);
 
-				ctx.fillText('   In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset*2);
-				ctx.fillText('   compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*3));
-				ctx.fillText('   players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*4));
-				ctx.fillText('   Arrows indicate the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*5)+line_offset);
-				ctx.fillText('   Here you need to compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*6+line_offset));
-				ctx.textAlign = 'center';
-				ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				//ctx.fillText('   In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset*2);
+				//ctx.fillText('   compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*3));
+				//ctx.fillText('   players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('   => An arrow indicates the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('   => Compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*6));
+				//ctx.textAlign = 'center';
+				//ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
-			} else if (instr_num==0 && response_num==1){
+			} else if (instr_num==3 && response_num==1){
 				ctx.textAlign = 'left';
-				ctx.fillText('=> Respond with <left arrow> to indicate that you thought ', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('    your performance was better than O2’s performance.', right_text_origin_x, right_text_origin_y+(line_offset));
-				ctx.fillText('    Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*2));
+				ctx.fillText('=> If your performance was better than O2’s performance,', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText(' press <left arrow>. Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillStyle = 'red';
+				ctx.fillText(' => Make a decision now!', right_text_origin_x, right_text_origin_y+(line_offset*8));
 
-				ctx.fillText('=> <left arrow> means you engage in competition with O2. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
-				ctx.fillText('    You will get points if the performance you have just seen', right_text_origin_x, right_text_origin_y+(line_offset*5));
-				ctx.fillText('    was better than O2’s performance and lose points if you had', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('    been worse. Points won/lost are equivalent to the', right_text_origin_x, right_text_origin_y+(line_offset*7));
-				ctx.fillText('    true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*8));
+				// ctx.fillText('=> <left arrow> means you engage in competition with O2. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				// ctx.fillText('    You will get points if the performance you have just seen', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				// ctx.fillText('    was better than O2’s performance and lose points if you had', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				// ctx.fillText('    been worse. Points won/lost are equivalent to the', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				// ctx.fillText('    true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*8));
 				
-				ctx.fillText('=> <right arrow> means you avoid competition and in this case', right_text_origin_x, right_text_origin_y+(line_offset*10));
-				ctx.fillText('    you cannot win or lose points. Your point count stays constant.', right_text_origin_x, right_text_origin_y+(line_offset*11));
-				ctx.fillText('    These rules mean that you should always press <left arrow>', right_text_origin_x, right_text_origin_y+(line_offset*12));
-				ctx.fillText('    when you thought you were better.', right_text_origin_x, right_text_origin_y+(line_offset*13));
-				ctx.fillText('    Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*14));
+				// ctx.textAlign = 'left';
+				// ctx.fillText('=> Respond with <left arrow> to indicate that you thought ', right_text_origin_x, right_text_origin_y);
+				// ctx.fillText('    your performance was better than O2’s performance.', right_text_origin_x, right_text_origin_y+(line_offset));
+				// ctx.fillText('    Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*2));
 
-			} else if (instr_num==0 && response_num==2){
-				ctx.font = 'bold 18px Open sans';
+				// ctx.fillText('=> <left arrow> means you engage in competition with O2. ', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				// ctx.fillText('    You will get points if the performance you have just seen', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				// ctx.fillText('    was better than O2’s performance and lose points if you had', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				// ctx.fillText('    been worse. Points won/lost are equivalent to the', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				// ctx.fillText('    true performance difference!', right_text_origin_x, right_text_origin_y+(line_offset*8));
+				
+				// ctx.fillText('=> <right arrow> means you avoid competition and in this case', right_text_origin_x, right_text_origin_y+(line_offset*10));
+				// ctx.fillText('    you cannot win or lose points. Your point count stays constant.', right_text_origin_x, right_text_origin_y+(line_offset*11));
+				// ctx.fillText('    These rules mean that you should always press <left arrow>', right_text_origin_x, right_text_origin_y+(line_offset*12));
+				// ctx.fillText('    when you thought you were better.', right_text_origin_x, right_text_origin_y+(line_offset*13));
+				// ctx.fillText('    Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*14));
+
+			} else if (instr_num==0 && response_num==0){
+				ctx.fillStyle = 'white';
+				ctx.textAlign = 'left';
+				ctx.font = '20px Open sans';
+				ctx.fillText('   => An arrow indicates the relevant players.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('   => Compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*6));
+			
+				ctx.textAlign = 'left';
+				ctx.fillText('=> If your performance was better than O2’s performance,', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText(' press <left arrow>. Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillStyle = 'red';
+				ctx.fillText(' => Make a decision now!', right_text_origin_x, right_text_origin_y+(line_offset*8));
+
+
+				ctx.font = 'bold 20px Open sans';
 				ctx.textAlign = 'center';
-				ctx.fillText('=> Before making your choice, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
-
+				ctx.fillText('=> Before moving on, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
+           
 
 
 			} else if (instr_num==1 && response_num==0){
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '18px Open sans';
-				ctx.fillText('=> If you have paid attention, you know that your correct', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('   performance was 4 and the O2’s correct performance was 2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.font = '20px Open sans';
+				ctx.fillText('=> In this case, the correct decision is <left arrow>.', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('Because your performance was 4 and O2’s was 2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
-				ctx.fillText('=> Here you should engage in the competition (press <left arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
-				ctx.fillText('   button). You will get 2 points for engaging since', right_text_origin_x, right_text_origin_y+(line_offset*4));
-				ctx.fillText('   you performed 2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText('=> <left arrow> means you engage in the competition.', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('  here, you get 2 points for it because you performed', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('  2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*5));
 
-				ctx.fillText('=> Avoiding always gives you 0 points, so you miss out on 2 points ', right_text_origin_x, right_text_origin_y+(line_offset*7));
-				ctx.fillText('   if you avoid competition here.', right_text_origin_x, right_text_origin_y+(line_offset*8));
+				ctx.fillText('=> <right arrow> means avoiding competition. Avoiding', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText(' always gives you no points (but you also don’t lose', right_text_origin_x, right_text_origin_y+(line_offset*8));
 
-				ctx.fillStyle = 'red';
+				//ctx.fillStyle = 'red';
 				ctx.textAlign = 'left';
-				ctx.fillText('=> Make a decision now! use left or right arrow button!', right_text_origin_x, right_text_origin_y+(line_offset*10));
+				ctx.fillText('points). Do this if the performances are the same.', right_text_origin_x, right_text_origin_y+(line_offset*9));
+
+
+			} else if (instr_num==4 && response_num==0){
+				
+				 ctx.textAlign = 'left';
+				 ctx.fillStyle = 'white';
+				// ctx.font = '25px Open sans';
+				// ctx.fillText('=> Sometimes, We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y-line_offset*9);
+				// ctx.fillText('=> Remember that you and your partner are in the same team. If the partner was better than the opponent, you will get points, too!', left_text_origin_x, left_text_origin_y-line_offset*8);
+				
+				ctx.font = '20px Open sans';
+				ctx.fillText('=> This arrow means compare your partner', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				ctx.fillText('  and O1.', left_text_origin_x, left_text_origin_y+(line_offset*5));
+                ctx.fillStyle = 'red';
+				ctx.fillText('=> Make a decision now!', left_text_origin_x, left_text_origin_y+(line_offset*7));
+
 
 			} else if (instr_num==2 && response_num==0){
-				
-				ctx.textAlign = 'left';
-				ctx.fillStyle = 'white';
-				ctx.font = '25px Open sans';
-				ctx.fillText('=> Sometimes, We will also ask you to compare your partner and the one player from the other team. ', left_text_origin_x, left_text_origin_y-line_offset*9);
-				ctx.fillText('=> Remember that you and your partner are in the same team. If the partner was better than the opponent, you will get points, too!', left_text_origin_x, left_text_origin_y-line_offset*8);
-				
-				ctx.font = '18px Open sans';
-				ctx.fillText('=> Here, indicated by the arrow, you are asked ', left_text_origin_x, left_text_origin_y+(line_offset*4));
-				ctx.fillText('   to compare your partner and O1 ', left_text_origin_x, left_text_origin_y+(line_offset*5));
-
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
-				ctx.font = '18px Open sans';
-				ctx.fillText('=> If you remembered their performances, you know that your ', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('    partner’s performance was 4 and the O1’s performance was 5', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.font = '20px Open sans';
+				ctx.fillText('=> In this case, the correct decision is <right arrow> ', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('    Because partner’s performance was 4 and the O1’s was 5', right_text_origin_x, right_text_origin_y+(line_offset*1));
 
-				ctx.fillText('=> You should avoid the competition (press <right arrow> button) ', right_text_origin_x, right_text_origin_y+(line_offset*3));
-				ctx.fillText('   here. You don’t lose points, since avoiding gives you 0 point.', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('=> <left arrow> means engaging and makes you lose', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('   1 point (O1 was better by 1).', right_text_origin_x, right_text_origin_y+(line_offset*4));
 
-				ctx.fillText('=> But if you engaged in the competition, since your partner ', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('    performed 1 point worse than O1, you lose 1 point.', right_text_origin_x, right_text_origin_y+(line_offset*7));
-
-				ctx.fillStyle = 'red';
-				ctx.fillText('=> Make a decision now! use left or right arrow on your keyboard!', right_text_origin_x, right_text_origin_y+(line_offset*9));
-
+				ctx.fillText('=> <right arrow> means avoiding and will prevent', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillText('    you from losing points.', right_text_origin_x, right_text_origin_y+(line_offset*7));
 			}
+			
 		}
 
 
