@@ -47,7 +47,7 @@
     var subject_id            			= jsPsych.randomization.randomID(7); // generat a 15 digit subjet ID
     var colours               			= ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
     var random_porder_index   			= Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
-    var this_subjects_porder  			= "Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
+    var this_subjects_porder  			= "DUMMY_Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
     var porder_sch            			= eval(this_subjects_porder);
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
@@ -72,7 +72,7 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_trials           		= 2; //
+    var num_RDM_trials           		= 10; //
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
@@ -165,7 +165,7 @@
 
 		'<br><p><li>The game will take about 30 minutes and has two parts:</p>'+
         '<ul><ul><ul>'+
-		 '<p> &#8594 1) Individual performance assessment (~5 min) </br>&#8594 2) The group competition task (~25 min)<p>'+
+		 '<p> 1) Individual performance assessment (~5 min) </br> 2) The group competition task (~25 min)<p>'+
 	    '</ul></ul></ul>' +
 		 //'<br><p><li>Press the arrow as button to proceed to the next screen.</p>'+
 		 '<br>'+
@@ -329,9 +329,9 @@
 
 			'<br><p><li>Please press the “left” or “right” arrow button on your keyboard to indicate the correct direction.<p>'+
 			'<ul><ul><ul>'+
-			'<p>&#8594Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center">;<p>'+
-			'<p>&#8594Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px";>× </span>;<p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
-			'<p>&#8594No response in time will be displayed as <u><strong>"Missed"</u></strong>, and will be counted as incorrect;'+
+			'<p>&#8594   Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center">;<p>'+
+			'<p>&#8594   Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px";>× </span>;<p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
+			'<p>&#8594   No response in time will be displayed as <u><strong>"Missed"</u></strong>, and will be counted as incorrect;'+
 			'</ul></ul></ul>'+ 
 			'<br><p><li>Try to pay your full attention and be as quick and accurate as possible.<p>'+
 
@@ -688,7 +688,7 @@
 
 
     // this is the main block which shows the rdm trials with feedback
-		var RDM_block = {
+		var RDM_training_block = {
 		timeline: [RDM_trial,RDM_training_fb],
 		repetitions: num_RDM_trials,
 		on_timeline_start: function(){
@@ -698,7 +698,7 @@
 	}
 	
 	timeline.push(RDM_pretrial)
-	timeline.push(RDM_block)
+	timeline.push(RDM_training_block)
 
 	///////////////////////////////////
 	// this is a conditional block if any of the criteria are met ( none, right none wrong)
@@ -774,13 +774,26 @@
 		repetitions: num_RDM_repeat_trials,
 	    timeline: [RDM_trial,RDM_fb],
 	    //timeline_variables: RDM_schedule,
+	    conditional_function: function(){
+	        // get the data from the previous trial,
+	        // and check which key was pressed
+	        var sum_no_response = jsPsych.data.get().filter({no_response:true}).count();
+	        var total_trial_num = jsPsych.data.get().filter({rdm_trial_count:true}).count();
+	        //var percent_no_resp = sum_no_response/total_trial_num;
+			var percent_no_resp = sum_no_response/(total_trial_num)
+	        if(percent_no_resp > .2){
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    },
 	    loop_function: function(){
 	        // get the data from the previous trial,
 	        // and check which key was pressed
-	        var sum_no_response = jsPsych.data.get().filter({training:false, no_response:true}).count();
-	        var total_trial_num = jsPsych.data.get().filter({training:false, rdm_trial_count:true}).count();
+	        var sum_no_response = jsPsych.data.get().filter({no_response:true}).count();
+	        var total_trial_num = jsPsych.data.get().filter({rdm_trial_count:true}).count();
 	        //var percent_no_resp = sum_no_response/total_trial_num;
-			var percent_no_resp = sum_no_response/(num_RDM_trials*2)
+			var percent_no_resp = sum_no_response/(total_trial_num)
 	        if(percent_no_resp > .2){
 	            return true;
 	        } else {
@@ -838,7 +851,7 @@
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
 			//var schedule_id   = "main_sch_" + closest_sch_index;
 			
-			var schedule_id   = "main_sch_" + closest_sch_index;
+			var schedule_id   = "DUMMY_main_sch_" + closest_sch_index;
 			this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
     		jsPsych.data.addProperties({main_schedule: closest_sch_index});
 
@@ -1560,7 +1573,7 @@ var main_instructions_2 = {
 	// create timeline for the main block
 	var main_block = {
 		timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb,ITI],
-		timeline_variables : main_sch, //this_subs_schedule,//// Now give the block an empty set of arrays of length = number of trials we warrant
+		timeline_variables : DUMMY_main_sch, //this_subs_schedule,//// Now give the block an empty set of arrays of length = number of trials we warrant
 		// the paramaters we want are assigned dynamically in the
 		on_timeline_start: function(){
 			main_trial_count = 0;

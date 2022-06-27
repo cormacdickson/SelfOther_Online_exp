@@ -629,13 +629,13 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					ctx.textAlign = 'left';
 					ctx.font = '25px Open Sans';
 					//ctx.fillText('First of all, this is how we will display two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
-                    ctx.fillText('--> In Part 2, you will be paired with three other players: your partner, and two opponents. Your team (you and your partner) will', centre_bottom_text_origin_x/9, left_text_origin_y*2);
+                    ctx.fillText('In Part 2, you will be paired with three other players: your partner, and two opponents. Your team (you and your partner) will', centre_bottom_text_origin_x/9, left_text_origin_y*2);
 					ctx.fillText('play against another team of two people (the two opponents).', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*2);
 					//ctx.fillText('-->This is how we will display two teams on screen:', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*4);//centre_bottom_text_origin_y-5*line_offset);
 
 					//ctx.font = '18px Open Sans';
 					ctx.textAlign = 'centre';
-					ctx.fillText( '(This is how we will display two teams on screen)', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
+					ctx.fillText( '(This is how we will display the two teams on screen)', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
 					//ctx.fillText('   - press the right arow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 					}
 
