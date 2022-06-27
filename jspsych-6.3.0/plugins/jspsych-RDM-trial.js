@@ -531,11 +531,6 @@ jsPsych.plugins["RDM-trial"] = (function() {
 				number_of_frames: numberOfFrames, //The number of frames in this trial
 				aperture_center_x: trial.aperture_center_x,
 				aperture_center_y: trial.aperture_center_y,
-				fixation_cross: trial.fixation_cross,
-				fixation_cross_width: trial.fixation_cross_width,
-				fixation_cross_height: trial.fixation_cross_height,
-				fixation_cross_color: trial.fixation_cross_color,
-				fixation_cross_thickness: trial.fixation_cross_thickness,
 				border: trial.border,
 				border_thickness: trial.border_thickness,
 				border_color: trial.border_color,
