@@ -208,7 +208,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		var screen_num      = trial.screen_num;
 		var allApertureCentreX = trial.aperture_center_x; // same but this one wont get set to current aperture and can be used to plot decision arrows
 		var allApertureCentreY = trial.aperture_center_y;
-		var player_fonts = trial.initials_font;
+		var player_fonts = '30px Open sans';//trial.initials_font;
 		
 
 		var response_num=0; // to count the number of responsese so we knoow when to show next instrustions
@@ -391,7 +391,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			var trial_data = {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
-				trial_3d_dot_array: dotArray3d,
+				//trial_3d_dot_array: dotArray3d,
 				choices: trial.choices, //The set of valid keys
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
 				aperture_width:      trial.aperture_width,
@@ -627,7 +627,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
                     ctx.fillText('2) Group competition task', centre_bottom_text_origin_x, left_text_origin_y*2-line_offset*5);
 
 					ctx.textAlign = 'left';
-					ctx.font = '25px Open Sans';
+					ctx.font = '20px Open Sans';
 					//ctx.fillText('First of all, this is how we will display two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
                     ctx.fillText('In Part 2, you will be paired with three other players: your partner, and two opponents. Your team (you and your partner) will', centre_bottom_text_origin_x/9, left_text_origin_y*2);
 					ctx.fillText('play against another team of two people (the two opponents).', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*2);

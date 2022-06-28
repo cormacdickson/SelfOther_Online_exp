@@ -526,7 +526,7 @@ jsPsych.plugins["main-decision"] = (function() {
 			var trial_data = {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
-				trial_3d_dot_array: dotArray3d,
+				//trial_3d_dot_array: dotArray3d,
 				choices: trial.choices, //The set of valid keys
 				correct_choice: trial.correct_choice, //The correct choice
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial

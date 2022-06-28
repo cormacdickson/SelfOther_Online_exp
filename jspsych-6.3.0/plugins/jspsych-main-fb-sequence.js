@@ -563,7 +563,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
-				//trial_3d_dot_array: dotArray3d,
+				trial_3d_dot_array: dotArray3d,
+				trial_2d_dot_array: dotArray2d,
 				trial_duration: trial.trial_duration, //The trial duration
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
 				number_of_apertures: trial.number_of_apertures,
