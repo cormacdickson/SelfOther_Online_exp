@@ -509,7 +509,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 			var trial_data = {
 				rt: response.rt, //The response time
 				response: response.key, //The key that the subject pressed
-				trial_3d_dot_array: dotArray3d,
+				//trial_3d_dot_array: dotArray3d,
 				// correct: correctOrNot(), //If the subject response was correct
 				choices: trial.choices, //The set of valid keys
 				correct_choice: trial.correct_choice, //The correct choice
