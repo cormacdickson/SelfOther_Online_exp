@@ -976,18 +976,18 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					ctx.lineWidth = borderThickness;
 					ctx.strokeStyle = borderColor;
 					ctx.beginPath();
-					ctx.ellipse(window.innerWidth/2, window.innerHeight/2, 30, 30, 0, 0, Math.PI*2);
+					ctx.ellipse(window.innerWidth/2, window.innerHeight/2, 45, 45, 0, 0, Math.PI*2);
 					ctx.fillStyle = 'yellow';
 					ctx.fill();
 					//ctx.stroke();
 				} else {
 					// draw a red x
-					ctx.lineWidth = 4;
+					ctx.lineWidth = 7;
 					ctx.beginPath();
-			    ctx.moveTo(window.innerWidth/2 - 28, window.innerHeight/2 - 28);
-			    ctx.lineTo(window.innerWidth/2 + 28, window.innerHeight/2 + 28);
-			    ctx.moveTo(window.innerWidth/2 + 28, window.innerHeight/2 - 28);
-			    ctx.lineTo(window.innerWidth/2 - 28, window.innerHeight/2 + 28);
+			    ctx.moveTo(window.innerWidth/2 - 45, window.innerHeight/2 - 45);
+			    ctx.lineTo(window.innerWidth/2 + 45, window.innerHeight/2 + 45);
+			    ctx.moveTo(window.innerWidth/2 + 45, window.innerHeight/2 - 45);
+			    ctx.lineTo(window.innerWidth/2 - 45, window.innerHeight/2 + 45);
 					ctx.strokeStyle = 'red';
 			    ctx.stroke();
 				}
@@ -999,7 +999,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 					ctx.lineWidth = borderThickness;
 					ctx.strokeStyle = borderColor;
 					ctx.beginPath();
-					ctx.rect(window.innerWidth/2-30, window.innerHeight/2-30, 60, 60, 0, 0, Math.PI*2);
+					ctx.rect(window.innerWidth/2-50, window.innerHeight/2-50, 100, 100, 0, 0, Math.PI*2);
 					ctx.fillStyle = backgroundColor;
 					ctx.fill();
 		}

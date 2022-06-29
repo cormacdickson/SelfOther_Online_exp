@@ -893,8 +893,8 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('   => An arrow indicates the relevant', left_text_origin_x, left_text_origin_y);
 				ctx.fillText('       players.', left_text_origin_x, left_text_origin_y+(line_offset*1));
 				ctx.fillText('   => Compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
-				//ctx.textAlign = 'center';
-				//ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.textAlign = 'center';
+				ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 			} else if (instr_num==3 && response_num==1){
 				ctx.textAlign = 'left';
