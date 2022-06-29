@@ -249,8 +249,8 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 							ctx.font = 'bold';
 							//ctx.fillStyle= 'red';
 							ctx.fillText('Pairing complete now!', window.innerWidth/2, 3*(window.innerHeight/4));
-							//ctx.font = '20px sans-serif';
-							ctx.fillText('Please press the right arrow key to start the task', window.innerWidth/2, 3.2*(window.innerHeight/4));
+							ctx.font = '20px sans-serif';
+							ctx.fillText('Please press the right arrow key on your keyboard to start the task', window.innerWidth/2, 3.2*(window.innerHeight/4));
 
 							//timerID = window.setTimeout(end_trial,2000);
 							startKeyboardListener()

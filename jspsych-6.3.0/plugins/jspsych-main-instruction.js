@@ -889,6 +889,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				//ctx.fillText('   In the decision phase, we will ask you to ', left_text_origin_x, left_text_origin_y+line_offset*2);
 				//ctx.fillText('   compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*3));
 				//ctx.fillText('   players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+
 				ctx.fillText('   => An arrow indicates the relevant', left_text_origin_x, left_text_origin_y);
 				ctx.fillText('       players.', left_text_origin_x, left_text_origin_y+(line_offset*1));
 				ctx.fillText('   => Compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
@@ -901,7 +902,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('     O2’s performance, press <left arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 				
 				ctx.fillText('     Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
-				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));  
 				ctx.fillStyle = 'red';
 				ctx.fillText('=> Make a decision now!', right_text_origin_x, right_text_origin_y+(line_offset*5));
 
@@ -942,14 +943,18 @@ jsPsych.plugins["main-instruction"] = (function() {
 				
 				ctx.fillText('     Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
 				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));
+
 				ctx.fillStyle = 'red';
 				ctx.fillText('=> Make a decision now!', right_text_origin_x, right_text_origin_y+(line_offset*5));
-
 
 				ctx.font = 'bold 18px Open sans';
 				ctx.textAlign = 'center';
 				ctx.fillText('=> Before moving on, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
-           
+                
+				ctx.textAlign = 'center';
+				ctx.fillStyle = 'white';
+				ctx.font = '18px Open sans';
+				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 
 			} else if (instr_num==1 && response_num==0){
@@ -965,13 +970,18 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.fillText('     2 points for it because you performed', right_text_origin_x, right_text_origin_y+(line_offset*2));
 				ctx.fillText('     2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*3));
 
+
 				ctx.fillText('=> <right arrow> means avoiding ', right_text_origin_x, right_text_origin_y+(line_offset*5));
 				ctx.fillText('     competition. Avoiding always gives', right_text_origin_x, right_text_origin_y+(line_offset*6));
 				ctx.fillText('     you no points (but you also ', right_text_origin_x, right_text_origin_y+(line_offset*7));
 				ctx.fillText('     don’t lose points). Do this if ', right_text_origin_x, right_text_origin_y+(line_offset*8));
 				ctx.fillText('     the performances are the same.', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				
+        ctx.textAlign = 'center';
+				ctx.font = '18px Open sans';
+				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
-
+        
 			} else if (instr_num==4 && response_num==0){
 				
 				 ctx.textAlign = 'left';
@@ -986,10 +996,10 @@ jsPsych.plugins["main-instruction"] = (function() {
                 ctx.fillStyle = 'red';
 				ctx.fillText('=> Make a decision now!', left_text_origin_x, left_text_origin_y+(line_offset*3));
 
-
 			} else if (instr_num==2 && response_num==0){
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
+
 				ctx.font = '18px Open sans';
 				ctx.fillText('=> In this case, the correct decision', right_text_origin_x, right_text_origin_y-(line_offset*3));
 				ctx.fillText('     is <right arrow> because your ', right_text_origin_x, right_text_origin_y-(line_offset*2));
@@ -1002,6 +1012,11 @@ jsPsych.plugins["main-instruction"] = (function() {
 
 				ctx.fillText('=> <right arrow> means avoiding and ', right_text_origin_x, right_text_origin_y+(line_offset*6));
 				ctx.fillText('     will prevent you from losing points.', right_text_origin_x, right_text_origin_y+(line_offset*7));
+        
+        ctx.textAlign = 'center';
+				ctx.font = '18px Open sans';
+				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+        
 			}
 			
 		}
