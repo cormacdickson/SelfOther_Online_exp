@@ -72,12 +72,14 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
+    var num_RDM_training_trials         = 1; //
     var num_RDM_trials           		= 1; //
+    var enough_rdm_trials 				= 0.8*(num_RDM_training_trials+num_RDM_trials);
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
     var closest_sch_index; // global variable to store the closest sch index
     var initials;
-    var display_initials               = '40px Open sans';
+    var display_initials              = '40px Open sans';
     var dec_arw_display = {
     	//// variable called dec_arrow which is accesible to all arrow using plugins from socialexp_6.3
 				// it has different properties which you can set and the will change for all arrows
@@ -138,7 +140,7 @@
 	                        	  (window.innerHeight/2+window.innerHeight/8)];
 	        // add all of th eother dimensions to be updated here
 	        aperture_diam = window.innerHeight/5;
-	        dot_size = window.innerHeight/900;
+	        dot_size = window.innerHeight/500;
 	        dec_arw_display.arrowhead_length= window.innerHeight/20 ;
 			dec_arw_display.arrow_body_thickness= aperture_diam/20;
       		dec_arw_display.arrow_head_thickness= dec_arw_display.arrow_body_thickness/2,
@@ -313,6 +315,10 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -324,7 +330,7 @@
 
 			'<h1>1)  Individual performance assessment</h1>'+
              //'<h2<u> Tag </h2>>'+
-			'<br><div style="text-align: left; font-size:22px">'+
+			'<br><div style="text-align: left; font-size:18px">'+
 			'<p><li>We ask you to perform a “random dot motion” task, in which you will see dot motion clouds moving to the left or to the right. <p>'+
 
 			'<br><p><li>Please press the “left” or “right” arrow button on your keyboard to indicate the correct direction.<p>'+
@@ -465,6 +471,10 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -512,8 +522,11 @@
 	    dot_radius: function(){
 	    	return dot_size
 	    },
-	    on_finish: function(){
+	    on_finish: function(data){
 	      saveData('outfile', jsPsych.data.get().csv());
+	      var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+
 	    }
 	};
 
@@ -556,6 +569,10 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -690,7 +707,7 @@
     // this is the main block which shows the rdm trials with feedback
 		var RDM_training_block = {
 		timeline: [RDM_trial,RDM_training_fb],
-		repetitions: num_RDM_trials,
+		repetitions: num_RDM_training_trials,
 		on_timeline_start: function(){
 		},
 		on_timeline_finish: function(){
@@ -725,7 +742,7 @@
 		type: 'instructions',
 		pages: function() {return [
 			'<h1> 1) Individual performance assessment</h1>'+
-			'<br><br><div style="text-align: left; font-size:22px">'+
+			'<br><br><div style="text-align: left; font-size:18px">'+
 			'<p><li>Well done! Now we ask you to continue the same task again, but you <u><strong>will not</strong></u> see performance feedback anymore.</p>'+
 			'<br><p><li> Try to pay your full attention and be as quick and accurate as possible. <p>'+
 			'<br><p><li> Press right arrow key on your keyboard to start when you are ready.<p>' +
@@ -734,7 +751,11 @@
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
-		button_label_next: ''
+		button_label_next: '',
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		}
 	}
 
 	timeline.push(instructions_3)
@@ -781,7 +802,7 @@
 	        var total_trial_num = jsPsych.data.get().filter({rdm_trial_count:true}).count();
 	        //var percent_no_resp = sum_no_response/total_trial_num;
 			var percent_no_resp = sum_no_response/(total_trial_num)
-	        if(percent_no_resp > .2){
+	        if(percent_no_resp > .2 & ((total_trial_num-sum_no_response)<enough_rdm_trials)){
 	            return true;
 	        } else {
 	            return false;
@@ -794,7 +815,7 @@
 	        var total_trial_num = jsPsych.data.get().filter({rdm_trial_count:true}).count();
 	        //var percent_no_resp = sum_no_response/total_trial_num;
 			var percent_no_resp = sum_no_response/(total_trial_num)
-	        if(percent_no_resp > .2){
+	        if(percent_no_resp > .2 & ((total_trial_num-sum_no_response)<enough_rdm_trials)){
 	            return true;
 	        } else {
 	            return false;
@@ -816,7 +837,11 @@
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
-		button_label_next: ''
+		button_label_next: '',
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		}
 	}
 	
 	
@@ -855,7 +880,8 @@
 			this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
     		jsPsych.data.addProperties({main_schedule: closest_sch_index});
 
-
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	}
 
@@ -872,7 +898,7 @@
 
           '<h1>2) Group competition task </h1>'+
 
-		  '<br><div style="text-align: left; font-size:22px">'+
+		  '<br><div style="text-align: left; font-size:18px">'+
           '<br><p><li>In this part, we will show you the performance we recorded for you and the other three players during the performance assessment. <p>'+
            
           '<p><br><li>Performance will be displayed as: <img src="images/fb_correct.png" width="30px" class="center"> ; Incorrect performance will be displayed as:<span style="color:red; font-weight:bold;font-size:35px";> x </span>.<p>'+
@@ -884,7 +910,11 @@
        ]},
        show_clickable_nav: true,
        button_label_previous: '',
-       button_label_next: ''
+       button_label_next: '',
+       on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		}
     }
 
 	timeline.push(rdm_instructions_1)
@@ -928,6 +958,10 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -977,6 +1011,10 @@
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1023,6 +1061,10 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1070,6 +1112,10 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1115,6 +1161,10 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1160,6 +1210,10 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1175,7 +1229,7 @@ var main_instructions_2 = {
 		pages: function() {return [
 		 '<h1> 2) Group competition task </h1>'+
 		 //'<br><p><div style="text-align:left; font-weight:bold; font-size:30px"> Notes:</div></p>'+
-		 '<br><div style="text-align: left; font-size:22px">'+
+		 '<br><div style="text-align: left; font-size:20px">'+
 		 '<p><li> For each round, you will make two decisions about the performances.</p>'+
 		 '<br><p><li>Now we can start. Remember: </p>' +
 	     '<ul><ul>'+
@@ -1189,7 +1243,11 @@ var main_instructions_2 = {
 		]},
 		show_clickable_nav: true,
 		button_label_previous: '',
-		button_label_next: ''
+		button_label_next: '',
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		}
 	}
 
 	timeline.push(main_instructions_6)
@@ -1287,6 +1345,11 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1329,6 +1392,10 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1378,6 +1445,10 @@ var main_instructions_2 = {
 			return dot_size
 		},
 		on_finish: function(data){
+
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		
 			var engaged   = jsPsych.data.getLastTrialData().select('response').values[0];
 			var engagepoints = jsPsych.data.getLastTrialData().select('outcome_engage').values[0];
 			if (engaged == 'arrowleft'){  // replaced by 'arrowleft'?
@@ -1435,6 +1506,10 @@ var main_instructions_2 = {
 			return dot_size
 		},
 		on_finish: function(data){
+			
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		
 			var engaged   = jsPsych.data.getLastTrialData().select('response').values[0];
 			var engagepoints = jsPsych.data.getLastTrialData().select('outcome_engage').values[0];
 			if (engaged == 'arrowleft'){  //replace by 'arrowleft'?
@@ -1484,6 +1559,10 @@ var main_instructions_2 = {
 		},
 		dot_radius: function(){
 			return dot_size
+		},
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1492,7 +1571,11 @@ var main_instructions_2 = {
 		type: 'html-keyboard-response',
 		stimulus: '',
 		trial_duration:500,
-		response_ends_trial: false
+		response_ends_trial: false,
+		on_finish: function(data){
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
+		}
 	};
 
 
@@ -1547,6 +1630,8 @@ var main_instructions_2 = {
 		choices: ["arrowright"],
 		on_finish: function(data){
 			data.break = 1;
+			var interactions = jsPsych.data.getInteractionData().last(1);
+			jsPsych.data.addDataToLastTrial({interaction_data: interactions.json()});
 		}
 	};
 
@@ -1641,8 +1726,8 @@ var main_instructions_2 = {
 jsPsych.init({
     timeline: timeline,
     on_interaction_data_update: function(data) {   // this funciton will log every time the participant does anything in their browser
-		jsPsych.data.addProperties(data);
-		console.log(JSON.stringify(data))
+		//jsPsych.data.addProperties(data);
+		//console.log(JSON.stringify(data))
 	},
     on_finish: function() {
 	    jsPsych.data.addProperties({subject_id: subject_id});
@@ -1659,9 +1744,11 @@ jsPsych.init({
 	    jsPsych.data.displayData('csv');
     },
     exclusions: {   // this will exclude brosers which do not meet these minimum
-    	min_width: 800,
-    	min_height: 600
+    	min_width: 1280,
+    	min_height: 577
     }
     });
   </script>
 </html>
+
+
