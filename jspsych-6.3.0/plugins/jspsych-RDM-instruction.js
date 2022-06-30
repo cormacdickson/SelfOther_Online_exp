@@ -624,17 +624,17 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					ctx.fillStyle = 'white';
 					ctx.textAlign = 'centre';
 					ctx.font = '40px Open Sans bold';
-                    ctx.fillText('2) Group competition task', centre_bottom_text_origin_x, left_text_origin_y*2-line_offset*5);
+                    ctx.fillText('2) Group task', centre_bottom_text_origin_x, left_text_origin_y*2-line_offset*5);
 
 					ctx.textAlign = 'left';
 					ctx.font = '20px Open Sans';
 					//ctx.fillText('First of all, this is how we will display two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
-                    ctx.fillText('In Part 2, you will be paired with three other players: your partner, and two opponents. Your team (you and your partner) will', centre_bottom_text_origin_x/9, left_text_origin_y*2);
-					ctx.fillText('play against another team of two people (the two opponents).', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*2);
+                    ctx.fillText('=> you will be paired with three other players: your partner, and two opponents.', centre_bottom_text_origin_x/9, left_text_origin_y*2);
+					ctx.fillText('=> Your team (you and your partner) will play against another team of two people (the two opponents).', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*2);
 					//ctx.fillText('-->This is how we will display two teams on screen:', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*4);//centre_bottom_text_origin_y-5*line_offset);
 
 					ctx.textAlign = 'centre';
-					ctx.fillText( '(This is how we will display the two teams on-screen)', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y-line_offset*4);
+					//ctx.fillText( '(This is how we will display the two teams on-screen)', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y-line_offset*4);
 					ctx.font = '18px Open Sans';
 					ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
 					}
