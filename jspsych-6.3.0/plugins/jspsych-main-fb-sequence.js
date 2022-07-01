@@ -1,6 +1,6 @@
 /*
 
-This plugin displays the performance of each player in the RDM part of the experiment in the centre of the screen 
+This plugin displays the performance of each player in the RDM part of the experiment in the centre of the screen
 
 */
 
@@ -323,7 +323,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var apertureCenterX = trial.aperture_center_x; // The x-coordinate of center of the aperture on the screen, in pixels
 		var apertureCenterY = trial.aperture_center_y; // The y-coordinate of center of the aperture on the screen, in pixels
 		var trial_duration 	= trial.trial_duration;
-		var player_fonts = trial.initials_font;	
+		var player_fonts = trial.initials_font;
 		var outcomeEngage = trial.outcomeEngage;
 
 		var S_perf = trial.S_perf;
@@ -332,7 +332,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		var O2_perf = trial.O2_perf;
 		var fb_steps = [2,4,6,8,10,12]; // this is a hardcoded indexo f which steps we want to dispaly feedback on
 
-		
+
 
 		var RDK = trial.RDK_type;
 		var apertureType = 1; //trial.aperture_type;
@@ -563,8 +563,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			//Place all the data to be saved from this trial in one data object
 			var trial_data = {
-				trial_3d_dot_array: dotArray3d,
-				trial_2d_dot_array: dotArray2d,
+
 				trial_duration: trial.trial_duration, //The trial duration
 				response_ends_trial: trial.response_ends_trial, //If the response ends the trial
 				number_of_apertures: trial.number_of_apertures,
@@ -597,7 +596,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 				O1_perf: trial.O1_perf,
 				O2_perf: trial.O2_perf,
 				porder:trial.p_order,
-				outcome_engage: trial.outcomeEngage
+				outcome_engage: trial.outcomeEngage,
+				trial_3d_dot_array: dotArray3d,
 
 			}
 
