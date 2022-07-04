@@ -73,7 +73,7 @@ var main_sch = [
  {},
  ]
 
-var main_sch_1 = [
+var main_sch_0 = [
  {
   "S_perf": [1,1,1,1,0,0],
   "P_perf": [1,0,1,0,0,1],
@@ -652,7 +652,7 @@ var main_sch_1 = [
  },
  ];
 
-var main_sch_2 = [
+var main_sch_1 = [
  {
   "S_perf": [1,0,1,0,1,0],
   "P_perf": [0,1,1,1,1,1],
@@ -1231,7 +1231,7 @@ var main_sch_2 = [
  },
  ];
 
-var main_sch_3 = [
+var main_sch_2 = [
  {
   "S_perf": [1,0,0,1,0,0],
   "P_perf": [1,1,1,0,1,1],
@@ -1809,4 +1809,3 @@ var main_sch_3 = [
   "outcomeEngage": [-1,-1],
  },
  ];
-
