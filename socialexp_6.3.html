@@ -47,11 +47,11 @@
     var subject_id            			= jsPsych.randomization.randomID(7); // generat a 15 digit subjet ID
     var colours               			= ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
     var random_porder_index   			= Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
-    var this_subjects_porder  			= "DUMMY_Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
+    var this_subjects_porder  			= "Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
     var porder_sch            			= eval(this_subjects_porder);
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
-    //this_subs_schedule        			= eval("DUMMY_main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
+	//this_subs_schedule        			= eval("DUMMY_main_sch_1"); // until schedule is properly created just set it to sch1, this is the line to replace
     var RDM_pretrial_duration 			= 1000; // duration that the initials are displayed at the start of the exp
     var positions 			  	 		    = [0,1,2,3]; // positions of the players [topleft,bottomleft,topright,bottomright]
 
@@ -72,8 +72,8 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_training_trials         = 1; //
-    var num_RDM_trials           		= 1; //
+    var num_RDM_training_trials         = 60; //
+    var num_RDM_trials           		= 60; //
     var enough_rdm_trials 				= 0.8*(num_RDM_training_trials+num_RDM_trials);
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
@@ -99,8 +99,8 @@
 	var correct_ans_right = "arrowright";
 	var correct_ans_left  = "arrowleft";
 	var chosenValue;
-	var total_num_dm_trials = 4;
-	var total_num_blocks = 2;
+	var total_num_dm_trials = 72;
+	var total_num_blocks = 3;
 	var block_size = total_num_dm_trials/total_num_blocks; // number of trials we want to have in each session
 
 
@@ -502,7 +502,8 @@
 			}
 		},
 		training_trial: false,
-	    RDK_type: RDktype, //Applied to all apertures if only one value
+	    choices: Main_decision_choices,
+		RDK_type: RDktype, //Applied to all apertures if only one value
 	    aperture_type: Aperturetype, // circle
 	    player_on:0, // index of the player to show rdk for [self,partner,op1,op2]
 	    player_position: positions,
@@ -875,8 +876,7 @@
 			// now get the index of this schedule
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
 			//var schedule_id   = "main_sch_" + closest_sch_index;
-			
-			var schedule_id   = "DUMMY_main_sch_" + closest_sch_index;
+			var schedule_id   = "main_sch_" + closest_sch_index;
 			this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
     		jsPsych.data.addProperties({main_schedule: closest_sch_index});
 
@@ -1658,7 +1658,7 @@ var main_instructions_2 = {
 	// create timeline for the main block
 	var main_block = {
 		timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb,ITI],
-		timeline_variables : DUMMY_main_sch, //this_subs_schedule,//// Now give the block an empty set of arrays of length = number of trials we warrant
+		timeline_variables : main_sch, //this_subs_schedule,//// Now give the block an empty set of arrays of length = number of trials we warrant
 		// the paramaters we want are assigned dynamically in the
 		on_timeline_start: function(){
 			main_trial_count = 0;
