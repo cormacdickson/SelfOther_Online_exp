@@ -914,7 +914,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 			assignPerfToCurrentPlayer();   // get performance for this pla
 
-			currentApertureNumber = porder[loop_number];
+			currentApertureNumber = porder.indexOf(loop_number);
 			//Initialize the variables for each parameter
 			initializeCurrentApertureParameters(currentApertureNumber);
 
