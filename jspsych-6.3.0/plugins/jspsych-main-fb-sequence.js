@@ -909,6 +909,8 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 			}
 		}
 
+
+
 		//Function to update all the dots all the apertures and then draw them
 		function updateAndDraw(){
 
@@ -1006,7 +1008,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 
 		//Draw the dots on the canvas after they're updated
 		function draw() {
-			if (currentApertureNumber===porder[loop_number]){
+			if (currentApertureNumber===porder.indexOf(loop_number)){
 	    	//Load in the current set of dot array for easy handling
 	    	var dotArray = dotArray2d[currentSetArray[currentApertureNumber]];
 
