@@ -248,9 +248,9 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 							ctx.font = '30px sans-serif';
 							ctx.font = 'bold';
 							//ctx.fillStyle= 'red';
-							ctx.fillText('Pairing complete now!', window.innerWidth/2, 3*(window.innerHeight/4));
+							ctx.fillText('Zuordnung ist abgeschlossen!', window.innerWidth/2, 3*(window.innerHeight/4));
 							ctx.font = '20px sans-serif';
-							ctx.fillText('Please press the right arrow key on your keyboard to start the task', window.innerWidth/2, 3.2*(window.innerHeight/4));
+							ctx.fillText('Bitte drücke die rechte Pfeiltaste, um die Aufgabe zu starten.', window.innerWidth/2, 3.2*(window.innerHeight/4));
 
 							//timerID = window.setTimeout(end_trial,2000);
 							startKeyboardListener()
@@ -265,8 +265,8 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 						ctx.fillStyle = 'white';
 						ctx.textAlign = "center";
 						ctx.font = '35px sans-serif';
-						ctx.fillText('You are being paired with three other players:', window.innerWidth/2, window.innerHeight/2.5);
-						ctx.fillText('your partner (Pa), and two opponents (O1,O2).', window.innerWidth/2, window.innerHeight/2.5 +35);
+						ctx.fillText('Dir werden drei andere Spieler zugeordnet:', window.innerWidth/2, window.innerHeight/2.5);
+						ctx.fillText('dein Partner (Pa) und zwei Gegner (G1, G2).', window.innerWidth/2, window.innerHeight/2.5 +35);
 
 						//ctx.font = '20px sans-serif';
 						//ctx.fillText('You are being paired with three other players: your partner (Pa), and two opponents (O1, O2).', window.innerWidth/2, window.innerHeight/2+90);

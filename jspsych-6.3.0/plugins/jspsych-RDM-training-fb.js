@@ -477,18 +477,18 @@ function drawfb(){
 		ctx.lineWidth = borderThickness;
 		ctx.strokeStyle = borderColor;
 		ctx.beginPath();
-		ctx.ellipse(window.innerWidth/2, window.innerHeight/2, 30, 30, 0, 0, Math.PI*2);
+		ctx.ellipse(window.innerWidth/2, window.innerHeight/2, 45, 45, 0, 0, Math.PI*2);
 		ctx.fillStyle = 'yellow';
 		ctx.fill();
 		//ctx.stroke();
 	} else if (feedback==0){  //wrong answer
-		ctx.lineWidth = 4;
+		ctx.lineWidth = 7;
 		ctx.beginPath();
-    	ctx.moveTo(window.innerWidth/2 - 28, window.innerHeight/2 - 28);
-    	ctx.lineTo(window.innerWidth/2 + 28, window.innerHeight/2 + 28);
+    	ctx.moveTo(window.innerWidth/2 - 45, window.innerHeight/2 - 45);
+    	ctx.lineTo(window.innerWidth/2 + 45, window.innerHeight/2 + 45);
 
-    	ctx.moveTo(window.innerWidth/2 + 28, window.innerHeight/2 - 28);
-    	ctx.lineTo(window.innerWidth/2 - 28, window.innerHeight/2 + 28);
+    	ctx.moveTo(window.innerWidth/2 + 45, window.innerHeight/2 - 45);
+    	ctx.lineTo(window.innerWidth/2 - 45, window.innerHeight/2 + 45);
 		ctx.strokeStyle = 'red';
     	ctx.stroke();
 
@@ -496,7 +496,7 @@ function drawfb(){
 		ctx.fillStyle = 'white';
 		ctx.textAlign = 'centre';
 		ctx.font = 'bold 30px Open Sans';
-		ctx.fillText('missed', window.innerWidth/2, window.innerHeight/2);
+		ctx.fillText('zu langsam', window.innerWidth/2, window.innerHeight/2);
 	}
 }
 

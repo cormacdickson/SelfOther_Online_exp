@@ -47,7 +47,7 @@
     var subject_id            			= jsPsych.randomization.randomID(7); // generat a 15 digit subjet ID
     var colours               			= ["rgb(127,201,127)","rgb(190,174,212)","rgb(253,192,134)","rgb(255,255,153)" ];
     var random_porder_index   			= Math.floor(Math.random() * 1000);   // generate a random index and use this value to access one of the porder schedules
-    var this_subjects_porder  			= "Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
+    var this_subjects_porder  			= "DUMMY_Porder_"+random_porder_index;   // until schedule is properly created just set it to use shorter dummy schedules so its easier to debug    
     var porder_sch            			= eval(this_subjects_porder);
     var main_trial_count      			= 0; // counter used to access correct value from porder schedule
     var this_subs_schedule; // will assign to a specific schedule later
@@ -72,8 +72,8 @@
     var trial_count              		= 0; // used to check if this trial is a break trial
     var borders                  		= false;
     var RDM_performance          		= 0;
-    var num_RDM_training_trials         = 60; //
-    var num_RDM_trials           		= 60; //
+    var num_RDM_training_trials         = 1; //
+    var num_RDM_trials           		= 1; //
     var enough_rdm_trials 				= 0.8*(num_RDM_training_trials+num_RDM_trials);
     var num_RDM_repeat_trials    		= 5;
     var closest_sch_value;  // global variable used to store the colosest accuracy value  to match scheduels
@@ -99,7 +99,7 @@
 	var correct_ans_right = "arrowright";
 	var correct_ans_left  = "arrowleft";
 	var chosenValue;
-	var total_num_dm_trials = 72;
+	var total_num_dm_trials = 3;
 	var total_num_blocks = 3;
 	var block_size = total_num_dm_trials/total_num_blocks; // number of trials we want to have in each session
 
@@ -161,15 +161,15 @@
   	var instructions_1 = {
 		type: 'instructions',
 		pages: function() {return [
-		 '<h1>Welcome to the group game!</h1>'+
+		 '<h1>Willkommen zum Gruppenspiel!</h1>'+
          '<div style="text-align: left; font-size:22px"> '+
-		 '<p><br><br><br><li> Thank you for participating.</p>'+
+		 '<p><br><br><br><li> Danke für deine Teilnahme.</p>'+
 
-		'<br><p><li>The game has two parts:</p>'+
+		'<br><p><li>Dieses Spiel hat zwei Teile:</p>'+
         '<ul><ul><ul>'+
-		'<p> 1) Individual performance assessment (~5 min) </br> 2) Group task (~25 min)<p>'+
+		'<p> 1) Einzelmessung deiner Leistung (~5 min) </br> 2) Gruppenaufgabe (~25 min)<p>'+
 	    '</ul></ul></ul>' +
-		 '<br><p><li>Press the arrow on your keyboard to proceed to the next screen during the whole game.</p>'+
+		 '<br><p><li>Während des ganzen Spiels kannst du durch Drücken der Pfeiltaste zum nächsten Bildschirm wechseln.</p>'+
 		 '<br>'+
          '</div>'
 		]},
@@ -187,7 +187,7 @@
 	//initials block 1
 	var get_initials = {
 		type: "survey-text",
-		questions: [ {prompt: 'Please enter your initials (e.g. MK):', required: true}],
+		questions: [ {prompt: 'Bitte gib deine Initialen an (z.B. MK):', required: true}],
 		on_finish: function(data) {
 		    initials = data.response.Q0.toUpperCase();
 			data.player = initials;
@@ -328,20 +328,20 @@
 		type: 'instructions',
 		pages: function() {return [
 
-			'<h1>1)  Individual performance assessment</h1>'+
+			'<h1>1)  Einzelmessung deiner Leistung</h1>'+
              //'<h2<u> Tag </h2>>'+
 			'<br><div style="text-align: left; font-size:18px">'+
-			'<p><li>In this task, you will see dots moving in a circle towards the left or right side. <p>'+
+			'<p><li>In dieser Aufgabe wirst du Punkte in einem Kreis sehen. Diese Punkte bewegen sich nach links oder rechts. <p>'+
 
-			'<br><p><li>Please press the “left” or “right” arrow button on your keyboard to indicate the correct direction.<p>'+
+			'<br><p><li>Bitte drücke die <strong>linke</strong> oder <strong>rechte</strong> Pfeiltaste auf deiner Tastatur, um die Richtung anzugeben, in die sich die Punkte bewegen.<p>'+
 			'<ul><ul><ul>'+
-			'<p>&#8594   Correct performance will be displayed as:  <img src="images/fb_correct.png" width="30px" class="center">;<p>'+
-			'<p>&#8594   Incorrect performance will be displayed as: <span style="color: red; font-weight:bold; font-size:35px";>× </span>;<p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
-			'<p>&#8594   No response in time will be displayed as <u><strong>"missed"</u></strong>, and will be counted as incorrect;'+
+			'<p>&#8594   eine <strong>richtige</strong> Antwort wird so angezeigt: <img src="images/fb_correct.png" width="30px" class="center">;<p>'+
+			'<p>&#8594   eine <strong>falsche</strong> Antwort wird so angezeigt: <span style="color: red; font-weight:bold; font-size:35px";>× </span>;<p>'+ //<img src="images/fb_wrong.png" width="50px" class="center">
+			'<p>&#8594   drückst du zu langsam, wird dir <strong>"zu langsam"</strong>angezeigt und das wird als falsche Antwort gezählt.'+
 			'</ul></ul></ul>'+ 
-			'<br><p><li>Try to pay your full attention and be as quick and accurate as possible.<p>'+
+			'<br><p><li>Versuche dich gut zu konzentrieren und so schnell und richtig wie möglich zu antworten.<p>'+
 
-			'<br><p><li>Press the right arrow key on your keyboard to start when you are ready.</p></li>'+
+			'<br><p><li>Drücke die rechte Pfeiltaste, um zu beginnen, wenn du bereit bist.</p></li>'+
 			'<br>'+
             '</div>'
 
@@ -742,11 +742,11 @@
 	var instructions_3 = {
 		type: 'instructions',
 		pages: function() {return [
-			'<h1> 1) Individual performance assessment</h1>'+
+			'<h1> 1) Einzelmessung deiner Leistung</h1>'+
 			'<br><br><div style="text-align: left; font-size:18px">'+
-			'<p><li>Well done! Now we ask you to continue the same task again, but you <u><strong>will not</strong></u> see performance feedback anymore.</p>'+
-			'<br><p><li> Try to pay your full attention and be as quick and accurate as possible. <p>'+
-			'<br><p><li> Press right arrow key on your keyboard to start when you are ready.<p>' +
+			'<p><li>Gut gemacht! Jetzt wirst du gebeten, die gleiche Aufgabe noch ein Mal zu machen. Aber du wirst dieses Mal <strong>keine Rückmeldung</strong> zur Korrektheit deiner Leistung erhalten.</p>'+
+			'<br><p><li> Versuche dich gut zu konzentrieren und so schnell und richtig wie möglich zu antworten. <p>'+
+			'<br><p><li> Drücke die rechte Pfeiltaste, um zu beginnen, wenn du bereit bist.<p>' +
              '<br>'+
 			 '</div>'
 		]},
@@ -829,10 +829,10 @@
 		type: 'instructions',
 		pages: function() {return [
 			'<br><br><div style="text-align: centre; font-size:40px">'+
-			'<p> <strong>Well done for completing Part 1! </strong> </p>'+
+			'<p> <strong>Gut gemacht! Teil 1 ist beendet! </strong> </p>'+
 			
 			'<br><br><div style="text-align: centre; font-size:25px">'+
-			'<p> Please press right arrow key on your keyboard to start Part 2 - the group task. <p>'+
+			'<p> Bitte drücke die rechte Pfeiltaste, um den zweiten Teil -die Gruppenaufgabe - zu beginnen. <p>'+
             '<br>'+
 			'</div>'
 		]},
@@ -876,7 +876,7 @@
 			// now get the index of this schedule
 			closest_sch_index = rdmperf.indexOf(closest_sch_value);
 			//var schedule_id   = "main_sch_" + closest_sch_index;
-			var schedule_id   = "main_sch_" + closest_sch_index;
+			var schedule_id   = "DUMMY_main_sch_" + closest_sch_index;
 			this_subs_schedule = eval(schedule_id); // to replace line 53 oncethe schedues are completed
     		jsPsych.data.addProperties({main_schedule: closest_sch_index});
 
@@ -896,15 +896,15 @@
        type: 'instructions',
        pages: function() {return [
 
-          '<h1>2) Group task </h1>'+
+          '<h1>2) Gruppenaufgabe </h1>'+
 
 		  '<br><div style="text-align: left; font-size:18px">'+
-          '<br><p><li>We will show you the performance we recorded for you and the other three players during the performance assessment. <p>'+
+          '<br><p><li>Die Leistung, die wir in Teil 1 gemessen haben, werden wir dir jetzt zeigen. Wir zeigen dir auch die Leistung, die wir für die drei anderen Spieler gemessen haben. <p>'+
            
-          '<p><br><li>Correct performance will be displayed as: <img src="images/fb_correct.png" width="30px" class="center"> ; Incorrect performance will be displayed as:<span style="color:red; font-weight:bold;font-size:35px";> x </span>.<p>'+
+          '<p><br><li>Korrekte Leistungen werden so angezeigt: <img src="images/fb_correct.png" width="30px" class="center"> ; falsche Leistungen werden so angezeigt:<span style="color:red; font-weight:bold;font-size:35px";> x </span>.<p>'+
            
-		  '<p><br><li>Keep track of the number of correct performances and make decisions about them! </p>'+
-		  '<p><br><li>Press right arrow key on your keyboard to see an example.<p>'+
+		  '<p><br><li>Beobachte die Anzahl der korrekten Leistungen und triff darüber Entscheidungen! </p>'+
+		  '<p><br><li>Drücke die rechte Pfeiltaste, um ein Beispiel zu sehen.<p>'+
            '<br>'+
 		   '</div>'
        ]},
@@ -1227,17 +1227,18 @@ var main_instructions_2 = {
 	var main_instructions_6 = {
 		type: 'instructions',
 		pages: function() {return [
-		 '<h1> 2) Group task </h1>'+
+		 '<h1> 2) Gruppenaufgabe </h1>'+
 		 //'<br><p><div style="text-align:left; font-weight:bold; font-size:30px"> Notes:</div></p>'+
 		 '<br><div style="text-align: left; font-size:20px">'+
-		 '<p><li> For each round, you will make two decisions about the performances.</p>'+
-		 '<br><p><li>Now we can start. Remember: </p>' +
+		 '<p><li> Für jede Runde wirst du zwei Entscheidungen über die aufgezeicheten Leistungen treffen.</p>'+
+		 '<br><p><li>Jetzt können wir beginnen. Denk dran: </p>' +
 	     '<ul><ul>'+
-		 '<br>&#8594 Track the performances for everyone.'+
-		 '<br>&#8594 Make correct decisions by picking the better performer.'+
-		 '<br>&#8594 Getting decisions about your partner right is just as important as getting decisions about yourself right.'+
+		 '<br>&#8594 Beobachte alle aufgezeichneten Leistungen.'+
+		 '<br>&#8594 Triff richtige Entscheidungen, indem du die Person auswählst, die die meisten richtigen Leistungen hatte.'+
+		 '<br>&#8594 Richtige Entscheidungen darüber zu treffen, ob dein Partner besser/schlechter war als der Gegner, ist genauso wichtig,'+
+		 '<br> wie wenn du dich selbst vergleichen sollst.'+
 		 '</ul></ul>'+
-		 '<br><p><li> Press below right arrow key on your keyboard to proceed to next screen: <u> you will be paired with three other players and start the task.</u></p>' + //<br> - Let’s do a practice round, in which we will show whether your decision is correct or not <strong>(?)</strong>. 
+		 '<br><p><li> Zum Starten drücke die rechte Pfeiltaste: <u> Dir werden drei Mitspieler zugeordnet und du wirst mit der Aufgabe beginnen.</u></p>' + //<br> - Let’s do a practice round, in which we will show whether your decision is correct or not <strong>(?)</strong>. 
 		'<br>'+
 		'</div>'
 		]},
@@ -1622,8 +1623,8 @@ var main_instructions_2 = {
 			var sum_points = jsPsych.data.get().select('points').sum();
 			var numbreaks  = 1+ jsPsych.data.get().select('break').sum();
 			return [ 	//"<p style='font-size: 25px'>Time to take a break!</p>" +
-		           		"<p style = 'font-size: 25px'> " + numbreaks + " sessions of " + total_num_blocks + " finished, you made " + sum_points + " points so far in the task </p>" +
-				   		"<p style = 'font-size: 25px'> Take a rest for about a minute. Then, Continue by pressing right arrow key </p>"
+		           		"<p style = 'font-size: 25px'> Ein " + numbreaks + " von " + total_num_blocks + " Teilen beende. Bisher hast du " + sum_points + " Punkte erspielt.</p>" +
+				   		"<p style = 'font-size: 25px'> Mache eine Minute lang Pause. Danach, mache weiter, indem du die rechte Pfeiltaste drückst. </p>"
 		 				
 				   ]
 		},
@@ -1658,7 +1659,7 @@ var main_instructions_2 = {
 	// create timeline for the main block
 	var main_block = {
 		timeline: [break_conditional,main_fb_sequence,main_decision_1, main_fb, main_decision_2, main_fb,ITI],
-		timeline_variables : main_sch, //this_subs_schedule,//// Now give the block an empty set of arrays of length = number of trials we warrant
+		timeline_variables : DUMMY_main_sch, //this_subs_schedule,//// Now give the block an empty set of arrays of length = number of trials we warrant
 		// the paramaters we want are assigned dynamically in the
 		on_timeline_start: function(){
 			main_trial_count = 0;
@@ -1701,8 +1702,8 @@ var main_instructions_2 = {
 		type: 'html-keyboard-response',
 		stimulus: function (){
 		var sum_points = jsPsych.data.get().select('points').sum();	
-		return [    "<p style='font-size: 25px'>Thank you!</p>" +
-		      		"<p style='font-size: 25px'>You made " + sum_points + " points in the whole task </p>"
+		return [    "<p style='font-size: 25px'>Vielen Dank!</p>" +
+		      		"<p style='font-size: 25px'>Du hast die Aufgabe mit " + sum_points + " Punkten abgeschlossen! </p>"
 		]
 		},
 		trial_duration: 2000,
