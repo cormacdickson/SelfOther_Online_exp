@@ -623,7 +623,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			if (instr_num==-1 && response_num==0){  // if they should engage
 					ctx.fillStyle = 'white';
 					ctx.textAlign = 'centre';
-					ctx.font = '40px Open Sans bold';
+					ctx.font = 'bold 35px sans-serif';
                     ctx.fillText('2) Gruppenaufgabe', centre_bottom_text_origin_x, left_text_origin_y*2-line_offset*5);
 
 					ctx.textAlign = 'left';
@@ -636,7 +636,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 					ctx.textAlign = 'centre';
 					//ctx.fillText( '(This is how we will display the two teams on-screen)', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y-line_offset*4);
 					ctx.font = '18px Open Sans';
-					ctx.fillText('   -Drücke die rechte Pfeiltaste, zum Weitermachen.', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
+					ctx.fillText('   Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
 					}
 
 			}

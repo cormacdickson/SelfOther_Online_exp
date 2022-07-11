@@ -899,9 +899,9 @@ jsPsych.plugins["main-instruction"] = (function() {
 			} else if (instr_num==3 && response_num==1){
 				ctx.textAlign = 'left';
 				ctx.fillText('=> Wenn du mehr richtige Leistungen hattest als G2,', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('   du also besser warst, drücke die <linke Pfeiltaste>', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.fillText('   du also besser warst, drücke die <linke Pfeiltaste>.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 				
-				ctx.fillText('=> Wenn nicht, drücke die <rechte Pfeiltaste>', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('=> Wenn nicht, drücke die <rechte Pfeiltaste>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
 				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));  
 				ctx.fillStyle = 'red';
 				ctx.fillText('=> Entscheide dich jetzt!', right_text_origin_x, right_text_origin_y+(line_offset*5));
@@ -932,7 +932,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.textAlign = 'center';
 				ctx.fillStyle = 'white';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -Drücke die rechte Pfeiltaste zum weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   Drücke die rechte Pfeiltaste zum weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 
 			} else if (instr_num==1 && response_num==0){
@@ -940,7 +940,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.textAlign = 'left';
 				ctx.font = '18px Open sans';
 				ctx.fillText('=> In diesem Fall ist es die richtige Entscheidung,', right_text_origin_x, right_text_origin_y-(line_offset*4));
-				ctx.fillText('   dein eigenes Team zu ählen durch Drücken ', right_text_origin_x, right_text_origin_y-(line_offset*3));
+				ctx.fillText('   dein eigenes Team zu wählen durch Drücken ', right_text_origin_x, right_text_origin_y-(line_offset*3));
 				ctx.fillText('   der linken Pfeiltaste. ', right_text_origin_x, right_text_origin_y-(line_offset*2));
 				//ctx.fillText('     ', right_text_origin_x, right_text_origin_y-(line_offset*2));
 
@@ -960,7 +960,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				
         ctx.textAlign = 'center';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
         
 			} else if (instr_num==4 && response_num==0){
@@ -1007,7 +1007,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
         ctx.textAlign = 'center';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   - Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
         
 			}
 			
