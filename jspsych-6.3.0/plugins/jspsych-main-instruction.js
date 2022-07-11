@@ -932,7 +932,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.textAlign = 'center';
 				ctx.fillStyle = 'white';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 
 			} else if (instr_num==1 && response_num==0){
@@ -958,7 +958,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 				
         ctx.textAlign = 'center';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
         
 			} else if (instr_num==4 && response_num==0){
@@ -1005,7 +1005,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 
         ctx.textAlign = 'center';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
         
 			}
 			
