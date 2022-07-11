@@ -23,15 +23,15 @@ jsPsych.plugins.fullscreen = (function() {
       message: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Message',
-        default: '<p>The task will switch to full screen mode.</p>'+
-        '<p> Please keep full screen mode on until you finish the task.</p>',
+        default: '<p>Das Spiel wird im Vollbildmodus stattfinden.</p>'+
+        '<p> Bitte bleibe im Vollbildmodus bis du das Spiel beendet hast. </p>',
         array: false,
         description: 'HTML content to display above the button to enter fullscreen mode.'
       },
       button_label: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Button label',
-        default:  'Continue',
+        default:  'weiter',
         array: false,
         description: 'The text that appears on the button to enter fullscreen.'
       },

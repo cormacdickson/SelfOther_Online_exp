@@ -445,7 +445,7 @@ jsPsych.plugins["RDM-fb"] = (function() {
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'centre';
 				ctx.font = 'bold 30px Open Sans';
-				ctx.fillText('missed', window.innerWidth/2, window.innerHeight/2);
+				ctx.fillText('zu langsam', window.innerWidth/2, window.innerHeight/2);
 
 			}
 		}

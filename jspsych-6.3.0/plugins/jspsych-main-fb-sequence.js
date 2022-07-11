@@ -414,7 +414,7 @@ jsPsych.plugins["main-fb-sequence"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		//var player_position;
 		var fb_index = 0;
-		var player_ids = [player1,'Pa','O1','O2'];
+		var player_ids = [player1,'Pa','G1','G2'];
 		var trial_duration;// = [300,100,200,100,200,100,200,100,200,100,200,100,200,500];
 		var nDotsArray;
 		var nSetsArray;
