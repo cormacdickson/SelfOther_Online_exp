@@ -293,7 +293,7 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		//var player_on;
-		var player_ids = [player1,'Partner (Pa)','Opponent1 (O1)','Opponent2 (O2)'];
+		var player_ids = [player1,'Partner (Pa)','Gegner1 (G1)','Gegner2 (G2)'];
 		var nDotsArray;
 		var nSetsArray;
 		var dotRadiusArray;
@@ -623,20 +623,20 @@ jsPsych.plugins["RDM-instruction"] = (function() {
 			if (instr_num==-1 && response_num==0){  // if they should engage
 					ctx.fillStyle = 'white';
 					ctx.textAlign = 'centre';
-					ctx.font = '40px Open Sans bold';
-                    ctx.fillText('2) Group task', centre_bottom_text_origin_x, left_text_origin_y*2-line_offset*5);
+					ctx.font = 'bold 35px sans-serif';
+                    ctx.fillText('2) Gruppenaufgabe', centre_bottom_text_origin_x, left_text_origin_y*2-line_offset*5);
 
 					ctx.textAlign = 'left';
 					ctx.font = '20px Open Sans';
 					//ctx.fillText('First of all, this is how we will display two teams on-screen:', centre_bottom_text_origin_x/2, left_text_origin_y*2);
-                    ctx.fillText('=> you will be paired with three other players: your partner, and two opponents.', centre_bottom_text_origin_x/9, left_text_origin_y*2);
-					ctx.fillText('=> Your team (you and your partner) will play against another team of two people (the two opponents).', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*2);
+                    ctx.fillText('=> Du spielst mit drei anderen Spielern: deinem Partner und zwei Gegnern.', centre_bottom_text_origin_x/9, left_text_origin_y*2);
+					ctx.fillText('=> Dein Team (du und dein Partner) werden gegen zwei andere Personen spielen (die zwei Gegner).', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*2);
 					//ctx.fillText('-->This is how we will display two teams on screen:', centre_bottom_text_origin_x/9, left_text_origin_y*2+line_offset*4);//centre_bottom_text_origin_y-5*line_offset);
 
 					ctx.textAlign = 'centre';
 					//ctx.fillText( '(This is how we will display the two teams on-screen)', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y-line_offset*4);
 					ctx.font = '18px Open Sans';
-					ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
+					ctx.fillText('   Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x/1.5, centre_bottom_text_origin_y);
 					}
 
 			}

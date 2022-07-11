@@ -400,7 +400,7 @@ jsPsych.plugins["main-instruction"] = (function() {
 		//Variables for different apertures (initialized in setUpMultipleApertures function below)
 		var player_position;
 		var player_on;
-		var player_ids = [player1,'Pa','O1','O2'];
+		var player_ids = [player1,'Pa','G1','G2'];
 		var nDotsArray;
 		var nSetsArray;
 		var coherentDirectionArray;
@@ -890,75 +890,77 @@ jsPsych.plugins["main-instruction"] = (function() {
 				//ctx.fillText('   compare the performances between two ', left_text_origin_x, left_text_origin_y+(line_offset*3));
 				//ctx.fillText('   players from memory.', left_text_origin_x, left_text_origin_y+(line_offset*4));
 
-				ctx.fillText('   => The arrow indicates the players', left_text_origin_x, left_text_origin_y);
-				ctx.fillText('      to compare.', left_text_origin_x, left_text_origin_y+(line_offset*1));
-				ctx.fillText('   => Compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
+				ctx.fillText('   => Der Pfeil zeigt auf die Spieler, die du', left_text_origin_x, left_text_origin_y);
+				ctx.fillText('      vergleichen sollst.', left_text_origin_x, left_text_origin_y+(line_offset*1));
+				ctx.fillText('   => Vergleiche dich mit G2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
 				//ctx.textAlign = 'center';
-				//ctx.fillText('   press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				//ctx.fillText('   -Drücke die rechte Pfeiltaste zum weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 			} else if (instr_num==3 && response_num==1){
 				ctx.textAlign = 'left';
-				ctx.fillText('=> If your performance was better than', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('     O2’s performance, press <left arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.fillText('=> Wenn du mehr richtige Leistungen hattest als G2,', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   du also besser warst, drücke die <linke Pfeiltaste>.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 				
-				ctx.fillText('=> Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('=> Wenn nicht, drücke die <rechte Pfeiltaste>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
 				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));  
 				ctx.fillStyle = 'red';
-				ctx.fillText('=> Make a decision now!', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText('=> Entscheide dich jetzt!', right_text_origin_x, right_text_origin_y+(line_offset*5));
 
 				
 			} else if (instr_num==0 && response_num==0){
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   => The arrow indicates the players', left_text_origin_x, left_text_origin_y);
-				ctx.fillText('      to compare.', left_text_origin_x, left_text_origin_y+(line_offset*1));
-				ctx.fillText('   => Compare yourself to O2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
+				ctx.fillText('   => Der Pfeil zeigt auf die Spieler, die du', left_text_origin_x, left_text_origin_y);
+				ctx.fillText('      vergleichen sollst.', left_text_origin_x, left_text_origin_y+(line_offset*1));
+				ctx.fillText('   => Vergleiche dich mit G2.', left_text_origin_x, left_text_origin_y+(line_offset*3));
 			
 				ctx.textAlign = 'left';
-				ctx.fillText('=> If your performance was better than', right_text_origin_x, right_text_origin_y);
-				ctx.fillText('     O2’s performance, press <left arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.fillText('=> Wenn du mehr richtige Leistungen hattest als G2,', right_text_origin_x, right_text_origin_y);
+				ctx.fillText('   du also besser warst, drücke die <linke Pfeiltaste>', right_text_origin_x, right_text_origin_y+(line_offset*1));
 				
-				ctx.fillText('=> Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('=> Wenn nicht, drücke die <rechte Pfeiltaste>', right_text_origin_x, right_text_origin_y+(line_offset*3));
 				//ctx.fillText(' Otherwise click <right arrow>.', right_text_origin_x, right_text_origin_y+(line_offset*6));
 
 				ctx.fillStyle = 'red';
-				ctx.fillText('=> Make a decision now!', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText('=> Entscheide dich jetzt!', right_text_origin_x, right_text_origin_y+(line_offset*5));
 
 				ctx.font = 'bold 18px Open sans';
 				ctx.textAlign = 'center';
-				ctx.fillText('=> Before moving on, let us remind you of the performances you have just seen!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
+				ctx.fillText('=> Bevor du weitermachst, lass uns dich an die Leistungen erinnern, die du beobachtet hast!',centre_bottom_text_origin_x, centre_bottom_text_origin_y-(line_offset*1.5));
                 
 				ctx.textAlign = 'center';
 				ctx.fillStyle = 'white';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   Drücke die rechte Pfeiltaste zum weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
 
 			} else if (instr_num==1 && response_num==0){
 				ctx.fillStyle = 'white';
 				ctx.textAlign = 'left';
 				ctx.font = '18px Open sans';
-				ctx.fillText('=> In this case, the correct decision is to ', right_text_origin_x, right_text_origin_y-(line_offset*4));
-				ctx.fillText('    pick your team by using <left arrow>.', right_text_origin_x, right_text_origin_y-(line_offset*3));
+				ctx.fillText('=> In diesem Fall ist es die richtige Entscheidung,', right_text_origin_x, right_text_origin_y-(line_offset*4));
+				ctx.fillText('   dein eigenes Team zu wählen durch Drücken ', right_text_origin_x, right_text_origin_y-(line_offset*3));
+				ctx.fillText('   der linken Pfeiltaste. ', right_text_origin_x, right_text_origin_y-(line_offset*2));
 				//ctx.fillText('     ', right_text_origin_x, right_text_origin_y-(line_offset*2));
 
-				ctx.fillText('=> This is because your performance ', right_text_origin_x, right_text_origin_y-(line_offset*1));
-				ctx.fillText('   was better than O2’s performance ', right_text_origin_x, right_text_origin_y+(line_offset*0));
+				ctx.fillText('=> Das liegt daran, dass du besser', right_text_origin_x, right_text_origin_y-(line_offset*0));
+				ctx.fillText('   warst als G2.', right_text_origin_x, right_text_origin_y+(line_offset*1));
 				//ctx.fillText('     2 points for it because you performed', right_text_origin_x, right_text_origin_y+(line_offset*2));
 				//ctx.fillText('     2 points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*3));
 
 
-				ctx.fillText('=> Picking your team means you get', right_text_origin_x, right_text_origin_y+(line_offset*2));
-				ctx.fillText('   2 points beacuse you performed 2', right_text_origin_x, right_text_origin_y+(line_offset*3));
-				ctx.fillText('   points better than O2.', right_text_origin_x, right_text_origin_y+(line_offset*4));
-				ctx.fillText(' => picking the other team gives you', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('   no points (but you also  don’t lose', right_text_origin_x, right_text_origin_y+(line_offset*7));
-				ctx.fillText('   points).', right_text_origin_x, right_text_origin_y+(line_offset*8));
+				ctx.fillText('=> Für die Wahl deines Teams erhälst du', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('   2 Punkte, weil du 2 Leistungspunkte', right_text_origin_x, right_text_origin_y+(line_offset*4));
+				ctx.fillText('   besser warst als G2.', right_text_origin_x, right_text_origin_y+(line_offset*5));
+
+				ctx.fillText(' => Wählst du das andere Team, ', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('   bekommst du keine Punkte (du', right_text_origin_x, right_text_origin_y+(line_offset*8));
+				ctx.fillText('   verlierst aber auch keine Punkte).', right_text_origin_x, right_text_origin_y+(line_offset*9));
 				
         ctx.textAlign = 'center';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
 
         
 			} else if (instr_num==4 && response_num==0){
@@ -970,15 +972,15 @@ jsPsych.plugins["main-instruction"] = (function() {
 				// ctx.fillText('=> Remember that you and your partner are in the same team. If the partner was better than the opponent, you will get points, too!', left_text_origin_x, left_text_origin_y-line_offset*8);
 				
 				ctx.font = '18px Open sans';
-				ctx.fillText('=> This arrow means compare your ', left_text_origin_x, left_text_origin_y);
-				ctx.fillText('     partner and O1.', left_text_origin_x, left_text_origin_y+(line_offset*1));
+				ctx.fillText('=> Dieser Pfeil bedeutet, dass du deinen ', left_text_origin_x, left_text_origin_y);
+				ctx.fillText('  Partner mit G1 vergleichen sollst.', left_text_origin_x, left_text_origin_y+(line_offset*1));
 
-				ctx.fillText('=> You get points for that in the', left_text_origin_x, left_text_origin_y+(line_offset*3));
-				ctx.fillText('  same way as you get points', left_text_origin_x, left_text_origin_y+(line_offset*4));
-				ctx.fillText('  for comparing yourself.', left_text_origin_x, left_text_origin_y+(line_offset*5));
+				ctx.fillText('=> Du bekommst  dafür genauso Punkte,', left_text_origin_x, left_text_origin_y+(line_offset*3));
+				ctx.fillText('  wie wenn du dich selbst vergleichst.', left_text_origin_x, left_text_origin_y+(line_offset*4));
+				//ctx.fillText(' ', left_text_origin_x, left_text_origin_y+(line_offset*5));
 
 				ctx.fillStyle = 'red';
-				ctx.fillText('=> Make a decision now!', left_text_origin_x, left_text_origin_y+(line_offset*7));
+				ctx.fillText('=> Triff deine Entscheidung jetzt!', left_text_origin_x, left_text_origin_y+(line_offset*6));
 
 
 
@@ -988,24 +990,24 @@ jsPsych.plugins["main-instruction"] = (function() {
 				ctx.textAlign = 'left';
 
 				ctx.font = '18px Open sans';
-				ctx.fillText('=> In this case, the correct decision is', right_text_origin_x, right_text_origin_y-(line_offset*3));
-				ctx.fillText('    to pick the opponent team  by using ', right_text_origin_x, right_text_origin_y-(line_offset*2));
-				ctx.fillText('    <right arrow>.', right_text_origin_x, right_text_origin_y-(line_offset*1));
+				ctx.fillText('=> In diesem Fall ist es die richtige Entscheidung,', right_text_origin_x, right_text_origin_y-(line_offset*3));
+				ctx.fillText('   das andere Team zu wählen durch Drücken ', right_text_origin_x, right_text_origin_y-(line_offset*2));
+				ctx.fillText('   der <rechten Pfeiltaste>.', right_text_origin_x, right_text_origin_y-(line_offset*1));
 				//ctx.fillText('     and the O1’s was 5.', right_text_origin_x, right_text_origin_y-(line_offset*0));
 
-				ctx.fillText('=> This is because your partner’ performance', right_text_origin_x, right_text_origin_y+(line_offset*1));
-				ctx.fillText('   was worse compared to O1’s (4 compared', right_text_origin_x, right_text_origin_y+(line_offset*2));
-				ctx.fillText('   to 5).', right_text_origin_x, right_text_origin_y+(line_offset*3));
+				ctx.fillText('=> Das liegt daran, dass dein Partner', right_text_origin_x, right_text_origin_y+(line_offset*1));
+				ctx.fillText('   schlechter war als G1 (4 im Vergleich', right_text_origin_x, right_text_origin_y+(line_offset*2));
+				ctx.fillText('   zu 5 korrekten Leistungen).', right_text_origin_x, right_text_origin_y+(line_offset*3));
 
-				ctx.fillText('=> Picking the opponent team prevents', right_text_origin_x, right_text_origin_y+(line_offset*5));
-				ctx.fillText('   you from losing points. If you pick your', right_text_origin_x, right_text_origin_y+(line_offset*6));
-				ctx.fillText('   own team in this case you lose 1 point', right_text_origin_x, right_text_origin_y+(line_offset*7));
-				ctx.fillText('   (because this is how much better the', right_text_origin_x, right_text_origin_y+(line_offset*8));
-				ctx.fillText('   opponent was) .', right_text_origin_x, right_text_origin_y+(line_offset*9));
+				ctx.fillText('=> Das andere Team zu wählen, verhindert,', right_text_origin_x, right_text_origin_y+(line_offset*5));
+				ctx.fillText('   dass dein Team Punkte verliert. Würdest', right_text_origin_x, right_text_origin_y+(line_offset*6));
+				ctx.fillText('   du in diesem Fall dein Team wählen, würdest', right_text_origin_x, right_text_origin_y+(line_offset*7));
+				ctx.fillText('   du einen Punkt verlieren (weil euer Gegner', right_text_origin_x, right_text_origin_y+(line_offset*8));
+				ctx.fillText('   in diesem Fall einen Punkt besser war).', right_text_origin_x, right_text_origin_y+(line_offset*9));
 
         ctx.textAlign = 'center';
 				ctx.font = '18px Open sans';
-				ctx.fillText('   -press the right arrow key on your keyboard to continue', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
+				ctx.fillText('   Drücke die rechte Pfeiltaste zum Weitermachen.', centre_bottom_text_origin_x, centre_bottom_text_origin_y);
         
 			}
 			
