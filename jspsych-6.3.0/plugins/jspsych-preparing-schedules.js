@@ -56,7 +56,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		      default: "black",
 		      description: "The background of the stimulus"
 		    },
-			
+
 		 //   schedule_id: {
 	     //      type: jsPsych.plugins.parameterType.HTML_STRING,
 		//		pretty_name: 'schedule_id',
@@ -160,7 +160,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 
 		//----JsPsych Functions Begin----
 		//Function to start the keyboard listener
-		
+
 		function startKeyboardListener(){
 			//Start the response listener if there are choices for keys
 			if (choices != jsPsych.NO_KEYS) {
@@ -185,7 +185,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 
 			//If the parameter is set such that the response ends the trial, then kill the timeout and end the trial
 			if (trial.response_ends_trial) {
-				
+
 				end_trial();
 			}
 
@@ -193,12 +193,12 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 
 		//Function to end the trial proper
 		function end_trial() {
-		
+
 			//if (typeof keyboardListener !== 'undefined') {
 			jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
 
 			var trial_data = {
-			//schedule_id: trial.schedule_id 
+			//schedule_id: trial.schedule_id
 			}
 						//Remove the canvas as the child of the display_element element
 				display_element.innerHTML='';
@@ -273,7 +273,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 		}
 
 
-
+/*
 		// start the response listener
 	    if (choices != jsPsych.NO_KEYS) {
 	      var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
@@ -284,7 +284,7 @@ jsPsych.plugins["preparing-schedules"] = (function() {
 	        allow_held_key: false
 	      });
 	    }
-
+*/
 
 }; // END OF TRIAL
 
